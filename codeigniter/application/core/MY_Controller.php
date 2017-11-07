@@ -77,4 +77,24 @@ class MY_View_Controller extends MY_Controller {
   }
 }
 
+
+// custom controller
+class MY_Custom_Controller extends MY_View_Controller {
+  public function __construct() {
+    parent::__construct();
+    $this->_set_nav_items();
+  }
+
+  protected function _set_nav_items() {
+    // static test
+    $this->_nav_items = array('nav_items' => array(
+      array(
+        'title' => 'Home',
+        'href' => 'main'
+      )
+    ));;
+  }
+}
+
+
 ?>
