@@ -129,6 +129,27 @@ class MY_Custom_Controller extends MY_View_Controller {
       $this->_redirect('dashboard');
     }
   }
+
+  // send email
+  private $_EMAIL = 'mail.arnesfield@gmail.com';
+
+  protected function _send_mail($to, $subject, $view, $data, $from_name = 'Team Planner Project Team') {
+    $this->load->library('email');
+    
+    // true on third param on view
+    $this->email->from($this->_EMAIL, $from_name);
+    $this->email->to($to);
+    $this->email->subject($subject);
+    $this->email->message($this->load->view($view, $data, TRUE));
+    
+    if ($this->email->send()) {
+      return TRUE;
+    }
+    else {
+      return $this->email->print_debugger();
+    }
+  }
+
 }
 
 

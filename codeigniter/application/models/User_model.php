@@ -8,6 +8,10 @@ class User_model extends MY_CRUD_Model {
   public function fetch($user) {
     return $this->_read($this->_tbl, array('where' => $user));
   }
+
+  public function update($data, $where) {
+    return $this->_update($this->_tbl, $data, $where);
+  }
 }
 
 ?>

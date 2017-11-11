@@ -13,13 +13,8 @@
     <?=form_error('password', '<span>', '</span>')?>
   </div>
 
-  <?php if (isset($invalid) && $invalid): ?>
   <div>
-    Invalid username or password.
-  </div>
-  <?php endif; ?>
-
-  <div>
+    <a href="<?=base_url('forgot')?>">Forgot password?</a>
     <button type="submit">Login</button>
   </div>
 

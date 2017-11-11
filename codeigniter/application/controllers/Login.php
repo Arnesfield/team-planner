@@ -17,8 +17,6 @@ class Login extends MY_Custom_Controller {
     $this->form_validation->set_rules('username', 'Username', 'trim|required');
     $this->form_validation->set_rules('password', 'Password', 'trim|required');
 
-    // $invalid for display
-    $invalid = false;
     if ($this->form_validation->run() === TRUE) {
       $username = $this->input->post('username', true);
       $password = $this->input->post('password', true);
@@ -37,25 +35,26 @@ class Login extends MY_Custom_Controller {
         $this->session->set_userdata(array('is_logged_in' => TRUE));
         // msg
         $this->session->set_flashdata('msg', 'Logged in successfully.');
-
+        
         // go to
         $this->_redirect('dashboard');
         return;
       }
       else {
-        $invalid = true;
+        // $invalid changed to flashdata
+        $this->session->set_flashdata('msg', 'Invalid username or password.');
       }
     }
 
     // show login form
-    $form_login_data = array('invalid' => $invalid);
+    $form_login_data = array();
     $data = array(
       'title' => 'Login',
       'form_login' => $this->load->view('forms/login', $form_login_data, true),
       'msg' => $this->session->flashdata('msg')
     );
     $this->_view(
-      array('templates/nav', 'pages/login'),
+      array('templates/nav', 'pages/login', 'alerts/msg'),
       array_merge($this->_info_nav_items, $data)
     );
   }
