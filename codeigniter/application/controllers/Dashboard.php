@@ -14,21 +14,6 @@ class Dashboard extends MY_Custom_Controller {
     if ($this->session->has_userdata('is_logged_in') === FALSE) {
       $this->_redirect('login');
     }
-    // check status also
-    // status :: 0 - deactivated, 1 - ok, 2 - email unverified
-    else if ($user['status'] === 0) {
-      $this->session->set_flashdata('msg', 'We are sorry. But this account has been blocked.');
-      $this->_redirect('login');
-    }
-    else if ($user['status'] === 2) {
-      $this->session->set_flashdata('msg', "Please verify your account's email first.");
-      $this->_redirect('login');
-    }
-    // check type of account
-    // type :: 1 - admin, 2 - user
-    else if ($user['type'] === 1) {
-      $this->_redirect('admin');
-    }
   }
   
   public function index() {

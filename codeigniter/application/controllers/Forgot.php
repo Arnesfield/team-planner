@@ -28,12 +28,12 @@ class Forgot extends MY_Custom_Controller {
       // return the id and update verification code field
       if ($user) {
         $user = $user[0];
-        $verification_code = substr(md5(uniqid(rand(), true)), -16, 16);
+        $reset_code = $this->_generate_code();
 
         $user_data = array(
-          'verification_code' => $verification_code,
+          'reset_code' => $reset_code,
           // 30 min expiration
-          'verification_expiration' => time() + 1800
+          'reset_expiration' => time() + 1800
         );
         $where = array(
           'id' => $user['id']
@@ -42,8 +42,8 @@ class Forgot extends MY_Custom_Controller {
         // update
         if ($this->user_model->update($user_data, $where)) {
           $send_data = array(
-            'expiration' => $user_data['verification_expiration'],
-            'code' => $verification_code
+            'expiration' => $user_data['reset_expiration'],
+            'code' => $reset_code
           );
           // send email
           $sent = $this->_send_mail($email, 'Password Reset', 'email/password_reset', $send_data);
@@ -98,7 +98,7 @@ class Forgot extends MY_Custom_Controller {
       $this->load->model('user_model');
 
       // check if code exists in db
-      $where = array('verification_code' => $code);
+      $where = array('reset_code' => $code);
       $user = $this->user_model->fetch($where);
 
       // return user
@@ -106,7 +106,7 @@ class Forgot extends MY_Custom_Controller {
         $user = $user[0];
 
         // check if expired
-        if (time() < $user['verification_expiration']) {
+        if (time() < $user['reset_expiration']) {
           // show form
           $this->session->set_userdata(array('v_id' => $user['id']));
           $this->_show_reset_form();
@@ -145,8 +145,8 @@ class Forgot extends MY_Custom_Controller {
         // update that id
         $data = array(
           'password' => $password,
-          'verification_code' => '',
-          'verification_expiration' => ''
+          'reset_code' => '',
+          'reset_expiration' => 0
         );
         $where = array('id' => $id);
         

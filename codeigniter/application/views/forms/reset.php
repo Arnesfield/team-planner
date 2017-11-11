@@ -1,5 +1,7 @@
 <form action="forgot/reset" method="post">
 
+  <h3>Password Reset</h3>
+
   <div>
     <label for="password">Password</label>
     <input type="password" name="password" id="password">

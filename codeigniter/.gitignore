@@ -32,3 +32,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 # Sensitive information
 application/config/email.php
+application/config/recaptcha.php

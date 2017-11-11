@@ -29,15 +29,38 @@ class Login extends MY_Custom_Controller {
 
       // verify if user is valid
       if ($user && password_verify($password, $user[0]['password'])) {
+        $user = $user[0];
         // set session here
         $this->load->library('session');
-        $this->session->set_userdata(array('user' => $user[0]));
+
+        // check conditions first
+        // check status
+        // status :: 0 - deactivated, 1 - ok, 2 - email unverified
+        if ($user['status'] == 0) {
+          $this->session->set_flashdata('msg', 'We are sorry, but this account has been suspended.');
+          $this->_redirect('login');
+          return;
+        }
+        else if ($user['status'] == 2) {
+          $this->session->set_flashdata('msg', "Please verify your account's email first.");
+          $this->_redirect('login');
+          return;
+        }
+
+        $this->session->set_userdata(array('user' => $user));
         $this->session->set_userdata(array('is_logged_in' => TRUE));
         // msg
         $this->session->set_flashdata('msg', 'Logged in successfully.');
         
         // go to
-        $this->_redirect('dashboard');
+        // check type of account
+        // type :: 1 - admin, 2 - user
+        if ($user['type'] == 1) {
+          $this->_redirect('admin');
+        }
+        else if ($user['type'] == 2) {
+          $this->_redirect('dashboard');
+        }
         return;
       }
       else {

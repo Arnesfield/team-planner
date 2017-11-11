@@ -150,6 +150,10 @@ class MY_Custom_Controller extends MY_View_Controller {
     }
   }
 
+  protected function _generate_code() {
+    return substr(md5(uniqid(rand(), true)), -16, 16);
+  }
+
 }
 
 
