@@ -106,21 +106,34 @@ class Signup extends MY_Custom_Controller {
     if ($code = $this->uri->segment(3)) {
       $this->load->model('user_model');
       
-      // update status to 1
-      $data = array('status' => 1);
       $where = array('verification_code' => $code);
-      
-      if ($this->user_model->update($data, $where)) {
-        // set message
-        $this->session->set_flashdata('msg', 'Your account has been verified. You may now login.');
-        // go to login
-        $this->_redirect('login');
-        return;
+      $user = $this->user_model->fetch($where);
+
+      if ($user) {
+        $user = $user[0];
+
+        // update status to 1
+        $data = array('status' => 1, 'verification_code' => '');
+        $where = array('id' => $user['id']);
+        
+        if ($this->user_model->update($data, $where)) {
+          // set message
+          $this->session->set_flashdata('msg', 'Your account has been verified. You may now login.');
+          // go to login
+          $this->_redirect('login');
+          return;
+        }
+        // error
+        else {
+          $this->session->set_flashdata('msg', 'An error occurred while retrieving account information.');
+        }
+
       }
-      // error
+      // user does not exist or exist anymore
       else {
-        $this->session->set_flashdata('msg', 'An error occurred while retrieving account information.');
+        $this->session->set_flashdata('msg', 'This verification code may have already expired and no longer exists.');
       }
+
     }
     // go to /
     $this->_redirect();
