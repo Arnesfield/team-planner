@@ -6,7 +6,7 @@
     <p>This reset link will only be available until <strong><?=date('l, d F Y H:i:s', $expiration)?></strong>.</p>
   </div>
 
-  <a href="<?=base_url('forgot/verify/' . $code)?>">Reset</a>
+  <a href="<?=base_url('forgot/reset/' . $code)?>">Reset</a>
   <p>&copy; team-planner project 2017</p>
 
 </div>

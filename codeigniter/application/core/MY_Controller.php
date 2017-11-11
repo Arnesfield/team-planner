@@ -133,7 +133,7 @@ class MY_Custom_Controller extends MY_View_Controller {
   // send email
   private $_EMAIL = 'mail.arnesfield@gmail.com';
 
-  protected function _send_mail($to, $subject, $view, $data, $from_name = 'Team Planner Project Team') {
+  protected function _send_mail($to, $subject, $view, $data, $from_name = 'Team-Planner Project Team') {
     $this->load->library('email');
     
     // true on third param on view
