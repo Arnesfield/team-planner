@@ -82,7 +82,18 @@ class MY_View_Controller extends MY_Controller {
 class MY_Custom_Controller extends MY_View_Controller {
   public function __construct() {
     parent::__construct();
-    $this->_set_nav_items();
+    // $this->_set_info_nav_items();
+    // $this->_set_nav_items();
+  }
+
+  protected function _set_info_nav_items() {
+    // static test
+    $this->_info_nav_items = array('nav_items' => array(
+      array(
+        'title' => 'Home',
+        'href' => ''
+      )
+    ));
   }
 
   protected function _set_nav_items() {
@@ -90,9 +101,33 @@ class MY_Custom_Controller extends MY_View_Controller {
     $this->_nav_items = array('nav_items' => array(
       array(
         'title' => 'Home',
-        'href' => 'main'
+        'href' => ''
+      ),
+      array(
+        'title' => 'Logout',
+        'href' => 'logout'
       )
-    ));;
+    ));
+  }
+
+  protected function _redirect($to = '') {
+    redirect(base_url($to));
+  }
+
+  protected function _unset_session_but($except) {
+    // unset userdata except $except
+    foreach ($this->session->userdata() as $key => $value) {
+      if ($key !== $except) {
+        $this->session->unset_userdata($key);
+      }
+    }
+  }
+
+  protected function _if_session_isset() {
+    // redirect to dashboard if logged in
+    if ($this->session->has_userdata('is_logged_in') === TRUE) {
+      $this->_redirect('dashboard');
+    }
   }
 }
 

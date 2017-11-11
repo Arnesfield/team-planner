@@ -5,6 +5,10 @@ class Login extends MY_Custom_Controller {
 
   public function __construct() {
     parent::__construct();
+    $this->_set_info_nav_items();
+    $this->load->library('session');
+    // check if session isset
+    $this->_if_session_isset();
   }
   
   public function index() {
@@ -28,7 +32,14 @@ class Login extends MY_Custom_Controller {
       // verify if user is valid
       if ($user && password_verify($password, $user[0]['password'])) {
         // set session here
-        echo "fetched";
+        $this->load->library('session');
+        $this->session->set_userdata(array('user' => $user[0]));
+        $this->session->set_userdata(array('is_logged_in' => TRUE));
+        // msg
+        $this->session->set_flashdata('msg', 'Logged in successfully.');
+
+        // go to
+        $this->_redirect('dashboard');
         return;
       }
       else {
@@ -40,10 +51,13 @@ class Login extends MY_Custom_Controller {
     $form_login_data = array('invalid' => $invalid);
     $data = array(
       'title' => 'Login',
-      'form_login' => $this->load->view('forms/login', $form_login_data, true)
+      'form_login' => $this->load->view('forms/login', $form_login_data, true),
+      'msg' => $this->session->flashdata('msg')
     );
-    $this->_view(array('templates/nav', 'pages/login'), array_merge($this->_nav_items, $data));
-
+    $this->_view(
+      array('templates/nav', 'pages/login'),
+      array_merge($this->_info_nav_items, $data)
+    );
   }
 }
 
