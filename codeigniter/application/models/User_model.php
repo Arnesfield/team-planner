@@ -16,7 +16,7 @@ class User_model extends MY_CRUD_Model {
       ->where("(username LIKE '%$text%' or fname LIKE '%$text%' or lname LIKE '%$text%' or email LIKE '%$text%')")
       ->where('id !=', $id)
       ->get();
-    echo $this->db->last_query();
+    // echo $this->db->last_query();
     return $query->num_rows() > 0 ? $query->result_array() : FALSE;
   }
 

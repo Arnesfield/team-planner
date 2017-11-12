@@ -1,9 +1,9 @@
-<form action="dashboard/create" method="post">
+<form action="<?=base_url('dashboard/create')?>" method="post">
 
   <h3>Create Group</h3>
 
   <div>
-    <label for="name">Name</label>
+    <label for="name">Group Name</label>
     <input type="text" name="name" id="name"
       value="<?=set_value('name')?>">
     <?=form_error('name', '<span>', '</span>')?>
@@ -19,16 +19,31 @@
     <label for="search_user">Members</label>
     <input type="text" id="search_user" v-model="search">
 
-    <div>
-      <noscript>
-        <div>You need <strong>JavaScript</strong> to search for members!</div>
-      </noscript>
+    <noscript>
+      <div>You need <strong>JavaScript</strong> to search for members!</div>
+    </noscript>
 
-      <div v-show="true" v-bind:key="index" v-for="(user, index) in users" style="display: none">
+    <div v-show="true" style="display: none">
+      <label :for="user.username" v-bind:key="user.id" v-for="user in users">
         <div>{{ user.username }} {{ user.email }}</div>
         <div>{{ user.fname }} {{ user.lname }}</div>
+        <input type="checkbox" :id="user.username" v-model="selected" :value="user">
+      </label>
+    </div>
+
+    <!-- users selected -->
+    <div v-show="true" style="display: none">
+      <div v-if="selected.length">
+        <strong>Selected</strong>
+      </div>
+      <div v-bind:key="user.id" v-for="user in selected">
+        <div>{{ user.username }} {{ user.email }}</div>
+        <div>{{ user.fname }} {{ user.lname }}</div>
+        <input type="hidden" name="users[]" :value="user.id">
+        <input type="checkbox" :id="user.username" v-model="selected" :value="user">
       </div>
     </div>
+
   </div>
 
   <div>
@@ -42,6 +57,7 @@ new Vue({
   el: '#users',
   data: {
     users: [],
+    selected: [],
     search: ''
   },
 
@@ -71,7 +87,7 @@ new Vue({
           self.users = []
         }
       })
-
+      
     }
   }
 })

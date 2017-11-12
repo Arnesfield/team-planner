@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 11, 2017 at 06:41 PM
+-- Generation Time: Nov 12, 2017 at 10:43 AM
 -- Server version: 10.1.25-MariaDB
 -- PHP Version: 7.1.7
 
@@ -21,6 +21,52 @@ SET time_zone = "+00:00";
 --
 -- Database: `team_planner`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `groups`
+--
+
+CREATE TABLE `groups` (
+  `id` int(11) NOT NULL,
+  `name` varchar(128) NOT NULL,
+  `description` text NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `status` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `groups`
+--
+
+INSERT INTO `groups` (`id`, `name`, `description`, `slug`, `status`) VALUES
+(1, 'test', 'Some desc hehe', 'test', 1),
+(2, 'test', 'Some new desc hehe', 'test-1', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `memberships`
+--
+
+CREATE TABLE `memberships` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  `type` tinyint(4) NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `memberships`
+--
+
+INSERT INTO `memberships` (`id`, `user_id`, `group_id`, `type`, `status`) VALUES
+(1, 1, 1, 1, 1),
+(2, 2, 1, 2, 1),
+(3, 2, 2, 1, 1),
+(4, 1, 2, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -43,8 +89,28 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `fname`, `lname`, `email`, `type`, `verification_code`, `reset_code`, `reset_expiration`, `status`) VALUES
+(1, 'test', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Jefferson', 'Rylee', 'rylee.jeff385@gmail.com', 2, '', '', 0, 1),
+(2, 'rylee', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Test', 'User', 'test@sample.com', 2, '', '', 0, 1);
+
+--
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `groups`
+--
+ALTER TABLE `groups`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `memberships`
+--
+ALTER TABLE `memberships`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
@@ -59,10 +125,22 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `groups`
+--
+ALTER TABLE `groups`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `memberships`
+--
+ALTER TABLE `memberships`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

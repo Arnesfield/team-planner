@@ -74,8 +74,63 @@ class Dashboard extends MY_Custom_Controller {
     // form validation
     $this->load->library('form_validation');
 
+    $this->form_validation->set_rules('name', 'Group Name', 'trim|required');
+    $this->form_validation->set_rules('desc', 'Description', 'trim');
+
     if ($this->form_validation->run() === TRUE) {
-      return;
+      $this->load->model('group_model');
+      
+      $name = strip_tags($this->input->post('name'));
+      $desc = strip_tags($this->input->post('desc'));
+      $slug = $this->group_model->_create_slug($this->group_model->_tbl, 'slug', $name);
+      
+      // insert 1 group
+      $data = array(
+        'name' => $name,
+        'description' => $desc,
+        'slug' => $slug,
+        'status' => 1
+      );
+      
+      if ($this->group_model->insert($data)) {
+        // create memberships based on number of users[]
+        if ($users = $this->input->post('users')) {
+          $this->load->model('membership_model');
+          // fetch group id using $slug
+          $group = $this->group_model->fetch($data)[0];
+          
+          $membership_data = array(
+            'user_id' => $this->session->userdata('user')['id'],
+            'group_id' => $group['id'],
+            'type' => 1,
+            'status' => 1
+          );
+
+          // insert yourself
+          $this->membership_model->insert($membership_data);
+          
+          // insert others
+          $membership_data['type'] = 2;
+          foreach ($users as $user) {
+            $membership_data['user_id'] = $user['id'];
+            $this->membership_model->insert($membership_data);
+          }
+
+        }
+        // no users set
+        // debug
+        else {
+          print_r($this->input->post('users'));
+        }
+
+        $this->session->set_flashdata('msg', 'Successfully created group!');
+        $this->_redirect('dashboard/groups');
+        return;
+      }
+      // if error
+      else {
+        $this->session->set_flashdata('msg', 'An error occurred. Unable to create group.');
+      }
     }
 
     $form_create_data = array('curr_user_id' => $this->session->userdata('user')['id']);
