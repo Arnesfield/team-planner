@@ -101,7 +101,11 @@ class MY_Custom_Controller extends MY_View_Controller {
     $this->_nav_items = array('nav_items' => array(
       array(
         'title' => 'Home',
-        'href' => ''
+        'href' => 'dashboard'
+      ),
+      array(
+        'title' => 'Groups',
+        'href' => 'dashboard/groups'
       ),
       array(
         'title' => 'Logout',
