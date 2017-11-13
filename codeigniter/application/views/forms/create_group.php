@@ -24,11 +24,13 @@
     </noscript>
 
     <div v-show="true" style="display: none">
-      <label :for="user.username" v-bind:key="user.id" v-for="user in users">
-        <div>{{ user.username }} {{ user.email }}</div>
-        <div>{{ user.fname }} {{ user.lname }}</div>
-        <input type="checkbox" :id="user.username" v-model="selected" :value="user">
-      </label>
+      <div v-bind:key="user.id" v-for="user in users">
+        <label :for="user.username">
+          <div>{{ user.username }} {{ user.email }}</div>
+          <div>{{ user.fname }} {{ user.lname }}</div>
+          <input type="checkbox" :id="user.username" v-model="selected" :value="user">
+        </label>
+      </div>
     </div>
 
     <!-- users selected -->

@@ -35,6 +35,8 @@ class Dashboard extends MY_Custom_Controller {
   // groups page
   public function groups() {
     if ($group_code = $this->uri->segment(3)) {
+      // check code with sess user id and if m status 1
+      // show group details
       return;
     }
 
@@ -55,13 +57,29 @@ class Dashboard extends MY_Custom_Controller {
       'm.status' => 1,
       'g.status' => 1
     );
-
+    
     $groups = $this->membership_model->fetch($where);
+
+    // 1 is owner
+    $where['m.type'] = 1;
+    $my_groups = $this->membership_model->fetch($where);
+
+    // membership type 2 is normal member
+    $where['m.type'] = 2;
+    $other_groups = $this->membership_model->fetch($where);
+
+    // can be any type for invited
+    unset($where['m.type']);
+    $where['m.status'] = 2;
+    $invited_groups = $this->membership_model->fetch($where);
     
     $data = array(
       'title' => 'Groups',
       'msg' => $this->session->flashdata('msg'),
-      'groups' => $groups
+      'groups' => $groups,
+      'my_groups' => $my_groups,
+      'other_groups' => $other_groups,
+      'invited_groups' => $invited_groups
     );
     $this->_view(
       array('templates/nav', 'pages/dashboard/groups', 'alerts/msg'),
@@ -111,6 +129,8 @@ class Dashboard extends MY_Custom_Controller {
           
           // insert others
           $membership_data['type'] = 2;
+          // status 2 for invitation
+          $membership_data['status'] = 2;
           foreach ($users as $user) {
             $membership_data['user_id'] = $user['id'];
             $this->membership_model->insert($membership_data);
@@ -143,6 +163,77 @@ class Dashboard extends MY_Custom_Controller {
       array('templates/nav', 'pages/dashboard/create_group', 'alerts/msg'),
       array_merge($this->_nav_items, $data)
     );
+  }
+
+  // invites page
+  public function invites() {
+    $this->load->model('membership_model');
+    
+    $user_id = $this->session->userdata('user')['id'];
+
+    $where = array(
+      'm.user_id' => $user_id,
+      'm.status' => 2,
+      'g.status' => 1
+    );
+
+    $groups = $this->membership_model->fetch($where);
+    
+    $data = array(
+      'title' => 'Group Invitations',
+      'msg' => $this->session->flashdata('msg'),
+      'groups' => $groups
+    );
+    $this->_view(
+      array('templates/nav', 'pages/dashboard/invites', 'alerts/msg'),
+      array_merge($this->_nav_items, $data)
+    );
+  }
+
+  public function accept_invite() {
+    if (!$this->input->post()) {
+      $this->_redirect('dashboard/groups');
+      exit();
+    }
+
+    if (!isset($this->input->post()['group'])) {
+      $this->session->set_flashdata('msg', 'An error occurred while processing group invitation.');
+      $this->_redirect('dashboard/groups');
+      exit();
+    }
+    
+    if (isset($this->input->post()['accept'])) {
+      $flag = 1;
+      $this->session->set_flashdata('msg', 'Successfully accepted group invitation.');
+    }
+    else if (isset($this->input->post()['reject'])) {
+      $flag = 0;
+      $this->session->set_flashdata('msg', 'Successfully deleted group invitation.');
+    }
+    
+    // modify membership row
+    $this->load->model('membership_model');
+    
+    $group_id = $this->input->post('group', TRUE);
+    $user_id = $this->session->userdata('user')['id'];
+
+    $data = array(
+      'status' => $flag
+    );
+
+    $where = array(
+      'user_id' => $user_id,
+      'group_id' => $group_id,
+      // status should be in invitation mode
+      // for it to be updated
+      'status' => 2
+    );
+
+    if (!$this->membership_model->update($data, $where)) {
+      $this->session->set_flashdata('msg', 'An error occurred while processing group invitation.');
+    }
+
+    $this->_redirect('dashboard/groups');
   }
 
 

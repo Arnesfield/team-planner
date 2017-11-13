@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 12, 2017 at 10:43 AM
+-- Generation Time: Nov 13, 2017 at 08:40 AM
 -- Server version: 10.1.25-MariaDB
 -- PHP Version: 7.1.7
 
@@ -41,8 +41,9 @@ CREATE TABLE `groups` (
 --
 
 INSERT INTO `groups` (`id`, `name`, `description`, `slug`, `status`) VALUES
-(1, 'test', 'Some desc hehe', 'test', 1),
-(2, 'test', 'Some new desc hehe', 'test-1', 1);
+(1, 'Charlyn\'s Group', 'Hello friends!', 'charlyns-group', 1),
+(2, 'Test\'s Group', 'Hello test', 'tests-group', 1),
+(3, 'Rylee\'s Group', 'Awesome', 'rylees-group', 1);
 
 -- --------------------------------------------------------
 
@@ -63,10 +64,15 @@ CREATE TABLE `memberships` (
 --
 
 INSERT INTO `memberships` (`id`, `user_id`, `group_id`, `type`, `status`) VALUES
-(1, 1, 1, 1, 1),
-(2, 2, 1, 2, 1),
-(3, 2, 2, 1, 1),
-(4, 1, 2, 2, 1);
+(1, 3, 1, 1, 1),
+(2, 1, 1, 2, 1),
+(3, 2, 1, 2, 1),
+(4, 1, 2, 1, 1),
+(5, 3, 2, 2, 1),
+(6, 2, 2, 2, 1),
+(7, 2, 3, 1, 1),
+(8, 3, 3, 2, 1),
+(9, 1, 3, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -94,7 +100,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `fname`, `lname`, `email`, `type`, `verification_code`, `reset_code`, `reset_expiration`, `status`) VALUES
 (1, 'test', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Jefferson', 'Rylee', 'rylee.jeff385@gmail.com', 2, '', '', 0, 1),
-(2, 'rylee', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Test', 'User', 'test@sample.com', 2, '', '', 0, 1);
+(2, 'rylee', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Test', 'User', 'test@sample.com', 2, '', '', 0, 1),
+(3, 'charlyn', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Charlyn', 'Ann', 'charlyn@sample.com', 2, '', '', 0, 1);
 
 --
 -- Indexes for dumped tables
@@ -128,19 +135,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `memberships`
 --
 ALTER TABLE `memberships`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
