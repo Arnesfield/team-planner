@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 13, 2017 at 08:40 AM
+-- Generation Time: Nov 13, 2017 at 09:28 AM
 -- Server version: 10.1.25-MariaDB
 -- PHP Version: 7.1.7
 
@@ -77,6 +77,25 @@ INSERT INTO `memberships` (`id`, `user_id`, `group_id`, `type`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tasks`
+--
+
+CREATE TABLE `tasks` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `group_id` int(11) NOT NULL,
+  `created_by_user_id` int(11) NOT NULL,
+  `taken_by_user_id` int(11) NOT NULL,
+  `created_at` int(11) NOT NULL,
+  `started_at` int(11) NOT NULL,
+  `ended_at` int(11) NOT NULL,
+  `status` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -120,6 +139,12 @@ ALTER TABLE `memberships`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tasks`
+--
+ALTER TABLE `tasks`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -142,6 +167,12 @@ ALTER TABLE `groups`
 --
 ALTER TABLE `memberships`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `tasks`
+--
+ALTER TABLE `tasks`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`

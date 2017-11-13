@@ -30,9 +30,9 @@ if ($groups): ?>
 
     <?php foreach ($my_groups as $group): ?>
     <div>
-      <h4><?=$group['name']?></h4>
-      <div><?=$group['description']?></div>
-      <a href="<?=base_url('dashboard/groups/' . $group['slug'])?>">Go to group</a>
+      <h4><?=$group['group_name']?></h4>
+      <div><?=$group['group_desc']?></div>
+      <a href="<?=base_url('dashboard/groups/' . $group['group_id'])?>">Go to group</a>
     </div>
     <?php endforeach; ?>
 
@@ -45,9 +45,9 @@ if ($groups): ?>
 
     <?php foreach ($other_groups as $group): ?>
     <div>
-      <h4><?=$group['name']?></h4>
-      <div><?=$group['description']?></div>
-      <a href="<?=base_url('dashboard/groups/' . $group['slug'])?>">Go to group</a>
+      <h4><?=$group['group_name']?></h4>
+      <div><?=$group['group_desc']?></div>
+      <a href="<?=base_url('dashboard/groups/' . $group['group_id'])?>">Go to group</a>
     </div>
     <?php endforeach; ?>
 

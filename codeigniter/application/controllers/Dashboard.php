@@ -34,8 +34,75 @@ class Dashboard extends MY_Custom_Controller {
 
   // groups page
   public function groups() {
-    if ($group_code = $this->uri->segment(3)) {
-      // check code with sess user id and if m status 1
+    if ($group_id = $this->uri->segment(3)) {
+      $user_id = $this->session->userdata('user')['id'];
+
+      $this->load->model('membership_model');
+      
+      // check slug with sess user id and if m status 1
+      $where = array(
+        // 'm.user_id' => $user_id,
+        'm.group_id' => $group_id,
+        'm.status' => 1
+      );
+
+      $memberships = $this->membership_model->fetch($where);
+
+      if ($memberships) {
+        $this->load->model('task_model');
+
+        $per_member_tasks = array();
+
+        foreach ($memberships as $key => $member) {
+          $where = array(
+            't.group_id' => $group_id,
+            't.taken_by_user_id' => $member['user_id'],
+            // deleted
+            't.status !=' => 0,
+          );
+          $member_tasks = $this->task_model->fetch($where);
+          $per_member_tasks[$key] = $member_tasks;
+        }
+
+        $where = array(
+          't.group_id' => $group_id,
+          't.taken_by_user_id' => 0,
+          't.status !=' => 0
+        );
+        $group_tasks = $this->task_model->fetch($where);
+
+
+
+
+        echo '<pre>';
+        print_r($memberships);
+        echo '</pre>';
+
+        echo '<pre>';
+        print_r($per_member_tasks);
+        echo '</pre>';
+
+        echo '<pre>';
+        print_r($group_tasks);
+        echo '</pre>';
+
+        $data = array(
+          'title' => $memberships[0]['group_name'],
+          'msg' => $this->session->flashdata('msg'),
+          'memberships' => $memberships,
+          'per_member_tasks' => $per_member_tasks,
+          'group_tasks' => $group_tasks
+        );
+        $this->_view(
+          array('templates/nav', 'pages/dashboard/group_view', 'alerts/msg'),
+          array_merge($this->_nav_items, $data)
+        );
+      }
+      // if there are no memberships
+      else {
+        $this->session->set_flashdata('msg', 'An error occurred. Unable to view group.');
+        $this->_redirect('dashboard/groups');
+      }
       // show group details
       return;
     }
