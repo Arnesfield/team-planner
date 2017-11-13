@@ -14,7 +14,8 @@
 
   <div>
     <h5><?=$member['username']?></h5>
-    <span><?=$member['fname'] . ' ' . $member['lname']?></span>
+    <div><?=$member['fname'] . ' ' . $member['lname']?></div>
+    <div><?=$member['member_type'] == 1 ? 'Admin' : 'Member'?></div>
   </div>
 
   <?php if($per_member_tasks[$key]): ?>

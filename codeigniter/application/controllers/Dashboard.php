@@ -373,12 +373,23 @@ class Dashboard extends MY_Custom_Controller {
       'g.status' => 1
     );
 
+    $owners = array();
     $groups = $this->membership_model->fetch($where);
+    // fetch owners of groups
+    foreach ($groups as $key => $group) {
+      $o_where = array(
+        'm.type' => 1,
+        'g.id' => $group['group_id'],
+        'g.status' => 1
+      );
+      $owners[$key] = $this->membership_model->fetch($o_where);
+    }
     
     $data = array(
       'title' => 'Group Invitations',
       'msg' => $this->session->flashdata('msg'),
-      'groups' => $groups
+      'groups' => $groups,
+      'owners' => $owners
     );
     $this->_view(
       array('templates/nav', 'pages/dashboard/invites', 'alerts/msg'),
