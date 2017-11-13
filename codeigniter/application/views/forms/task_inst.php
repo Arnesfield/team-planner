@@ -18,7 +18,7 @@
         <?php if ($task['task_status'] == 2): ?>
         <button type="submit" name="start">Ongoing</button>
         <?php endif; ?>
-        <?php if ($task['task_status'] != 9): ?>
+        <?php if (!($task['task_status'] == 9 || $task['task_status'] == 8)): ?>
         <button type="submit" name="done">Done</button>
         <button type="submit" name="remove">Discontinue</button>
         <?php endif; ?>

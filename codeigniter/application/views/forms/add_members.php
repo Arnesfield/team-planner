@@ -1,23 +1,11 @@
-<form action="<?=base_url('dashboard/create')?>" method="post">
+<form action="<?=base_url('dashboard/add_members')?>" method="post">
 
-  <h3>Create Group</h3>
-
-  <div>
-    <label for="name">Group Name</label>
-    <input type="text" name="name" id="name"
-      value="<?=set_value('name')?>">
-    <?=form_error('name', '<span>', '</span>')?>
-  </div>
-
-  <div>
-    <label for="desc">Brief Description</label>
-    <textarea name="desc" id="desc" cols="30" rows="10"><?=set_value('desc')?></textarea>
-    <?=form_error('desc', '<span>', '</span>')?>
-  </div>
+  <h3>Add members</h3>
 
   <div id="users">
     <label for="search_user">Members</label>
     <input type="text" id="search_user" v-model="search">
+    <button type="submit" v-if="selected.length">Invite</button>
 
     <noscript>
       <div>You need <strong>JavaScript</strong> to search for members!</div>
@@ -46,10 +34,6 @@
       </div>
     </div>
 
-  </div>
-
-  <div>
-    <button type="submit">Create</button>
   </div>
 
 </form>

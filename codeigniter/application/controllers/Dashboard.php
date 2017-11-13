@@ -35,8 +35,6 @@ class Dashboard extends MY_Custom_Controller {
   // groups page
   public function groups() {
     $this->load->library('form_validation');
-    
-
 
     // if create task
     if ($this->input->post() && $this->session->has_userdata('curr_group_id')) {
@@ -44,6 +42,7 @@ class Dashboard extends MY_Custom_Controller {
       $user_id = $this->session->userdata('user')['id'];
 
       $this->load->model('task_model');
+      $this->load->model('membership_model');
 
       // set rules here
       if ($this->input->post('action') == 'create') {
@@ -61,35 +60,48 @@ class Dashboard extends MY_Custom_Controller {
           $date = strip_tags($this->input->post('date'));
           $time = strip_tags($this->input->post('time'));
   
-          $deadline = strtotime($data . ' ' . $time);
+          $deadline = strtotime($date . ' ' . $time);
 
+          // check if $assign is included in group
           $where = array(
-            'name' => $name,
-            'description' => $desc,
-            'group_id' => $g_id,
-            'created_by_user_id' => $user_id,
-            'taken_by_user_id' => $assign,
-            'created_at' => time(),
-            'deadline_at' => $deadline,
-            'started_at' => 0,
-            'ended_at' => 0,
-            'status' => 2
+            'm.group_id' => $g_id,
+            'm.user_id' => $assign,
+            'm.status' => 1
           );
 
-          // deadline should be greater than now
-          $is_valid = $deadline > time();
-
-          // insert
-          if ($is_valid && $this->task_model->insert($where)) {
-            $this->session->set_flashdata('msg', 'Successfully added task!');
-          }
-          else {
-            if ($is_valid) {
-              $this->session->set_flashdata('msg', 'Unable to create task. Please try again.');
+          if ($this->membership_model->fetch($where)) {
+            $t_data = array(
+              'name' => $name,
+              'description' => $desc,
+              'group_id' => $g_id,
+              'created_by_user_id' => $user_id,
+              'taken_by_user_id' => $assign,
+              'created_at' => time(),
+              'deadline_at' => $deadline,
+              'started_at' => 0,
+              'ended_at' => 0,
+              'status' => 2
+            );
+  
+            // deadline should be greater than now
+            $is_valid_date = $deadline > time();
+  
+            // insert
+            if ($is_valid_date && $this->task_model->insert($t_data)) {
+              $this->session->set_flashdata('msg', 'Successfully added task!');
             }
             else {
-              $this->session->set_flashdata('msg', 'Unable to create task with a deadline in the past.');
+              if ($is_valid_date) {
+                $this->session->set_flashdata('msg', 'Unable to create task. Please try again.');
+              }
+              else {
+                $this->session->set_flashdata('msg', 'Unable to create task with a deadline in the past.');
+              }
             }
+          }
+          // if not included in group
+          else {
+            $this->session->set_flashdata('msg', 'Unable to create task. Please try again.');
           }
 
         }
@@ -121,13 +133,15 @@ class Dashboard extends MY_Custom_Controller {
 
         }
 
-        if (isset($stat)) {
+        if (isset($stat) && $this->input->post('t_id', TRUE)) {
+          $t_id = $this->input->post('t_id', TRUE);
           // update
           $t_data = array(
             'status' => $stat
           );
 
           $t_where = array(
+            'id' => $t_id,
             'group_id' => $g_id,
             'taken_by_user_id' => $user_id
           );
@@ -167,18 +181,27 @@ class Dashboard extends MY_Custom_Controller {
       
       // check g id with sess user id and if m status 1
       $where = array(
-        // 'm.user_id' => $user_id,
+        'm.user_id' => $user_id,
         'm.group_id' => $group_id,
         'm.status' => 1
       );
 
-      $memberships = $this->membership_model->fetch($where);
+      $my_membership = $this->membership_model->fetch($where);
 
-      if ($memberships) {
+      if ($my_membership) {
         $this->load->model('task_model');
         $this->load->model('user_model');
 
         $per_member_tasks = array();
+        $curr_user_info = array();
+
+        $where = array(
+          // 'm.user_id' => $user_id,
+          'm.group_id' => $group_id,
+          'm.status' => 1
+        );
+  
+        $memberships = $this->membership_model->fetch($where);
 
         foreach ($memberships as $key => $member) {
           $where = array(
@@ -189,6 +212,11 @@ class Dashboard extends MY_Custom_Controller {
           );
           $member_tasks = $this->task_model->fetch($where);
           $per_member_tasks[$key] = $member_tasks;
+
+          // save info of curr user
+          if ($user_id == $member['user_id']) {
+            $curr_user_info = $member;
+          }
         }
 
         $where = array(
@@ -199,17 +227,22 @@ class Dashboard extends MY_Custom_Controller {
         $group_tasks = $this->task_model->fetch($where);
 
         $form_create_task_data = array(
-          'sess_user_id' => $this->session->userdata('user')['id'],
+          'sess_user_id' => $user_id,
           'members' => $memberships
         );
-
+        
+        $form_add_members_data = array();
+        
         $data = array(
+          'sess_user_id' => $user_id,
+          'curr_user_info' => $curr_user_info,
           'title' => $memberships[0]['group_name'],
           'msg' => $this->session->flashdata('msg'),
           'memberships' => $memberships,
           'per_member_tasks' => $per_member_tasks,
           'group_tasks' => $group_tasks,
           'form_create_task' => $this->load->view('forms/create_task', $form_create_task_data, TRUE),
+          'form_add_members' => $this->load->view('forms/add_members', $form_add_members_data, TRUE),
           'task_inst' => function($task) {
             $view_data = array(
               'sess_user_id' => $this->session->userdata('user')['id'],
@@ -285,6 +318,9 @@ class Dashboard extends MY_Custom_Controller {
 
   // create group
   public function create() {
+    // unset sess group id
+    $this->session->unset_userdata('curr_group_id');
+
     // form validation
     $this->load->library('form_validation');
 
@@ -307,22 +343,22 @@ class Dashboard extends MY_Custom_Controller {
       );
       
       if ($this->group_model->insert($data)) {
+        $this->load->model('membership_model');
+        // fetch group id using $slug
+        $group = $this->group_model->fetch($data)[0];
+        
+        $membership_data = array(
+          'user_id' => $this->session->userdata('user')['id'],
+          'group_id' => $group['id'],
+          'type' => 1,
+          'status' => 1
+        );
+
+        // insert yourself
+        $this->membership_model->insert($membership_data);
+
         // create memberships based on number of users[]
         if ($users = $this->input->post('users')) {
-          $this->load->model('membership_model');
-          // fetch group id using $slug
-          $group = $this->group_model->fetch($data)[0];
-          
-          $membership_data = array(
-            'user_id' => $this->session->userdata('user')['id'],
-            'group_id' => $group['id'],
-            'type' => 1,
-            'status' => 1
-          );
-
-          // insert yourself
-          $this->membership_model->insert($membership_data);
-          
           // insert others
           $membership_data['type'] = 2;
           // status 2 for invitation
@@ -331,7 +367,7 @@ class Dashboard extends MY_Custom_Controller {
             $membership_data['user_id'] = $user['id'];
             $this->membership_model->insert($membership_data);
           }
-
+          
         }
         // no users set
         // debug
@@ -444,6 +480,79 @@ class Dashboard extends MY_Custom_Controller {
   }
 
 
+  public function add_members() {
+    // check if post and curr group id exists
+    // check if a user + group id exists in membership
+    // update that if exists
+    // else, add
+    // redirect to group id
+
+    if (!($this->input->post() || $this->session->has_userdata('curr_group_id'))) {
+      $this->_redirect('dashboard/groups');
+      exit();
+    }
+
+    $curr_group_id = $this->session->userdata('curr_group_id');
+    $user_id = $this->session->userdata('user')['id'];
+    
+    $this->load->model('membership_model');
+    
+    if ($users = $this->input->post('users')) {
+      foreach ($users as $user) {
+        $where = array(
+          'm.user_id' => $user['id'],
+          'm.group_id' => $curr_group_id
+        );
+        
+        // if membership exists, update
+        // else, insert
+        if ($membership = $this->membership_model->fetch($where)) {
+          $m_id = $membership[0]['membership_id'];
+
+          $m_data = array(
+            'type' => 2,
+            'status' => 2
+          );
+
+          $m_where = array(
+            'id' => $m_id
+          );
+
+          if ($this->membership_model->update($m_data, $m_where)) {
+            $this->session->set_flashdata('msg', 'Successfully sent group invitation.');
+          }
+          // failed updated
+          else {
+            $this->session->set_flashdata('msg', 'An error occurred while processing group invitation.');
+          }
+        }
+        // insert
+        else {
+          $data = array(
+            'user_id' => $user['id'],
+            'group_id' => $curr_group_id,
+            'type' => 2,
+            // invitation
+            'status' => 2
+          );
+
+          if ($this->membership_model->insert($data)) {
+            $this->session->set_flashdata('msg', 'Successfully sent group invitation.');
+          }
+          // failed insert
+          else {
+            $this->session->set_flashdata('msg', 'An error occurred while processing group invitation.');
+          }
+
+        }
+        
+      }
+    }
+
+    $this->_redirect('dashboard/groups/' . $curr_group_id);
+  }
+
+
   // json
   public function users_json() {
     if (!$this->input->post()) {
@@ -451,12 +560,32 @@ class Dashboard extends MY_Custom_Controller {
       exit();
     }
 
-    if ($text = $this->input->post('text')) {
+    if ($text = strip_tags($this->input->post('text'))) {
       $curr_user_id = $this->session->userdata('user')['id'];
+      $ids = array();
+      array_push($ids, $curr_user_id);
+
+      if ($this->session->has_userdata('curr_group_id')) {
+        $this->load->model('membership_model');
+
+        $g_id = $this->session->userdata('curr_group_id');
+
+        $where = array(
+          'm.group_id' => $g_id,
+          'm.status' => 1
+        );
+  
+        // get members of curr sess group id
+        $members = $this->membership_model->fetch($where);
+        foreach ($members as $key => $member) {
+          array_push($ids, $member['user_id']);
+        }
+      }
+
       // search users using text
       $this->load->model('user_model');
 
-      $users = $this->user_model->fetch_like($text, $curr_user_id);
+      $users = $this->user_model->fetch_like($text, $ids);
 
       if ($users) {
         echo json_encode($users);

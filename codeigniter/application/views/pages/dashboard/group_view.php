@@ -1,10 +1,15 @@
 <div>
 
+<h2><?=$memberships[0]['group_name']?></h2>
+
 <!-- add task -->
-<div>
-
-<?=$form_create_task?>
-
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6"><?=$form_create_task?></div>
+    <?php if ($curr_user_info['member_type'] == 1): ?>
+    <div class="col-sm-6"><?=$form_add_members?></div>
+    <?php endif; ?>
+  </div>
 </div>
 
 <hr>
@@ -32,10 +37,20 @@
           </div>
 
           <?php
+            $i_count = 0;
             foreach ($per_member_tasks[$key] as $task_key => $task) {
-              if ($task['task_status'] == 2) echo $task_inst($task);
+              if ($task['task_status'] == 2) {
+                echo $task_inst($task);
+                $i_count++;
+              }
             }
           ?>
+
+          <?php if ($i_count === 0): ?>
+          <div>
+            No pending tasks.
+          </div>
+          <?php endif; ?>
         </div>
 
         <!-- ongoing tasks -->
@@ -45,10 +60,20 @@
           </div>
 
           <?php
+            $i_count = 0;
             foreach ($per_member_tasks[$key] as $task_key => $task) {
-              if ($task['task_status'] == 3) echo $task_inst($task);
+              if ($task['task_status'] == 3) {
+                echo $task_inst($task);
+                $i_count++;
+              }
             }
           ?>
+
+          <?php if ($i_count === 0): ?>
+          <div>
+            No ongoing tasks.
+          </div>
+          <?php endif; ?>
         </div>
 
         <!-- done tasks -->
@@ -57,10 +82,20 @@
             Done Tasks
           </div>
           <?php
+            $i_count = 0;
             foreach ($per_member_tasks[$key] as $task_key => $task) {
-              if ($task['task_status'] == 9) echo $task_inst($task);
+              if ($task['task_status'] == 9) {
+                echo $task_inst($task);
+                $i_count++;
+              }
             }
           ?>
+
+          <?php if ($i_count === 0): ?>
+          <div>
+            No done tasks.
+          </div>
+          <?php endif; ?>
         </div>
 
         <!-- done tasks -->
@@ -69,10 +104,20 @@
             Discontinued Tasks
           </div>
           <?php
+            $i_count = 0;
             foreach ($per_member_tasks[$key] as $task_key => $task) {
-              if ($task['task_status'] == 8) echo $task_inst($task);
+              if ($task['task_status'] == 8) {
+                echo $task_inst($task);
+                $i_count++;
+              }
             }
           ?>
+
+          <?php if ($i_count === 0): ?>
+          <div>
+            No discontinued tasks.
+          </div>
+          <?php endif; ?>
         </div>
 
       </div>

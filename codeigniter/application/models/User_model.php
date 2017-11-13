@@ -9,12 +9,18 @@ class User_model extends MY_CRUD_Model {
     return $this->_read($this->_tbl, array('where' => $user));
   }
 
-  public function fetch_like($text, $id) {
+  public function fetch_like($text, $ids) {
+    // if $ids not array
+    if (!is_array($ids)) {
+      // convert to array
+      $ids = array($ids);
+    }
+
     $query = $this->db
       ->select('*')
       ->from($this->_tbl)
       ->where("(username LIKE '%$text%' or fname LIKE '%$text%' or lname LIKE '%$text%' or email LIKE '%$text%')")
-      ->where('id !=', $id)
+      ->where_not_in('id', $ids)
       ->get();
     // echo $this->db->last_query();
     return $query->num_rows() > 0 ? $query->result_array() : FALSE;
