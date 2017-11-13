@@ -11,7 +11,13 @@ class Task_model extends MY_CRUD_Model {
         t.id AS task_id,
         t.name AS task_name,
         t.description AS task_desc,
+        t.created_by_user_id AS task_created_by_user_id,
+        t.taken_by_user_id AS task_taken_by_user_id,
+        t.created_at AS task_created_at,
+        t.deadline_at AS task_deadline_at,
         t.started_at AS task_started_at,
+        t.ended_at AS task_ended_at,
+        t.status AS task_status
       ')
       ->from('tasks t')
       ->join('groups g', 'g.id = t.group_id')

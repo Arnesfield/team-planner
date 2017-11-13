@@ -1,5 +1,14 @@
 <div>
 
+<!-- add task -->
+<div>
+
+<?=$form_create_task?>
+
+</div>
+
+<hr>
+
 <?php foreach ($memberships as $key => $member): ?>
 <div>
 
@@ -12,58 +21,57 @@
   <div>
     <h6>Tasks</h6>
 
-    <div>
+    <div class="container-fluid">
       <!-- row and col -->
-      <div>
+      <div class="row">
+        <!-- pending tasks -->
+        <div class="col-md-3">
+          <div>
+            Pending Tasks
+          </div>
+
+          <?php
+            foreach ($per_member_tasks[$key] as $task_key => $task) {
+              if ($task['task_status'] == 2) echo $task_inst($task);
+            }
+          ?>
+        </div>
+
         <!-- ongoing tasks -->
-        <div>
+        <div class="col-md-3">
           <div>
             Ongoing Tasks
           </div>
 
-          <?php foreach ($per_member_tasks[$key] as $task_key => $task): ?>
-            <?php if (!($task['status'] == 8 || $task['status'] == 9)): ?>
-            <div>
-              <h6><?=task['task_name']?></h6>
-              <div><?=task['task_desc']?></div>
-              <div><?=date('l, d F Y H:i:s', task['task_started_at'])?></div>
-            </div>
-            <?php endif; ?>
-          <?php endforeach; ?>
+          <?php
+            foreach ($per_member_tasks[$key] as $task_key => $task) {
+              if ($task['task_status'] == 3) echo $task_inst($task);
+            }
+          ?>
         </div>
 
         <!-- done tasks -->
-        <div>
+        <div class="col-md-3">
           <div>
             Done Tasks
           </div>
-          <?php foreach ($per_member_tasks[$key] as $task_key => $task): ?>
-            <?php if ($task['status'] == 9): ?>
-            <div>
-              <h6><?=task['task_name']?></h6>
-              <div><?=task['task_desc']?></div>
-              <div><?=date('l, d F Y H:i:s', task['task_started_at'])?></div>
-              <div><?=date('l, d F Y H:i:s', task['task_ended_at'])?></div>
-            </div>
-            <?php endif; ?>
-          <?php endforeach; ?>
+          <?php
+            foreach ($per_member_tasks[$key] as $task_key => $task) {
+              if ($task['task_status'] == 9) echo $task_inst($task);
+            }
+          ?>
         </div>
 
         <!-- done tasks -->
-        <div>
+        <div class="col-md-3">
           <div>
             Discontinued Tasks
           </div>
-          <?php foreach ($per_member_tasks[$key] as $task_key => $task): ?>
-            <?php if ($task['status'] == 8): ?>
-            <div>
-              <h6><?=task['task_name']?></h6>
-              <div><?=task['task_desc']?></div>
-              <div><?=date('l, d F Y H:i:s', task['task_started_at'])?></div>
-              <div><?=date('l, d F Y H:i:s', task['task_ended_at'])?></div>
-            </div>
-            <?php endif; ?>
-          <?php endforeach; ?>
+          <?php
+            foreach ($per_member_tasks[$key] as $task_key => $task) {
+              if ($task['task_status'] == 8) echo $task_inst($task);
+            }
+          ?>
         </div>
 
       </div>

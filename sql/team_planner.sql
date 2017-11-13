@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 13, 2017 at 09:28 AM
+-- Generation Time: Nov 13, 2017 at 12:32 PM
 -- Server version: 10.1.25-MariaDB
 -- PHP Version: 7.1.7
 
@@ -43,7 +43,8 @@ CREATE TABLE `groups` (
 INSERT INTO `groups` (`id`, `name`, `description`, `slug`, `status`) VALUES
 (1, 'Charlyn\'s Group', 'Hello friends!', 'charlyns-group', 1),
 (2, 'Test\'s Group', 'Hello test', 'tests-group', 1),
-(3, 'Rylee\'s Group', 'Awesome', 'rylees-group', 1);
+(3, 'Rylee\'s Group', 'Awesome', 'rylees-group', 1),
+(4, 'New', 'Test', 'new', 1);
 
 -- --------------------------------------------------------
 
@@ -72,7 +73,10 @@ INSERT INTO `memberships` (`id`, `user_id`, `group_id`, `type`, `status`) VALUES
 (6, 2, 2, 2, 1),
 (7, 2, 3, 1, 1),
 (8, 3, 3, 2, 1),
-(9, 1, 3, 2, 1);
+(9, 1, 3, 2, 1),
+(10, 3, 4, 1, 1),
+(11, 1, 4, 2, 2),
+(12, 2, 4, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -88,6 +92,7 @@ CREATE TABLE `tasks` (
   `created_by_user_id` int(11) NOT NULL,
   `taken_by_user_id` int(11) NOT NULL,
   `created_at` int(11) NOT NULL,
+  `deadline_at` int(11) NOT NULL,
   `started_at` int(11) NOT NULL,
   `ended_at` int(11) NOT NULL,
   `status` tinyint(4) NOT NULL
@@ -160,13 +165,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `memberships`
 --
 ALTER TABLE `memberships`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tasks`

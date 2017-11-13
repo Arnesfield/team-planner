@@ -34,12 +34,138 @@ class Dashboard extends MY_Custom_Controller {
 
   // groups page
   public function groups() {
+    $this->load->library('form_validation');
+    
+
+
+    // if create task
+    if ($this->input->post() && $this->session->has_userdata('curr_group_id')) {
+      $g_id = $this->session->userdata('curr_group_id');
+      $user_id = $this->session->userdata('user')['id'];
+
+      $this->load->model('task_model');
+
+      // set rules here
+      if ($this->input->post('action') == 'create') {
+        // task rules
+        $this->form_validation->set_rules('name', 'Task Name', 'trim|required');
+        $this->form_validation->set_rules('desc', 'Description', 'trim');
+        $this->form_validation->set_rules('assign', 'Member', 'trim|required');
+        $this->form_validation->set_rules('date', 'Date', 'trim|required');
+        $this->form_validation->set_rules('time', 'Time', 'trim|required');
+        
+        if ($this->form_validation->run() === TRUE) {
+          $name = strip_tags($this->input->post('name'));
+          $desc = strip_tags($this->input->post('desc'));
+          $assign = strip_tags($this->input->post('assign'));
+          $date = strip_tags($this->input->post('date'));
+          $time = strip_tags($this->input->post('time'));
+  
+          $deadline = strtotime($data . ' ' . $time);
+
+          $where = array(
+            'name' => $name,
+            'description' => $desc,
+            'group_id' => $g_id,
+            'created_by_user_id' => $user_id,
+            'taken_by_user_id' => $assign,
+            'created_at' => time(),
+            'deadline_at' => $deadline,
+            'started_at' => 0,
+            'ended_at' => 0,
+            'status' => 2
+          );
+
+          // deadline should be greater than now
+          $is_valid = $deadline > time();
+
+          // insert
+          if ($is_valid && $this->task_model->insert($where)) {
+            $this->session->set_flashdata('msg', 'Successfully added task!');
+          }
+          else {
+            if ($is_valid) {
+              $this->session->set_flashdata('msg', 'Unable to create task. Please try again.');
+            }
+            else {
+              $this->session->set_flashdata('msg', 'Unable to create task with a deadline in the past.');
+            }
+          }
+
+        }
+        // error occurred
+        else {
+          $this->session->set_flashdata('msg', 'Unable to create task. Please try again.');
+        }
+
+      }
+      // end of action create
+      else if ($this->input->post('action') == 'mark') {
+        if (isset($this->input->post()['start'])) {
+          // move task to ongoing
+          // status 3
+          $stat = 3;
+        }
+        else if (isset($this->input->post()['done'])) {
+          // move task to done
+          // status 9
+          $stat = 9;
+        }
+        else if (isset($this->input->post()['remove'])) {
+          // move task to discontinued
+          // status 8
+          $stat = 8;
+        }
+        // if none
+        else {
+
+        }
+
+        if (isset($stat)) {
+          // update
+          $t_data = array(
+            'status' => $stat
+          );
+
+          $t_where = array(
+            'group_id' => $g_id,
+            'taken_by_user_id' => $user_id
+          );
+
+          // ongoing
+          if ($stat == 3) {
+            $t_data['started_at'] = time();
+          }
+          // done or discontinued
+          else if ($stat == 9 || $stat == 8) {
+            $t_data['ended_at'] = time();
+          }
+
+          if ($this->task_model->update($t_data, $t_where)) {
+            $this->session->set_flashdata('msg', 'Successfully updated task.');
+          }
+          // update failed
+          else {
+            $this->session->set_flashdata('msg', 'An error occurred. Unable to update task.');
+          }
+
+        }
+      }
+      // end of action mark
+
+      $this->_redirect('dashboard/groups/' . $g_id);
+      return;
+    }
+
     if ($group_id = $this->uri->segment(3)) {
+      // set group id to session
+      $this->session->set_userdata('curr_group_id', $group_id);
+
       $user_id = $this->session->userdata('user')['id'];
 
       $this->load->model('membership_model');
       
-      // check slug with sess user id and if m status 1
+      // check g id with sess user id and if m status 1
       $where = array(
         // 'm.user_id' => $user_id,
         'm.group_id' => $group_id,
@@ -50,6 +176,7 @@ class Dashboard extends MY_Custom_Controller {
 
       if ($memberships) {
         $this->load->model('task_model');
+        $this->load->model('user_model');
 
         $per_member_tasks = array();
 
@@ -71,27 +198,29 @@ class Dashboard extends MY_Custom_Controller {
         );
         $group_tasks = $this->task_model->fetch($where);
 
-
-
-
-        echo '<pre>';
-        print_r($memberships);
-        echo '</pre>';
-
-        echo '<pre>';
-        print_r($per_member_tasks);
-        echo '</pre>';
-
-        echo '<pre>';
-        print_r($group_tasks);
-        echo '</pre>';
+        $form_create_task_data = array(
+          'sess_user_id' => $this->session->userdata('user')['id'],
+          'members' => $memberships
+        );
 
         $data = array(
           'title' => $memberships[0]['group_name'],
           'msg' => $this->session->flashdata('msg'),
           'memberships' => $memberships,
           'per_member_tasks' => $per_member_tasks,
-          'group_tasks' => $group_tasks
+          'group_tasks' => $group_tasks,
+          'form_create_task' => $this->load->view('forms/create_task', $form_create_task_data, TRUE),
+          'task_inst' => function($task) {
+            $view_data = array(
+              'sess_user_id' => $this->session->userdata('user')['id'],
+              'task' => $task,
+              'get_creator' => function($id) {
+                $where = array('id' => $id);
+                return $this->user_model->fetch($where)[0]['username'];
+              },
+            );
+            return $this->load->view('forms/task_inst', $view_data, TRUE);
+          }
         );
         $this->_view(
           array('templates/nav', 'pages/dashboard/group_view', 'alerts/msg'),
