@@ -59,6 +59,7 @@
 
   <div>
     <button type="submit">Update</button>
+    <a @click="back">Back</a>
     <input type="checkbox" v-model="showPassword" id="delete">
     <label v-if="!showPassword" for="delete">Delete</label>
     <template v-if="showPassword">
@@ -70,7 +71,7 @@
     </template>
   </div>
 
-
+  <span id="isjs"></span>
   <input type="hidden" name="action" value="manage">
 
 </form>
@@ -108,11 +109,17 @@ new Vue({
   },
 
   created() {
+    // to check if javascript is enabled, lol
+    $('#isjs').html('<input type="hidden" name="isjs" value="1">')
     // fetch current users and add to selected
     this.setSelected()
   },
 
   methods: {
+    back() {
+      window.location = "<?=base_url('dashboard/groups/' . $group_id)?>"
+    },
+
     deleteGroup() {
       const id = <?=$group_id?>;
       if (confirm('Are you sure you want to delete this group?')) {

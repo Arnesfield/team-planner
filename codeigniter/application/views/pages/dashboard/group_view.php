@@ -3,9 +3,20 @@
 <div>
   <h2><?=$memberships[0]['group_name']?></h2>
   <div>
-    <?=$memberships[0]['group_desc'] ? $memberships[0]['group_desc'] : 'No description'?> |
+    <span>
+      <?=$memberships[0]['group_desc'] ? $memberships[0]['group_desc'] : 'No description'?>
+    </span>
     <?php if ($curr_user_info['member_type'] == 1): ?>
-    <a href="<?=base_url('dashboard/groups/' . $group_id . '/manage')?>">Manage group</a>
+    <span>| 
+    <?php
+      if ($memberships[0]['group_status'] == 1) echo 'Active';
+      else if ($memberships[0]['group_status'] == 2) echo 'Deactivated';
+      else echo 'Deleted';
+    ?>
+    </span>
+    <span>
+      | <a href="<?=base_url('dashboard/groups/' . $group_id . '/manage')?>">Manage group</a>
+    </span>
     <?php endif; ?>
   </div>
   

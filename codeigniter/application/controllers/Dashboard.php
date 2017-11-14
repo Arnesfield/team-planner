@@ -241,7 +241,13 @@ class Dashboard extends MY_Custom_Controller {
 
           if ($this->group_model->update($data, $where)) {
             // update members
-            if ($users = $this->input->post('users')) {
+            // don't update if js is disabled
+            if (isset($this->input->post()['isjs'])) {
+
+              // note that users[] does not include
+              // the current user, so add that too
+              $users = $this->input->post('users') ? $this->input->post('users') : array();
+              array_push($users, $user_id);
               // fetch all membership rows with uid and gid
               // if not equal with $users, set status to 0
               $where_in = array(
@@ -252,15 +258,34 @@ class Dashboard extends MY_Custom_Controller {
                 'group_id' => $g_id
               );
               if ($fetched_all = $this->membership_model->fetch($where, $where_in)) {
-                echo '<pre>';
-                print_r($fetched_all);
-                echo '</pre>';
                 // loop through fetch all and update that row's status to 0
                 // if user_id field not in $users
-                return;
+                foreach ($fetched_all as $fetched) {
+                  $m_where = array('id' => $fetched['membership_id']);
+
+                  // if included, update status
+                  if (in_array($fetched['user_id'], $users)) {
+                    // status 2 for invitation
+                    $m_data = array('status' => 2);
+                    // do not include if already in group || status 1
+                    // can also be status = 0 but whatever
+                    $m_where['status !='] = 1;
+                  }
+                  // if not, remove from group
+                  else {
+                    $m_data = array('status' => 0);
+                    // do not include if already 0
+                    $m_where['status !='] = 0;
+                  }
+
+                  $this->membership_model->update($m_data, $m_where);
+                }
               }
 
               // add users
+              // note that the above code pertains to
+              // users who have record of being in the group
+              // add users either add or update
               $this->_add_users($users);
             }
 
@@ -274,6 +299,7 @@ class Dashboard extends MY_Custom_Controller {
         }
 
       }
+      // end of action mark
 
       $this->_redirect('dashboard/groups/' . $g_id);
       return;
@@ -653,7 +679,9 @@ class Dashboard extends MY_Custom_Controller {
         $m_id = $membership[0]['membership_id'];
 
         $m_data = array(
-          'type' => 2,
+          // reuse member type
+          // to not rewrite current type
+          'type' => $membership[0]['member_type'],
           'status' => 2
         );
 
@@ -701,9 +729,12 @@ class Dashboard extends MY_Custom_Controller {
       exit();
     }
 
-    if ($update = $this->input->post('update') || $text = strip_tags($this->input->post('text'))) {
+    if (($update = isset($this->input->post()['update'])) || $text = strip_tags($this->input->post('text'))) {
+      $text = isset($text) ? $text : strip_tags($this->input->post('text'));
+
       $curr_user_id = $this->session->userdata('user')['id'];
       $ids = array();
+      $not_id = FALSE;
       array_push($ids, $curr_user_id);
 
       if ($this->session->has_userdata('curr_group_id')) {
@@ -721,12 +752,14 @@ class Dashboard extends MY_Custom_Controller {
         foreach ($members as $key => $member) {
           array_push($ids, $member['user_id']);
         }
+        // remove current user from ids
+        $not_id = array($curr_user_id);
       }
 
       // search users using text
       $this->load->model('user_model');
 
-      $users = $this->user_model->fetch_like($update ? '' : $text, $ids, $update);
+      $users = $this->user_model->fetch_like($update ? '' : $text, $ids, $update, $not_id);
 
       if ($users) {
         echo json_encode($users);

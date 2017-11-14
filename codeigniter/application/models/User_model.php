@@ -9,7 +9,7 @@ class User_model extends MY_CRUD_Model {
     return $this->_read($this->_tbl, array('where' => $user));
   }
 
-  public function fetch_like($text, $ids, $where_in = TRUE) {
+  public function fetch_like($text, $ids, $where_in = TRUE, $arr_where_not_in = FALSE) {
     // if $ids not array
     if (!is_array($ids)) {
       // convert to array
@@ -26,6 +26,10 @@ class User_model extends MY_CRUD_Model {
     }
     else {
       $this->db->where_not_in('id', $ids);
+    }
+
+    if ($arr_where_not_in) {
+      $this->db->where_not_in('id', $arr_where_not_in);
     }
     
     $query = $this->db->get();
