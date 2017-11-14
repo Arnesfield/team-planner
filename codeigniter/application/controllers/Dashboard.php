@@ -103,10 +103,17 @@ class Dashboard extends MY_Custom_Controller {
     // set session of currently editing
     // unset if not editing above
     $this->session->set_userdata('curr_user_id_edit', $user['id']);
-
     // display edit profile view
+    $this->_show_edit_profile($user);
+  }
+
+  // show edit profile
+  private function _show_edit_profile($user) {
     $form_edit_profile_data = array(
-      'user' => $user
+      'user' => $user,
+      'write_val' => function($key, $u) {
+        return set_value($key) ? set_value($key) : $u[$key];
+      }
     );
     $data = array(
       'title' => 'Edit Profile',
@@ -117,7 +124,6 @@ class Dashboard extends MY_Custom_Controller {
       array('templates/nav', 'pages/dashboard/edit_profile', 'alerts/msg'),
       array_merge($this->_nav_items, $data)
     );
-
   }
 
   // get user info by default
@@ -143,7 +149,140 @@ class Dashboard extends MY_Custom_Controller {
     }
     
     // do edit here
-    echo 'edited test';
+    $this->load->library('form_validation');
+    $this->load->database();
+
+    $this->form_validation->set_rules('username', 'username', 'trim|required|min_length[3]|max_length[16]|callback__is_different[users.username]');
+    $this->form_validation->set_rules('fname', 'First Name', 'trim|required');
+    $this->form_validation->set_rules('lname', 'Last Name', 'trim|required');
+    $this->form_validation->set_rules('email', 'email', 'trim|required|valid_email|callback__is_different[users.email]');
+    $this->form_validation->set_rules('bio', 'Bio', 'trim');
+    // not required password
+    $this->form_validation->set_rules('old_password', 'Password', 'trim|callback__is_pass_match');
+    $this->form_validation->set_rules('password', 'Password', 'trim|custom_match[passconf]');
+    $this->form_validation->set_rules('passconf', 'Password Confirmation', 'trim|custom_match[password]');
+    
+    $user = $this->_fetch_user($user_id);
+
+    if ($this->form_validation->run() === TRUE) {
+      $this->load->model('user_model');
+
+      // compare set email to curr email
+      // if changed, send new confirmation and make status 2 lol
+      $username = strip_tags($this->input->post('username'));
+      $fname = strip_tags($this->input->post('fname'));
+      $lname = strip_tags($this->input->post('lname'));
+      $email = strip_tags($this->input->post('email'));
+      $bio = strip_tags($this->input->post('bio'));
+      $bio = $bio ? $bio : '';
+
+      // update values
+      $data = array(
+        'username' => $username,
+        'fname' => $fname,
+        'lname' => $lname,
+        'email' => $email,
+        'bio' => $bio,
+        'reset_expiration' => 0
+      );
+      $where = array('id' => $user_id);
+
+      if (
+        ($new_password = strip_tags($this->input->post('password')))
+        && ($old_password = strip_tags($this->input->post('old_password')))
+      ) {
+        if ($is_valid_oldpass = password_verify($old_password, $user['password'])) {
+          $new_password = password_hash($new_password, PASSWORD_DEFAULT);
+
+          $data['password'] = $new_password;
+        }
+      }
+
+      // compare email
+      if ($user['email'] !== $email) {
+        // send email for confirmation
+        // set status to 2
+        $verification_code = $this->_generate_code();
+        
+        // send email verification code
+        $send_data = array('code' => $verification_code);
+        // send email
+        $sent = $this->_send_mail($email, 'Email Verification', 'email/email_verification', $send_data);
+        // if sent
+        if ($sent === TRUE) {
+          $data['verification_code'] = $verification_code;
+          $data['status'] = 2;
+          $data['email'] = $email;
+          $email_ok = true;
+        }
+        // if not sent
+        else {
+          $email_error = true;
+        }
+        
+      }
+      
+      // update
+      if ($this->user_model->update($data, $where)) {
+        if (isset($email_error) && $email_error) {
+          $this->session->set_flashdata('msg', 'Updated profile but unable to change email.');
+        }
+        else if (isset($email_ok) && $email_ok) {
+          // logout lol
+          $this->_unset_session_but('msg');
+          $this->session->set_flashdata('msg', 'Updated profile. An email verification was sent. Confirm before login.');
+          $this->_redirect();
+          return;
+        }
+        else {
+          $this->session->set_flashdata('msg', 'Updated profile.');
+        }
+      }
+      // failed update
+      else {
+        $this->session->set_flashdata('msg', 'An error occurred while updating user profile.');
+      }
+
+      // redirect
+      $this->_redirect('dashboard/profile/' . $user_id);
+      return;
+    }
+
+    $this->_show_edit_profile($user);
+  }
+
+  // callback for checking email and username
+  public function _is_different($str, $field) {
+    $user_id = $this->session->userdata('user')['id'];
+
+    // based on is_unique[]
+		sscanf($field, '%[^.].%[^.]', $table, $field);
+		$res = isset($this->db)
+			? ($this->db->limit(1)->get_where($table, array($field => $str, 'id !=' => $user_id))->num_rows() === 0)
+      : FALSE;
+      
+    if (!$res) {
+      $this->form_validation->set_message('_is_different', 'This {field} is already taken.');
+    }
+    
+    return $res;
+  }
+  
+  // callback for password
+  public function _is_pass_match($password) {
+    if (empty($password)) {
+      return TRUE;
+    }
+
+    $user_id = $this->session->userdata('user')['id'];
+    $user = $this->_fetch_user($user_id);
+
+    if (password_verify($password, $user['password'])) {
+      return TRUE;
+    }
+
+    $this->form_validation->set_message('_is_pass_match', '{field} is incorrect.');
+    return FALSE;
   }
 
   // manage view

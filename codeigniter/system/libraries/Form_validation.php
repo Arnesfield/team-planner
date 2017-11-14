@@ -1089,6 +1089,18 @@ class CI_Form_validation {
 			: FALSE;
 	}
 
+	// my custom function lol
+	public function custom_match($str, $field)
+	{
+		$res = ($str == $this->_field_data[$field]['postdata']);
+
+		if (!$res) {
+			$this->set_message('custom_match', '{field} does not match password.');
+		}
+
+		return $res;
+	}
+
 	// --------------------------------------------------------------------
 
 	/**

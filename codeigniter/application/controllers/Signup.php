@@ -19,6 +19,7 @@ class Signup extends MY_Custom_Controller {
     $this->form_validation->set_rules('fname', 'First Name', 'trim|required');
     $this->form_validation->set_rules('lname', 'Last Name', 'trim|required');
     $this->form_validation->set_rules('email', 'email', 'trim|required|valid_email|is_unique[users.email]');
+    $this->form_validation->set_rules('bio', 'Bio', 'trim');
     $this->form_validation->set_rules('password', 'Password', 'trim|required');
     $this->form_validation->set_rules('passconf', 'Password Confirmation', 'trim|required|matches[password]');
     $this->form_validation->set_rules('g-recaptcha-response', 'reCAPTCHA', 'required|callback__check_recaptcha');
@@ -28,6 +29,8 @@ class Signup extends MY_Custom_Controller {
 
       $verification_code = $this->_generate_code();
       $email = strip_tags($this->input->post('email'));
+      $bio = strip_tags($this->input->post('bio'));
+      $bio = $bio ? $bio : '';
       $password = password_hash(strip_tags($this->input->post('password')), PASSWORD_DEFAULT);
 
       // insert user
@@ -36,6 +39,7 @@ class Signup extends MY_Custom_Controller {
         'fname' => strip_tags($this->input->post('fname')),
         'lname' => strip_tags($this->input->post('lname')),
         'email' => $email,
+        'bio' => $bio,
         'password' => $password,
         'verification_code' => $verification_code,
         'reset_expiration' => 0,

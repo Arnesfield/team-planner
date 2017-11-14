@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 13, 2017 at 12:32 PM
+-- Generation Time: Nov 14, 2017 at 02:36 PM
 -- Server version: 10.1.25-MariaDB
 -- PHP Version: 7.1.7
 
@@ -42,9 +42,10 @@ CREATE TABLE `groups` (
 
 INSERT INTO `groups` (`id`, `name`, `description`, `slug`, `status`) VALUES
 (1, 'Charlyn\'s Group', 'Hello friends!', 'charlyns-group', 1),
-(2, 'Test\'s Group', 'Hello test', 'tests-group', 1),
+(2, 'Test\'s Group', 'Hello test', 'tests-group', 0),
 (3, 'Rylee\'s Group', 'Awesome', 'rylees-group', 1),
-(4, 'New', 'Test', 'new', 1);
+(4, 'New', 'Test lol hi xD', 'new', 1),
+(6, 'Awesome Group XD', 'XD lol', 'awesome-group-xd', 1);
 
 -- --------------------------------------------------------
 
@@ -66,7 +67,7 @@ CREATE TABLE `memberships` (
 
 INSERT INTO `memberships` (`id`, `user_id`, `group_id`, `type`, `status`) VALUES
 (1, 3, 1, 1, 1),
-(2, 1, 1, 2, 1),
+(2, 1, 1, 1, 1),
 (3, 2, 1, 2, 1),
 (4, 1, 2, 1, 1),
 (5, 3, 2, 2, 1),
@@ -76,7 +77,10 @@ INSERT INTO `memberships` (`id`, `user_id`, `group_id`, `type`, `status`) VALUES
 (9, 1, 3, 2, 1),
 (10, 3, 4, 1, 1),
 (11, 1, 4, 2, 2),
-(12, 2, 4, 2, 2);
+(12, 2, 4, 2, 1),
+(13, 2, 6, 1, 1),
+(14, 1, 6, 2, 2),
+(15, 3, 6, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -98,6 +102,19 @@ CREATE TABLE `tasks` (
   `status` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `tasks`
+--
+
+INSERT INTO `tasks` (`id`, `name`, `description`, `group_id`, `created_by_user_id`, `taken_by_user_id`, `created_at`, `deadline_at`, `started_at`, `ended_at`, `status`) VALUES
+(1, 'Sleep', 'Sleep well', 1, 3, 3, 1510574960, 1510576200, 1510579713, 1510579720, 9),
+(2, 'Code', 'Finish projects', 1, 3, 2, 1510579184, 1510588740, 0, 1510595520, 8),
+(3, 'Apple', 'Red', 2, 2, 2, 1510594773, 1510603380, 1510595046, 1510595070, 9),
+(4, 'Apple', 'test', 1, 2, 2, 1510595501, 1510675200, 0, 1510595754, 9),
+(5, 'Wow', 'Ok', 6, 3, 3, 1510596047, 1510804800, 0, 0, 2),
+(7, 'test', 'new', 2, 1, 1, 1510597803, 1510761600, 1510597807, 0, 3),
+(8, 'Finish assignment', 'Finish psych', 1, 3, 3, 1510631976, 1510675200, 1510631990, 1510632000, 9);
+
 -- --------------------------------------------------------
 
 --
@@ -111,6 +128,7 @@ CREATE TABLE `users` (
   `fname` varchar(128) NOT NULL,
   `lname` varchar(128) NOT NULL,
   `email` varchar(128) NOT NULL,
+  `bio` text NOT NULL,
   `type` tinyint(4) NOT NULL,
   `verification_code` varchar(32) NOT NULL,
   `reset_code` varchar(32) NOT NULL,
@@ -122,10 +140,10 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `fname`, `lname`, `email`, `type`, `verification_code`, `reset_code`, `reset_expiration`, `status`) VALUES
-(1, 'test', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Jefferson', 'Rylee', 'rylee.jeff385@gmail.com', 2, '', '', 0, 1),
-(2, 'rylee', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Test', 'User', 'test@sample.com', 2, '', '', 0, 1),
-(3, 'charlyn', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Charlyn', 'Ann', 'charlyn@sample.com', 2, '', '', 0, 1);
+INSERT INTO `users` (`id`, `username`, `password`, `fname`, `lname`, `email`, `bio`, `type`, `verification_code`, `reset_code`, `reset_expiration`, `status`) VALUES
+(1, 'test', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Jefferson', 'Rylee', 'rylee.jeff385@gmail.com', '', 2, '', '', 0, 1),
+(2, 'rylee', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Test', 'User', 'test@sample.com', '', 2, '', '', 0, 1),
+(3, 'charlyn', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Charlyn', 'Ann', 'charlyn@sample.com', '', 2, '', '', 0, 1);
 
 --
 -- Indexes for dumped tables
@@ -165,19 +183,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `memberships`
 --
 ALTER TABLE `memberships`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `users`

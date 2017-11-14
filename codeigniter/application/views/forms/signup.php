@@ -31,6 +31,12 @@
   </div>
 
   <div>
+    <label for="bio">Bio</label>
+    <textarea name="bio" id="bio"><?=set_value('bio')?></textarea>
+    <?=form_error('bio', '<span>', '</span>')?>
+  </div>
+
+  <div>
     <label for="password">Password</label>
     <input type="password" name="password" id="password">
     <?=form_error('password', '<span>', '</span>')?>
