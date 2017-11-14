@@ -1,14 +1,19 @@
 <div>
 
-<h2><?=$memberships[0]['group_name']?></h2>
+<div>
+  <h2><?=$memberships[0]['group_name']?></h2>
+  <?php if ($curr_user_info['member_type'] == 1): ?>
+  <a href="<?=base_url('dashboard/groups/' . $group_id . '/manage')?>">Manage group</a>
+  <?php endif; ?>
+</div>
 
 <!-- add task -->
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm-6"><?=$form_create_task?></div>
-    <?php if ($curr_user_info['member_type'] == 1): ?>
-    <div class="col-sm-6"><?=$form_add_members?></div>
-    <?php endif; ?>
+    <div class="col-md-6"><?=$form_create_task?></div>
+    <div class="col-md-6">
+      <?=$curr_user_info['member_type'] == 1 ? $form_add_members : ''?>
+    </div>
   </div>
 </div>
 
@@ -31,7 +36,7 @@
       <!-- row and col -->
       <div class="row">
         <!-- pending tasks -->
-        <div class="col-md-3">
+        <div class="col-md-3 col-sm-6">
           <div>
             Pending Tasks
           </div>
@@ -54,7 +59,7 @@
         </div>
 
         <!-- ongoing tasks -->
-        <div class="col-md-3">
+        <div class="col-md-3 col-sm-6">
           <div>
             Ongoing Tasks
           </div>
@@ -77,7 +82,7 @@
         </div>
 
         <!-- done tasks -->
-        <div class="col-md-3">
+        <div class="col-md-3 col-sm-6">
           <div>
             Done Tasks
           </div>
@@ -99,7 +104,7 @@
         </div>
 
         <!-- done tasks -->
-        <div class="col-md-3">
+        <div class="col-md-3 col-sm-6">
           <div>
             Discontinued Tasks
           </div>

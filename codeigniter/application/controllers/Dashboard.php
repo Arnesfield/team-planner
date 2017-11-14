@@ -32,6 +32,36 @@ class Dashboard extends MY_Custom_Controller {
     );
   }
 
+  // manage view
+  private function _manage_group($manage) {
+    $group_id = $this->session->userdata('curr_group_id');
+    
+    if (!$group_id) {
+      $this->session->set_flashdata('msg', 'An error occurred. Unable to view group settings.');
+      $this->_redirect('dashboard/groups');
+      return;
+    }
+
+    // if 4th segment exists but not manage
+    if ($manage != 'manage') {
+      $this->session->set_flashdata('msg', 'An error occurred. Unable to view group settings.');
+      $this->_redirect('dashboard/groups/' . $group_id);
+      return;
+    }
+
+    
+    // display view for manage
+    $manage_data = array(
+      'group_id' => $group_id,
+      'title' => 'Manage Group',
+      'msg' => $this->session->flashdata('msg'),
+    );
+    $this->_view(
+      array('templates/nav', 'pages/dashboard/manage_group', 'alerts/msg'),
+      array_merge($this->_nav_items, $manage_data)
+    );
+  }
+
   // groups page
   public function groups() {
     $this->load->library('form_validation');
@@ -192,6 +222,12 @@ class Dashboard extends MY_Custom_Controller {
         $this->load->model('task_model');
         $this->load->model('user_model');
 
+        // check for segment for 'manage' here
+        if ($manage = $this->uri->segment(4)) {
+          $this->_manage_group($manage);
+          return;
+        }
+
         $per_member_tasks = array();
         $curr_user_info = array();
 
@@ -235,6 +271,7 @@ class Dashboard extends MY_Custom_Controller {
         
         $data = array(
           'sess_user_id' => $user_id,
+          'group_id' => $group_id,
           'curr_user_info' => $curr_user_info,
           'title' => $memberships[0]['group_name'],
           'msg' => $this->session->flashdata('msg'),
