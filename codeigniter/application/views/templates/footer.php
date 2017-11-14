@@ -5,7 +5,6 @@
 <script src="https://storage.googleapis.com/materialdesignlite/material.min.js"></script>
 -->
 
-<script src="<?=base_url('vendor/jquery.min.js')?>"></script>
 <script src="<?=base_url('vendor/bootstrap/js/bootstrap.min.js')?>"></script>
 <script src="<?=base_url('vendor/mdl/material.min.js')?>"></script>
 <script src="<?=base_url('vendor/inherit.min.js')?>"></script>

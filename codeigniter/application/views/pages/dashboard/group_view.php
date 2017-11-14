@@ -2,9 +2,13 @@
 
 <div>
   <h2><?=$memberships[0]['group_name']?></h2>
-  <?php if ($curr_user_info['member_type'] == 1): ?>
-  <a href="<?=base_url('dashboard/groups/' . $group_id . '/manage')?>">Manage group</a>
-  <?php endif; ?>
+  <div>
+    <?=$memberships[0]['group_desc'] ? $memberships[0]['group_desc'] : 'No description'?> |
+    <?php if ($curr_user_info['member_type'] == 1): ?>
+    <a href="<?=base_url('dashboard/groups/' . $group_id . '/manage')?>">Manage group</a>
+    <?php endif; ?>
+  </div>
+  
 </div>
 
 <!-- add task -->
