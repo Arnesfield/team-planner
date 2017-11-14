@@ -24,12 +24,126 @@ class Dashboard extends MY_Custom_Controller {
 
     $data = array(
       'title' => 'Dashboard',
-      'msg' => $this->session->flashdata('msg')
+      'msg' => $this->session->flashdata('msg'),
+      'user' => $this->_fetch_user()
     );
     $this->_view(
       array('templates/nav', 'pages/dashboard/dashboard', 'alerts/msg'),
       array_merge($this->_nav_items, $data)
     );
+  }
+
+  public function profile() {
+    // if posted and sess curr edit id is set
+    if ($this->input->post() && $this->session->has_userdata('curr_user_id_edit')) {
+      $this->_edit_profile();
+      return;
+    }
+
+    // else, continue here
+
+    $user_id = $this->session->userdata('user')['id'];
+    // if third segment is not specified
+    if (!$this->uri->segment(3)) {
+      $this->_redirect('dashboard/profile/' . $user_id);
+      return;
+    }
+
+    $id_segment = $this->uri->segment(3);
+    // user should be active!
+    $user = $this->_fetch_user($id_segment);
+
+    // if user does not exist
+    // or user status is 0
+    if (!$user || $user['status'] == 0) {
+      $this->session->set_flashdata('msg', 'An error occurred. User does not exist.');
+      $this->_redirect('dashboard');
+      return;
+    }
+
+    // allow edit if curr id == segment
+    $allow_edit = $id_segment === $user_id;
+
+    if ($allow_edit && $this->uri->segment(4) === 'edit') {
+      $edit = true;
+    }
+    // if not edit, redirect to no /edit
+    else if ($this->uri->segment(4) === 'edit') {
+      $this->_redirect('dashboard/profile/' . $id_segment);
+      return;
+    }
+    // else if any segment
+    // go back to profile
+    else if ($this->uri->segment(4)) {
+      $this->_redirect('dashboard/profile/' . $id_segment);
+      return;
+    }
+
+    // if just view
+    if (!(isset($edit) && $edit)) {
+      // unset user id edit here
+      $this->session->unset_userdata('curr_user_id_edit');
+      // display profile view
+      $data = array(
+        'title' => 'My Profile',
+        'msg' => $this->session->flashdata('msg'),
+        'user' => $user,
+        'allow_edit' => $allow_edit
+      );
+      $this->_view(
+        array('templates/nav', 'pages/dashboard/profile', 'alerts/msg'),
+        array_merge($this->_nav_items, $data)
+      );
+      return;
+    }
+
+    // proceed here if edit
+    $this->load->library('form_validation');
+
+    // set session of currently editing
+    // unset if not editing above
+    $this->session->set_userdata('curr_user_id_edit', $user['id']);
+
+    // display edit profile view
+    $form_edit_profile_data = array(
+      'user' => $user
+    );
+    $data = array(
+      'title' => 'Edit Profile',
+      'msg' => $this->session->flashdata('msg'),
+      'form_edit_profile' => $this->load->view('forms/edit_profile', $form_edit_profile_data, TRUE)
+    );
+    $this->_view(
+      array('templates/nav', 'pages/dashboard/edit_profile', 'alerts/msg'),
+      array_merge($this->_nav_items, $data)
+    );
+
+  }
+
+  // get user info by default
+  private function _fetch_user($id = FALSE) {
+    // fetch data of user
+    $this->load->model('user_model');
+    $user_id = $id === FALSE ? $this->session->userdata('user')['id'] : $id;
+    $where = array('id' => $user_id);
+    $user = $this->user_model->fetch($where);
+    return $user ? $user[0] : FALSE;
+  }
+  
+  // edit profile
+  private function _edit_profile() {
+    $user_id = $this->session->userdata('user')['id'];
+    $edit_id = $this->session->userdata('curr_user_id_edit');
+    
+    // edit id should be the same as curr user session id
+    // otherwise, return
+    if ($user_id !== $edit_id) {
+      $this->_redirect('dashboard/profile/' . $edit_id);
+      return;
+    }
+    
+    // do edit here
+    echo 'edited test';
   }
 
   // manage view

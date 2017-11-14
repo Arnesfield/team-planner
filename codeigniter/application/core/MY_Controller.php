@@ -104,6 +104,10 @@ class MY_Custom_Controller extends MY_View_Controller {
         'href' => 'dashboard'
       ),
       array(
+        'title' => 'My Profile',
+        'href' => 'dashboard/profile'
+      ),
+      array(
         'title' => 'Groups',
         'href' => 'dashboard/groups'
       ),
