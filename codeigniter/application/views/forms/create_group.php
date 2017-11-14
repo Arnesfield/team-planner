@@ -28,6 +28,9 @@
         <label :for="user.username">
           <div>{{ user.username }} {{ user.email }}</div>
           <div>{{ user.fname }} {{ user.lname }}</div>
+          <div>
+            <a :href="profileUrl + user.id" target="_blank">View Profile</a>
+          </div>
           <input type="checkbox" :id="user.username" v-model="selected" :value="user">
         </label>
       </div>
@@ -41,6 +44,9 @@
       <div v-bind:key="user.id" v-for="user in selected">
         <div>{{ user.username }} {{ user.email }}</div>
         <div>{{ user.fname }} {{ user.lname }}</div>
+        <div>
+          <a :href="profileUrl + user.id" target="_blank">View Profile</a>
+        </div>
         <input type="hidden" name="users[]" :value="user.id">
         <input type="checkbox" :id="user.username" v-model="selected" :value="user">
       </div>
@@ -62,7 +68,8 @@ new Vue({
   data: {
     users: [],
     selected: [],
-    search: ''
+    search: '',
+    profileUrl: "<?=base_url('dashboard/profile/')?>"
   },
 
   watch: {

@@ -38,7 +38,9 @@
 <div>
 
   <div>
-    <h5><?=$member['username']?></h5>
+      <h5>
+        <a href="<?=base_url('dashboard/profile/' . $member['user_id'])?>"><?=$member['username']?></a>
+      </h5>
     <div><?=$member['fname'] . ' ' . $member['lname']?></div>
     <div><?=$member['member_type'] == 1 ? 'Admin' : 'Member'?></div>
   </div>
