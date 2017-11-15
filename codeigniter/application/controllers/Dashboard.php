@@ -495,7 +495,7 @@ class Dashboard extends MY_Custom_Controller {
           
           $name = strip_tags($this->input->post('name'));
           $desc = strip_tags($this->input->post('desc'));
-          $users = $this->input->post('users');
+          // $users = $this->input->post('users');
           $status = $this->input->post('status', TRUE);
           $status = $status == 'on' ? 1 : 2;
           $remove_image = $this->input->post('remove_image', TRUE);
@@ -535,6 +535,7 @@ class Dashboard extends MY_Custom_Controller {
             // don't update if js is disabled
             if (isset($this->input->post()['isjs'])) {
 
+              $admins = $this->input->post('admins') ? $this->input->post('admins') : array();
               // note that users[] does not include
               // the current user, so add that too
               $users = $this->input->post('users') ? $this->input->post('users') : array();
@@ -556,6 +557,13 @@ class Dashboard extends MY_Custom_Controller {
 
                   // if included, update status
                   if (in_array($fetched['user_id'], $users)) {
+                    // type in m_data is 1 if admin
+                    $m_type = in_array($fetched['user_id'], $admins) ? 1 : 2;
+                    // if current id is the fetched user id, do not update
+                    if ($user_id !== $fetched['user_id']) {
+                      $this->membership_model->update(array('type' => $m_type), $m_where);
+                    }
+
                     // status 2 for invitation
                     $m_data = array('status' => 2);
                     // do not include if already in group || status 1
@@ -872,6 +880,8 @@ class Dashboard extends MY_Custom_Controller {
     foreach ($groups as $key => $group) {
       $o_where = array(
         'm.type' => 1,
+        // owner should be status 1
+        'm.status' => 1,
         'g.id' => $group['group_id'],
         'g.status' => 1
       );
@@ -1032,6 +1042,7 @@ class Dashboard extends MY_Custom_Controller {
 
       $curr_user_id = $this->session->userdata('user')['id'];
       $ids = array();
+      $types = array();
       $not_id = FALSE;
       array_push($ids, $curr_user_id);
 
@@ -1049,6 +1060,11 @@ class Dashboard extends MY_Custom_Controller {
         $members = $this->membership_model->fetch($where);
         foreach ($members as $key => $member) {
           array_push($ids, $member['user_id']);
+          // add types for type of member
+          // do not include if curr id
+          if ($member['user_id'] !== $curr_user_id) {
+            $types[$member['user_id']] = $member['member_type'];
+          }
         }
         // remove current user from ids
         $not_id = array($curr_user_id);
@@ -1060,7 +1076,10 @@ class Dashboard extends MY_Custom_Controller {
       $users = $this->user_model->fetch_like($update ? '' : $text, $ids, $update, $not_id);
 
       if ($users) {
-        echo json_encode($users);
+        echo json_encode(array(
+          'users' => $users,
+          'types' => $types
+        ));
       }
     }
 

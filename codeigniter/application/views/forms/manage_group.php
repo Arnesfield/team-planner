@@ -77,6 +77,11 @@
         <div>{{ user.username }} {{ user.email }}</div>
         <div>{{ user.fname }} {{ user.lname }}</div>
         <div>
+          <input type="checkbox" :id="user.username + '-is-admin'" v-model="isAdmin[user.id]" :value="user">
+          <label :for="user.username + '-is-admin'" :style="{ 'text-decoration': (isAdmin[user.id] ? '' : 'line-through') }">Admin</span>
+          <input v-if="isAdmin[user.id]" type="hidden" name="admins[]" :value="user.id">
+        </div>
+        <div>
           <a :href="profileUrl + user.id" target="_blank">View Profile</a>
         </div>
         <input type="hidden" name="users[]" :value="user.id">
@@ -118,7 +123,8 @@ new Vue({
     showPassword: false,
     showDelete: false,
     loading: false,
-    profileUrl: "<?=base_url('dashboard/profile/')?>"
+    profileUrl: "<?=base_url('dashboard/profile/')?>",
+    isAdmin: []
   },
 
   watch: {
@@ -163,7 +169,7 @@ new Vue({
             'password': self.password
           },
           'success': function(res) {
-            console.log(res)
+            // console.log(res)
             if (res.success == 1) {
               window.location = "<?=base_url('dashboard/groups')?>"
             }
@@ -197,7 +203,7 @@ new Vue({
           'text': self.search
         },
         'success': function(res) {
-          self.users = res
+          self.users = res.users
         },
         'error': function() {
           self.users = []
@@ -217,7 +223,11 @@ new Vue({
           'update': true
         },
         'success': function(res) {
-          self.selected = res
+          self.selected = res.users
+          // make true in isAdmin[] if type is 1
+          self.selected.forEach((e, i) => {
+            self.isAdmin[e.id] = res.types[e.id] == 1
+          })
         },
         'error': function() {
           self.selected = []

@@ -10,10 +10,13 @@ if ($groups): ?>
     <div>
       <h4><?=$group['group_name']?></h4>
       <div><?=$group['group_desc']?></div>
-      <?php if (isset($owners)): ?>
+      <?php if (isset($owners) && $owners[$key]): ?>
       <div>
         Admins:
-        <?php foreach ($owners[$key] as $owner_key => $owner): ?><?=count($owners[$key]) > 1 && $owner_key !== count($owners)-1 ? ', ' : ''?><?=$owner['username']?><?php endforeach; ?>
+        <?php foreach ($owners[$key] as $owner_key => $owner): ?>
+          <a href="<?=base_url('dashboard/profile/' . $owner['user_id'])?>" target="_blank">
+          <?=$owner['username']?></a><?=count($owners[$key]) > 1 && $owner_key !== count($owners[$key])-1 ? ', ' : ''?>
+        <?php endforeach; ?>
       </div>
       <?php endif; ?>
       <input type="hidden" name="group" value="<?=$group['group_id']?>">

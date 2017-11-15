@@ -98,7 +98,7 @@ new Vue({
           'text': self.search
         },
         'success': function(res) {
-          self.users = res
+          self.users = res.users
         },
         'error': function() {
           self.users = []
