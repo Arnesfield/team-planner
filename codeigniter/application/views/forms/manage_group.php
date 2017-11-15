@@ -19,7 +19,8 @@
     <div>
       <?php if ($group_info['g_image']): ?>
       <label for="">Current Image</label>
-      <img src="<?=base_url('uploads/images/groups/' . $group_info['g_image'])?>" alt="<?=$group_info['name']?>">
+      <img src="<?=base_url('uploads/images/groups/' . $group_info['g_image'])?>" alt="<?=$group_info['name']?>"
+        style="width: 48px">
       <?php else: ?>
       <label for="">No current image</label>
       <?php endif; ?>
@@ -87,7 +88,7 @@
 
   <div>
     <button type="submit">Update</button>
-    <a @click="back">Back</a>
+    <a @click="back">View Group</a>
     <input type="checkbox" v-model="showPassword" id="delete">
     <label v-if="!showPassword" for="delete">Delete</label>
     <template v-if="showPassword">

@@ -40,7 +40,8 @@
     <div>
       <?php if ($user['u_image']): ?>
       <label for="">Current Image</label>
-      <img src="<?=base_url('uploads/images/users/' . $user['u_image'])?>" alt="<?=$user['username']?>">
+      <img src="<?=base_url('uploads/images/users/' . $user['u_image'])?>" alt="<?=$user['username']?>"
+        style="width: 48px">
       <?php else: ?>
       <label for="">No current image</label>
       <?php endif; ?>

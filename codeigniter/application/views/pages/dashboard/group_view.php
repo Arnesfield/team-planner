@@ -47,11 +47,23 @@
 <div>
 
   <div>
-      <h5>
-        <a href="<?=base_url('dashboard/profile/' . $member['user_id'])?>"><?=$member['username']?></a>
-      </h5>
-    <div><?=$member['fname'] . ' ' . $member['lname']?></div>
-    <div><?=$member['member_type'] == 1 ? 'Admin' : 'Member'?></div>
+    <div>
+      <div style="display: inline-block; vertical-align: 100%">
+        <img src="<?=base_url('uploads/images/users/' . $member['user_image'])?>" alt="<?=$member['username']?>"
+          style="width: 52px;">
+      </div>
+
+      <div style="display: inline-block">
+        <a href="<?=base_url('dashboard/profile/' . $member['user_id'])?>" target="_blank">
+          <h5 style="display: inline-block"><?=$member['username']?></h5>
+        </a>
+        <div>
+          <?=$member['fname'] . ' ' . $member['lname']?>
+          | <?=$member['member_type'] == 1 ? 'Admin' : 'Member'?>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <?php if($per_member_tasks[$key]): ?>

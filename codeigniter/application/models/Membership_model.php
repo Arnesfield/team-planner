@@ -13,6 +13,7 @@ class Membership_model extends MY_CRUD_Model {
       u.username AS username,
       u.fname AS fname,
       u.lname AS lname,
+      u.u_image AS user_image,
       m.type AS member_type,
       m.status AS member_status,
       g.id AS group_id,
