@@ -55,12 +55,8 @@ class Login extends MY_Custom_Controller {
         // go to
         // check type of account
         // type :: 1 - admin, 2 - user
-        if ($user['type'] == 1) {
-          $this->_redirect('admin');
-        }
-        else if ($user['type'] == 2) {
-          $this->_redirect('dashboard');
-        }
+        // no need for type check for redirect
+        $this->_redirect('dashboard');
         return;
       }
       else {

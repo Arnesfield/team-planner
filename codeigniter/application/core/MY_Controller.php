@@ -96,9 +96,23 @@ class MY_Custom_Controller extends MY_View_Controller {
     ));
   }
 
-  protected function _set_nav_items() {
+  protected function _set_nav_items($is_admin = FALSE) {
     // static test
-    $this->_nav_items = array('nav_items' => array(
+    $admin_navs = array();
+    if ($is_admin) {
+      $admin_navs = array(
+        array(
+          'title' => 'Manage Users',
+          'href' => 'admin/users'
+        ),
+        array(
+          'title' => 'Manage Groups',
+          'href' => 'admin/groups'
+        ),
+      );
+    }
+
+    $navs = array(
       array(
         'title' => 'Home',
         'href' => 'dashboard'
@@ -108,14 +122,19 @@ class MY_Custom_Controller extends MY_View_Controller {
         'href' => 'dashboard/profile'
       ),
       array(
-        'title' => 'Groups',
+        'title' => 'My Groups',
         'href' => 'dashboard/groups'
       ),
+    );
+
+    $end_navs = array(
       array(
         'title' => 'Logout',
         'href' => 'logout'
       )
-    ));
+    );
+
+    $this->_nav_items = array('nav_items' => array_merge($navs, $admin_navs, $end_navs));
   }
 
   protected function _redirect($to = '') {
