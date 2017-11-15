@@ -18,6 +18,7 @@ class Membership_model extends MY_CRUD_Model {
       g.id AS group_id,
       g.name AS group_name,
       g.description AS group_desc,
+      g.g_image AS group_image,
       g.status AS group_status,
       ')
       ->from('memberships m')

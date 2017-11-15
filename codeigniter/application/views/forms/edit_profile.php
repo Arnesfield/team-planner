@@ -51,6 +51,11 @@
       <input type="file" name="u_image" id="u_image">
       <?=form_error('u_image', '<span>', '</span>')?>
     </div>
+
+    <div>
+      <label for="remove_image">Remove Image</label>
+      <input type="checkbox" name="remove_image" id="remove_image">
+    </div>
   </div>
 
   <div>

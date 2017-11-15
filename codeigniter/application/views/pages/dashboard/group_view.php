@@ -1,6 +1,15 @@
 <div>
 
 <div>
+  <div>
+    <?php if ($memberships[0]['group_image']): ?>
+    <img src="<?=base_url('uploads/images/groups/' . $memberships[0]['group_image'])?>"
+      style="width: 256px" alt="<?=$memberships[0]['group_image']?>">
+    <?php else: ?>
+    <div>No profile image</div>
+    <?php endif; ?>
+  </div>
+
   <h2><?=$memberships[0]['group_name']?></h2>
   <div>
     <span>

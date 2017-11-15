@@ -28,6 +28,9 @@ class Signup extends MY_Custom_Controller {
       $this->load->model('user_model');
 
       $verification_code = $this->_generate_code();
+      $username = strip_tags($this->input->post('username'));
+      $fname = strip_tags($this->input->post('fname'));
+      $lname = strip_tags($this->input->post('lname'));
       $email = strip_tags($this->input->post('email'));
       $bio = strip_tags($this->input->post('bio'));
       $bio = $bio ? $bio : '';
@@ -35,9 +38,9 @@ class Signup extends MY_Custom_Controller {
 
       // insert user
       $data = array(
-        'username' => strip_tags($this->input->post('username')),
-        'fname' => strip_tags($this->input->post('fname')),
-        'lname' => strip_tags($this->input->post('lname')),
+        'username' => $username,
+        'fname' => $fname,
+        'lname' => $lname,
         'email' => $email,
         'bio' => $bio,
         'password' => $password,
@@ -47,6 +50,15 @@ class Signup extends MY_Custom_Controller {
         'type' => 2,
         'status' => 2
       );
+
+      // before insert
+      // upload image
+      // if failed, optional image
+      $upload = $this->_upload_image('uploads/images/users/', 'u_image');
+      
+      // add u_image to insert
+      // image upload is optional!
+      $data['u_image'] = $upload['result'] ? $upload['return']['file_name'] : '';
 
       if ($this->user_model->insert($data)) {
         // send email verification code

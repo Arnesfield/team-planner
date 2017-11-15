@@ -17,9 +17,9 @@
 
   <div>
     <div>
-      <?php if ($group_info['u_image']): ?>
+      <?php if ($group_info['g_image']): ?>
       <label for="">Current Image</label>
-      <img src="<?=base_url('uploads/images/groups/' . $group_info['u_image'])?>" alt="<?=$group_info['name']?>">
+      <img src="<?=base_url('uploads/images/groups/' . $group_info['g_image'])?>" alt="<?=$group_info['name']?>">
       <?php else: ?>
       <label for="">No current image</label>
       <?php endif; ?>
@@ -29,6 +29,11 @@
       <label for="g_image">Group Image (optional)</label>
       <input type="file" name="g_image" id="g_image">
       <?=form_error('g_image', '<span>', '</span>')?>
+    </div>
+
+    <div>
+      <label for="remove_image">Remove Image</label>
+      <input type="checkbox" name="remove_image" id="remove_image">
     </div>
   </div>
 

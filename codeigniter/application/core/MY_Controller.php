@@ -171,7 +171,7 @@ class MY_Custom_Controller extends MY_View_Controller {
       'max_size' => 200,
       'max_width' => 1920,
       'max_height' => 1080,
-      'file_name' => 'IMG-' . time()
+      'file_name' => 'IMG_' . date('dmyHis')
     );
 
     // override default values

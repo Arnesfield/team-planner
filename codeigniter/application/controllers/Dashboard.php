@@ -175,6 +175,8 @@ class Dashboard extends MY_Custom_Controller {
       $email = strip_tags($this->input->post('email'));
       $bio = strip_tags($this->input->post('bio'));
       $bio = $bio ? $bio : '';
+      $remove_image = $this->input->post('remove_image', TRUE);
+      $remove_image = $remove_image == 'on' ? TRUE : FALSE;
 
       // update values
       $data = array(
@@ -221,7 +223,25 @@ class Dashboard extends MY_Custom_Controller {
         }
         
       }
-      
+
+      // if remove image, do not upload
+      // and set field to ''
+      if ($remove_image === TRUE) {
+        $data['u_image'] = '';
+      }
+      // if do add
+      else {
+        // before insert
+        // upload image
+        // if failed, optional image
+        $upload = $this->_upload_image('uploads/images/users/', 'u_image');
+
+        // do not update if no set
+        if ($upload['result']) {
+          $data['u_image'] = $upload['return']['file_name'];
+        }
+      }
+
       // update
       if ($this->user_model->update($data, $where)) {
         if (isset($email_error) && $email_error) {
@@ -478,6 +498,8 @@ class Dashboard extends MY_Custom_Controller {
           $users = $this->input->post('users');
           $status = $this->input->post('status', TRUE);
           $status = $status == 'on' ? 1 : 2;
+          $remove_image = $this->input->post('remove_image', TRUE);
+          $remove_image = $remove_image == 'on' ? TRUE : FALSE;
           
           // update 1 group
           $data = array(
@@ -489,6 +511,24 @@ class Dashboard extends MY_Custom_Controller {
           $where = array(
             'id' => $g_id
           );
+
+          // if remove image, do not upload
+          // and set field to ''
+          if ($remove_image === TRUE) {
+            $data['g_image'] = '';
+          }
+          // if do add
+          else {
+            // before insert
+            // upload image
+            // if failed, optional image
+            $upload = $this->_upload_image('uploads/images/groups/', 'g_image');
+
+            // do not update if no set
+            if ($upload['result']) {
+              $data['g_image'] = $upload['return']['file_name'];
+            }
+          }
 
           if ($this->group_model->update($data, $where)) {
             // update members
@@ -755,6 +795,15 @@ class Dashboard extends MY_Custom_Controller {
         'status' => 1
       );
       
+      // before insert
+      // upload image
+      // if failed, optional image
+      $upload = $this->_upload_image('uploads/images/groups/', 'g_image');
+
+      // add g_image to insert
+      // image upload is optional!
+      $data['g_image'] = $upload['result'] ? $upload['return']['file_name'] : '';
+
       if ($this->group_model->insert($data)) {
         $this->load->model('membership_model');
         // fetch group id using $data
