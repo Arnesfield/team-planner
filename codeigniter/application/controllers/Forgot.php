@@ -51,6 +51,9 @@ class Forgot extends MY_Custom_Controller {
           if ($sent === TRUE) {
             // go to login
             $this->session->set_flashdata('msg', 'A password reset link was sent to your email.');
+
+            $this->_insert_activity('User '.$user['id'].' asked for password reset link using email "'.$email.'".', 5);
+
             $this->_redirect('login');
             return;
           }
@@ -154,6 +157,9 @@ class Forgot extends MY_Custom_Controller {
           // set some msg
           $this->session->set_flashdata('msg', 'Successfully reset password.');
           $this->session->unset_userdata('v_id');
+
+          $this->_insert_activity('User '.$id.' account reset password.', 5);
+
           // go to /
           $this->_redirect();
           return;

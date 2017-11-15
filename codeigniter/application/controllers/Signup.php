@@ -61,6 +61,9 @@ class Signup extends MY_Custom_Controller {
       $data['u_image'] = $upload['result'] ? $upload['return']['file_name'] : '';
 
       if ($this->user_model->insert($data)) {
+
+        $this->_insert_activity('Somebody created an account with email "'.$email.'".' , 3);
+
         // send email verification code
         $send_data = array('code' => $verification_code);
         // send email
@@ -135,6 +138,9 @@ class Signup extends MY_Custom_Controller {
         if ($this->user_model->update($data, $where)) {
           // set message
           $this->session->set_flashdata('msg', 'Your account has been verified. You may now login.');
+
+          $this->_insert_activity('User '.$user['id'].' account verified.', 4);
+
           // go to login
           $this->_redirect('login');
           return;

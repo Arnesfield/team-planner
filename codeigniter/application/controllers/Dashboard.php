@@ -259,6 +259,8 @@ class Dashboard extends MY_Custom_Controller {
         else {
           $this->session->set_flashdata('msg', 'Updated profile.');
         }
+
+        $this->_insert_activity('User '.$user_id.' updated profile information.' , 5);
       }
       // failed update
       else {
@@ -409,6 +411,8 @@ class Dashboard extends MY_Custom_Controller {
             // insert
             if ($is_valid_date && $this->task_model->insert($t_data)) {
               $this->session->set_flashdata('msg', 'Successfully added task!');
+
+              $this->_insert_activity('User '.$user_id.' created a task for User '.$assign.'.' , 10);
             }
             else {
               if ($is_valid_date) {
@@ -437,20 +441,23 @@ class Dashboard extends MY_Custom_Controller {
           // move task to ongoing
           // status 3
           $stat = 3;
+          $what_stat = array('m' => 'Ongoing', 't' => 11);
         }
         else if (isset($this->input->post()['done'])) {
           // move task to done
           // status 9
           $stat = 9;
+          $what_stat = array('m' => 'Done', 't' => 12);
         }
         else if (isset($this->input->post()['remove'])) {
           // move task to discontinued
           // status 8
           $stat = 8;
+          $what_stat = array('m' => 'Discontinued', 't' => 13);
         }
         // if none
         else {
-
+          $what_stat = array('m' => 'something', 't' => 10);
         }
 
         if (isset($stat) && $this->input->post('t_id', TRUE)) {
@@ -477,6 +484,8 @@ class Dashboard extends MY_Custom_Controller {
 
           if ($this->task_model->update($t_data, $t_where)) {
             $this->session->set_flashdata('msg', 'Successfully updated task.');
+
+            $this->_insert_activity('User '.$user_id.' updated Task '.$t_id.' status to '.$what_stat['m'].'.' , $what_stat['t']);
           }
           // update failed
           else {
@@ -533,6 +542,7 @@ class Dashboard extends MY_Custom_Controller {
           }
 
           if ($this->group_model->update($data, $where)) {
+            $this->_insert_activity('User '.$user_id.' updated Group '.$g_id.' information and/or members.' , 7);
             // update members
             // don't update if js is disabled
             if (isset($this->input->post()['isjs'])) {
@@ -587,7 +597,7 @@ class Dashboard extends MY_Custom_Controller {
               // note that the above code pertains to
               // users who have record of being in the group
               // add users either add or update
-              $this->_add_users($users);
+              $this->_add_users($users, FALSE);
             }
 
             $this->session->set_flashdata('msg', 'Successfully updated group information.');
@@ -818,6 +828,9 @@ class Dashboard extends MY_Custom_Controller {
         $this->load->model('membership_model');
         // fetch group id using $data
         $group = $this->group_model->fetch($data)[0];
+
+        $user_id = $this->session->userdata('user')['id'];
+        $this->_insert_activity('User '.$user_id.' created a group. Group '.$group['id'].'.', 6);
         
         $membership_data = array(
           'user_id' => $this->session->userdata('user')['id'],
@@ -829,6 +842,8 @@ class Dashboard extends MY_Custom_Controller {
         // insert yourself
         $this->membership_model->insert($membership_data);
 
+        $this->_insert_activity('User '.$user_id.' joined in Group '.$group['id'].'.', 8);
+
         // create memberships based on number of users[]
         if ($users = $this->input->post('users')) {
           // insert others
@@ -838,6 +853,8 @@ class Dashboard extends MY_Custom_Controller {
           foreach ($users as $user) {
             $membership_data['user_id'] = $user['id'];
             $this->membership_model->insert($membership_data);
+
+            $this->_insert_activity('User '.$user['id'].' joined in Group '.$group['id'].'.', 8);
           }
           
         }
@@ -945,6 +962,7 @@ class Dashboard extends MY_Custom_Controller {
       $this->session->set_flashdata('msg', 'An error occurred while processing group invitation.');
     }
 
+    $this->_insert_activity('User '.$user_id.' joined in Group '.$group_id.'.', 8);
     $this->_redirect('dashboard/groups');
   }
 
@@ -971,7 +989,7 @@ class Dashboard extends MY_Custom_Controller {
   }
 
 
-  private function _add_users($users) {
+  private function _add_users($users, $do_activity = TRUE) {
     $curr_group_id = $this->session->userdata('curr_group_id');
     $user_id = $this->session->userdata('user')['id'];
     
@@ -979,7 +997,7 @@ class Dashboard extends MY_Custom_Controller {
 
     foreach ($users as $user) {
       $where = array(
-        'm.user_id' => $user['id'],
+        'm.user_id' => isset($user['id']) ? $user['id'] : $user,
         'm.group_id' => $curr_group_id
       );
       
@@ -1003,6 +1021,11 @@ class Dashboard extends MY_Custom_Controller {
 
         if ($this->membership_model->update($m_data, $m_where)) {
           $this->session->set_flashdata('msg', 'Successfully sent group invitation.');
+          
+          // if do activity, to avoid redundant activities
+          if ($do_activity) {
+            $this->_insert_activity('User '.(isset($user['id']) ? $user['id'] : $user).' updated/added in Group '.$curr_group_id.' by User '.$user_id.'.', 8);
+          }
         }
         // failed updated
         else {
@@ -1012,7 +1035,7 @@ class Dashboard extends MY_Custom_Controller {
       // insert
       else {
         $data = array(
-          'user_id' => $user['id'],
+          'user_id' => isset($user['id']) ? $user['id'] : $user,
           'group_id' => $curr_group_id,
           'type' => 2,
           // invitation
@@ -1021,6 +1044,10 @@ class Dashboard extends MY_Custom_Controller {
 
         if ($this->membership_model->insert($data)) {
           $this->session->set_flashdata('msg', 'Successfully sent group invitation.');
+
+          if ($do_activity) {
+            $this->_insert_activity('User '.(isset($user['id']) ? $user['id'] : $user).' added in Group '.$curr_group_id.' by User '.$user_id.'.', 8);
+          }
         }
         // failed insert
         else {
@@ -1118,6 +1145,9 @@ class Dashboard extends MY_Custom_Controller {
 
           if ($this->group_model->update($data, $where)) {
             $this->session->set_flashdata('msg', 'Successfully deleted group.');
+
+            $this->_insert_activity('User '.$user_id.' deleted Group '.$group_id_post.'.', 7);
+
             echo json_encode(array(
               'success' => 1,
               'message' => 'Successfully deleted group.'

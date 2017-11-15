@@ -137,6 +137,42 @@ class MY_Custom_Controller extends MY_View_Controller {
     $this->_nav_items = array('nav_items' => array_merge($navs, $admin_navs, $end_navs));
   }
 
+  // insert activity log
+  protected function _insert_activity($remarks, $type, $date = FALSE) {
+    $this->load->model('activity_model');
+
+    $date = $date ? $date : time();
+
+    // types
+    // 1 - login
+    // 2 - logout
+    
+    // 3 - created account
+    // 4 - verified account
+    // 5 - updated account
+
+    // 6 - created group
+    // 7 - updated group
+    // 8 - updated members in group
+    // 9 - changed member info
+
+    // 10 - created task
+    // 11 - mark ongoing
+    // 12 - mark done
+    // 13 - mark discontinued
+
+    // 14 - updated user
+    // 15 - updated group
+
+    $data = array(
+      'remarks' => $remarks,
+      'type' => $type,
+      'date' => $date
+    );
+
+    return $this->activity_model->insert($data);
+  }
+
   protected function _redirect($to = '') {
     redirect(base_url($to));
   }

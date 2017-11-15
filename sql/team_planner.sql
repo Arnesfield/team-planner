@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 15, 2017 at 02:20 AM
+-- Generation Time: Nov 15, 2017 at 07:23 PM
 -- Server version: 10.1.25-MariaDB
 -- PHP Version: 7.1.7
 
@@ -25,6 +25,19 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `activities`
+--
+
+CREATE TABLE `activities` (
+  `id` int(11) NOT NULL,
+  `remarks` text NOT NULL,
+  `type` int(11) NOT NULL,
+  `date` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `groups`
 --
 
@@ -41,11 +54,12 @@ CREATE TABLE `groups` (
 --
 
 INSERT INTO `groups` (`id`, `name`, `description`, `g_image`, `status`) VALUES
-(1, 'Charlyn\'s Group', 'Hello friends!', '', 1),
-(2, 'Test\'s Group', 'Hello test', '', 0),
+(1, 'Charlyn\'s Group', 'Hello friends!', 'IMG_151117123721.png', 2),
+(2, 'Test\'s Group', 'Hello test', '', 1),
 (3, 'Rylee\'s Group', 'Awesome', '', 1),
 (4, 'New', 'Test lol hi xD', '', 1),
-(6, 'Awesome Group XD', 'XD lol', '', 1);
+(6, 'Awesome Group XD', 'XD lol', '', 1),
+(7, 'Strawberry', '', 'IMG_151117131945.png', 1);
 
 -- --------------------------------------------------------
 
@@ -68,7 +82,7 @@ CREATE TABLE `memberships` (
 INSERT INTO `memberships` (`id`, `user_id`, `group_id`, `type`, `status`) VALUES
 (1, 3, 1, 1, 1),
 (2, 1, 1, 1, 1),
-(3, 2, 1, 2, 0),
+(3, 2, 1, 1, 1),
 (4, 1, 2, 1, 1),
 (5, 3, 2, 2, 1),
 (6, 2, 2, 2, 1),
@@ -80,7 +94,9 @@ INSERT INTO `memberships` (`id`, `user_id`, `group_id`, `type`, `status`) VALUES
 (12, 2, 4, 2, 1),
 (13, 2, 6, 1, 1),
 (14, 1, 6, 2, 2),
-(15, 3, 6, 2, 1);
+(15, 3, 6, 2, 1),
+(16, 3, 7, 1, 1),
+(17, 2, 7, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -142,13 +158,19 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `fname`, `lname`, `email`, `bio`, `u_image`, `type`, `verification_code`, `reset_code`, `reset_expiration`, `status`) VALUES
-(1, 'test', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Jefferson', 'Rylee', 'test@email.com', '', '', 2, '', '', 0, 1),
-(2, 'rylee', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Test', 'User', 'test@sample.com', '', '', 2, '', '', 0, 1),
-(3, 'charlyn', '$2y$10$ico/hoXQ9ywrfhyEFk2yGudL1UC.s2xkqsDSyhxwT3ExjaDgrzoZS', 'Charlyn', 'Ann', 'rylee.jeff385@gmail.com', 'Hi new bio here', '', 2, '', '', 0, 1);
+(1, 'test', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Jefferson', 'Rylee', 'test@email.com', '', '', 0, '', '', 0, 1),
+(2, 'rylee', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Test', 'User', 'test@sample.com', 'Bio here', '', 2, '', '', 0, 0),
+(3, 'charlyn', '$2y$10$ico/hoXQ9ywrfhyEFk2yGudL1UC.s2xkqsDSyhxwT3ExjaDgrzoZS', 'Charlyn', 'Ann', 'rylee.jeff385@gmail.com', 'Hi new bio here hehe', 'IMG_151117123000.png', 1, '', '', 0, 1);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `activities`
+--
+ALTER TABLE `activities`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `groups`
@@ -181,16 +203,22 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `activities`
+--
+ALTER TABLE `activities`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `memberships`
 --
 ALTER TABLE `memberships`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `tasks`

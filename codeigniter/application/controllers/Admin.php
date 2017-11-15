@@ -66,11 +66,17 @@ class Admin extends MY_Custom_Controller {
     $data[$key] = $value;
     $where = array('id' => $id);
 
+    $user_id = $this->session->userdata('user')['id'];
+
     if ((isset($g) && $g) && $this->group_model->update($data, $where)) {
       $success = 1;
+
+      $this->_insert_activity('User '.$user_id.' updated Group '.$id.' '.$key.' information.' , 15);
     }
     else if (!(isset($g) && $g) && $this->user_model->update($data, $where)) {
       $success = 1;
+
+      $this->_insert_activity('User '.$user_id.' updated User '.$id.' '.$key.' information.' , 14);
     }
     else {
       $success = 0;
