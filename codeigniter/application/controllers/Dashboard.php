@@ -854,7 +854,7 @@ class Dashboard extends MY_Custom_Controller {
             $membership_data['user_id'] = $user['id'];
             $this->membership_model->insert($membership_data);
 
-            $this->_insert_activity('User '.$user['id'].' joined in Group '.$group['id'].'.', 8);
+            $this->_insert_activity('User '.$user['id'].' added in Group '.$group['id'].'.', 8);
           }
           
         }
