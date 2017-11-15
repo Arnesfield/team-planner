@@ -28,6 +28,27 @@ class Combo_model extends MY_CRUD_Model {
     return $query->num_rows() > 0 ? $query->result_array() : FALSE;
   }
 
+  public function fetch_groups() {
+    $sql = "
+      SELECT
+        g.id AS id,
+        g.name AS name,
+        g.description AS g_desc,
+        g.g_image AS g_image,
+        g.status AS status,
+        count(*) AS member_count
+      FROM
+        groups g, memberships m
+      WHERE
+        g.id = m.group_id
+      GROUP BY
+        g.id
+    ";
+      
+    $query = $this->db->query($sql);
+    return $query->num_rows() > 0 ? $query->result_array() : FALSE;
+  }
+
 }
 
 ?>

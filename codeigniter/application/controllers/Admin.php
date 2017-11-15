@@ -33,12 +33,19 @@ class Admin extends MY_Custom_Controller {
       exit();
     }
     
-    if (!$this->input->post('id')) {
+    // check gid
+    if (!($this->input->post('id', TRUE) || $this->input->post('gid', TRUE))) {
       $this->_redirect('dashboard');
       exit();
     }
 
-    $id = $this->input->post('id');
+    $id = $this->input->post('id', TRUE);
+    // if id not set
+    // use gid
+    if (!$id) {
+      $id = $this->input->post('gid', TRUE);
+      $g = TRUE;
+    }
 
     if (isset($this->input->post()['type'])) {
       $key = 'type';
@@ -49,17 +56,27 @@ class Admin extends MY_Custom_Controller {
       $value = $this->input->post('status');
     }
 
-    $this->load->model('user_model');
+    if (isset($g) && $g) {
+      $this->load->model('group_model');
+    }
+    else {
+      $this->load->model('user_model');
+    }
 
     $data[$key] = $value;
     $where = array('id' => $id);
 
-    if ($this->user_model->update($data, $where)) {
-      echo json_encode(array('success' => 1));
+    if ((isset($g) && $g) && $this->group_model->update($data, $where)) {
+      $success = 1;
+    }
+    else if (!(isset($g) && $g) && $this->user_model->update($data, $where)) {
+      $success = 1;
     }
     else {
-      echo json_encode(array('success' => 0));
+      $success = 0;
     }
+
+    echo json_encode(array('success' => $success));
   }
 
   // users
@@ -69,6 +86,7 @@ class Admin extends MY_Custom_Controller {
     $this->load->model('combo_model');
 
     $members = $this->combo_model->fetch_users();
+    $members = $members ? $members : array();
 
     $data = array(
       'title' => 'Manage Users',
@@ -84,9 +102,15 @@ class Admin extends MY_Custom_Controller {
 
   // groups
   public function groups() {
+    $this->load->model('combo_model');
+    
+    $groups = $this->combo_model->fetch_groups();
+    $groups = $groups ? $groups : array();
+
     $data = array(
       'title' => 'Manage Groups',
       'msg' => $this->session->flashdata('msg'),
+      'groups' => json_encode($groups),
     );
     $this->_view(
       array('templates/nav', 'pages/admin/groups', 'alerts/msg'),

@@ -19,7 +19,7 @@
     <span>| 
     <?php
       if ($memberships[0]['group_status'] == 1) echo 'Active';
-      else if ($memberships[0]['group_status'] == 2) echo 'Deactivated';
+      else if ($memberships[0]['group_status'] == 2) echo 'Hidden';
       else echo 'Deleted';
     ?>
     </span>

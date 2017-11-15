@@ -3,7 +3,10 @@
 <h3>Users</h3>
 
 <div v-cloak class="container-fluid">
-<table id="tblUsers">
+
+<noscript>You need JavaScript to see the data.</noscript>
+
+<table id="tblUsers" style="display: none" v-show="true">
   <thead>
     <tr>
       <th>User ID</th>
