@@ -1,4 +1,4 @@
-<form action="signup" method="post">
+<form action="signup" method="post" enctype="multipart/form-data">
 
   <h3>Signup</h3>
 
@@ -34,6 +34,12 @@
     <label for="bio">Bio</label>
     <textarea name="bio" id="bio"><?=set_value('bio')?></textarea>
     <?=form_error('bio', '<span>', '</span>')?>
+  </div>
+
+  <div>
+    <label for="u_image">User Image (optional)</label>
+    <input type="file" name="u_image" id="u_image">
+    <?=form_error('u_image', '<span>', '</span>')?>
   </div>
 
   <div>

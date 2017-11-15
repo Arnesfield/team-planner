@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2017 at 02:36 PM
+-- Generation Time: Nov 15, 2017 at 02:20 AM
 -- Server version: 10.1.25-MariaDB
 -- PHP Version: 7.1.7
 
@@ -32,7 +32,7 @@ CREATE TABLE `groups` (
   `id` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
   `description` text NOT NULL,
-  `slug` varchar(255) NOT NULL,
+  `g_image` varchar(32) NOT NULL,
   `status` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -40,12 +40,12 @@ CREATE TABLE `groups` (
 -- Dumping data for table `groups`
 --
 
-INSERT INTO `groups` (`id`, `name`, `description`, `slug`, `status`) VALUES
-(1, 'Charlyn\'s Group', 'Hello friends!', 'charlyns-group', 1),
-(2, 'Test\'s Group', 'Hello test', 'tests-group', 0),
-(3, 'Rylee\'s Group', 'Awesome', 'rylees-group', 1),
-(4, 'New', 'Test lol hi xD', 'new', 1),
-(6, 'Awesome Group XD', 'XD lol', 'awesome-group-xd', 1);
+INSERT INTO `groups` (`id`, `name`, `description`, `g_image`, `status`) VALUES
+(1, 'Charlyn\'s Group', 'Hello friends!', '', 1),
+(2, 'Test\'s Group', 'Hello test', '', 0),
+(3, 'Rylee\'s Group', 'Awesome', '', 1),
+(4, 'New', 'Test lol hi xD', '', 1),
+(6, 'Awesome Group XD', 'XD lol', '', 1);
 
 -- --------------------------------------------------------
 
@@ -68,7 +68,7 @@ CREATE TABLE `memberships` (
 INSERT INTO `memberships` (`id`, `user_id`, `group_id`, `type`, `status`) VALUES
 (1, 3, 1, 1, 1),
 (2, 1, 1, 1, 1),
-(3, 2, 1, 2, 1),
+(3, 2, 1, 2, 0),
 (4, 1, 2, 1, 1),
 (5, 3, 2, 2, 1),
 (6, 2, 2, 2, 1),
@@ -129,6 +129,7 @@ CREATE TABLE `users` (
   `lname` varchar(128) NOT NULL,
   `email` varchar(128) NOT NULL,
   `bio` text NOT NULL,
+  `u_image` varchar(32) NOT NULL,
   `type` tinyint(4) NOT NULL,
   `verification_code` varchar(32) NOT NULL,
   `reset_code` varchar(32) NOT NULL,
@@ -140,10 +141,10 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `fname`, `lname`, `email`, `bio`, `type`, `verification_code`, `reset_code`, `reset_expiration`, `status`) VALUES
-(1, 'test', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Jefferson', 'Rylee', 'rylee.jeff385@gmail.com', '', 2, '', '', 0, 1),
-(2, 'rylee', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Test', 'User', 'test@sample.com', '', 2, '', '', 0, 1),
-(3, 'charlyn', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Charlyn', 'Ann', 'charlyn@sample.com', '', 2, '', '', 0, 1);
+INSERT INTO `users` (`id`, `username`, `password`, `fname`, `lname`, `email`, `bio`, `u_image`, `type`, `verification_code`, `reset_code`, `reset_expiration`, `status`) VALUES
+(1, 'test', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Jefferson', 'Rylee', 'test@email.com', '', '', 2, '', '', 0, 1),
+(2, 'rylee', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Test', 'User', 'test@sample.com', '', '', 2, '', '', 0, 1),
+(3, 'charlyn', '$2y$10$ico/hoXQ9ywrfhyEFk2yGudL1UC.s2xkqsDSyhxwT3ExjaDgrzoZS', 'Charlyn', 'Ann', 'rylee.jeff385@gmail.com', 'Hi new bio here', '', 2, '', '', 0, 1);
 
 --
 -- Indexes for dumped tables

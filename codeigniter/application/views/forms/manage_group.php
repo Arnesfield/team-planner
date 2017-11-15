@@ -1,4 +1,4 @@
-<form id="users" action="<?=base_url('dashboard/groups/' . $group_id . '/manage')?>" method="post">
+<form id="users" action="<?=base_url('dashboard/groups/' . $group_id . '/manage')?>" method="post" enctype="multipart/form-data">
 
   <h3>Manage Group</h3>
 
@@ -13,6 +13,23 @@
     <label for="desc">Brief Description</label>
     <textarea name="desc" id="desc" cols="30" rows="10"><?=set_value('desc') ? set_value('desc') : $group_info['description']?></textarea>
     <?=form_error('desc', '<span>', '</span>')?>
+  </div>
+
+  <div>
+    <div>
+      <?php if ($group_info['u_image']): ?>
+      <label for="">Current Image</label>
+      <img src="<?=base_url('uploads/images/groups/' . $group_info['u_image'])?>" alt="<?=$group_info['name']?>">
+      <?php else: ?>
+      <label for="">No current image</label>
+      <?php endif; ?>
+    </div>
+
+    <div>
+      <label for="g_image">Group Image (optional)</label>
+      <input type="file" name="g_image" id="g_image">
+      <?=form_error('g_image', '<span>', '</span>')?>
+    </div>
   </div>
 
   <div>

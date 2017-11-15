@@ -162,6 +162,43 @@ class MY_Custom_Controller extends MY_View_Controller {
     return substr(md5(uniqid(rand(), true)), -16, 16);
   }
 
+  // for image upload
+  protected function _upload_image($path, $file_name, $p_config = FALSE) {
+    
+    $config = array(
+      'upload_path' => './' . $path,
+      'allowed_types' => 'gif|jpg|png',
+      'max_size' => 200,
+      'max_width' => 1920,
+      'max_height' => 1080,
+      'file_name' => 'IMG-' . time()
+    );
+
+    // override default values
+    if ($p_config) {
+      foreach ($p_config as $key => $value) {
+        $config[$key] = $value;
+      }
+    }
+
+    $this->load->library('upload', $config);
+
+    if (!$this->upload->do_upload($file_name)) {
+      return array(
+        'result' => FALSE,
+        'return' => $this->upload->display_errors()
+      );
+    }
+    else
+    {
+      return array(
+        'result' => TRUE,
+        'return' => $this->upload->data()
+      );
+    }
+
+  }
+
 }
 
 

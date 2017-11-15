@@ -1,4 +1,4 @@
-<form action="<?=base_url('dashboard/create')?>" method="post">
+<form action="<?=base_url('dashboard/create')?>" method="post" enctype="multipart/form-data">
 
   <h3>Create Group</h3>
 
@@ -13,6 +13,12 @@
     <label for="desc">Brief Description</label>
     <textarea name="desc" id="desc" cols="30" rows="10"><?=set_value('desc')?></textarea>
     <?=form_error('desc', '<span>', '</span>')?>
+  </div>
+
+  <div>
+    <label for="g_image">Group Image (optional)</label>
+    <input type="file" name="g_image" id="g_image">
+    <?=form_error('g_image', '<span>', '</span>')?>
   </div>
 
   <div id="users">

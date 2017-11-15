@@ -476,7 +476,6 @@ class Dashboard extends MY_Custom_Controller {
           $name = strip_tags($this->input->post('name'));
           $desc = strip_tags($this->input->post('desc'));
           $users = $this->input->post('users');
-          $slug = $this->group_model->_create_slug($this->group_model->_tbl, 'slug', $name, $g_id, 'name');
           $status = $this->input->post('status', TRUE);
           $status = $status == 'on' ? 1 : 2;
           
@@ -484,7 +483,6 @@ class Dashboard extends MY_Custom_Controller {
           $data = array(
             'name' => $name,
             'description' => $desc,
-            'slug' => $slug,
             'status' => $status
           );
 
@@ -749,13 +747,11 @@ class Dashboard extends MY_Custom_Controller {
       
       $name = strip_tags($this->input->post('name'));
       $desc = strip_tags($this->input->post('desc'));
-      $slug = $this->group_model->_create_slug($this->group_model->_tbl, 'slug', $name);
       
       // insert 1 group
       $data = array(
         'name' => $name,
         'description' => $desc,
-        'slug' => $slug,
         'status' => 1
       );
       

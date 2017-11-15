@@ -1,4 +1,4 @@
-<form id="profile" action="<?=base_url('dashboard/profile')?>" method="post">
+<form id="profile" action="<?=base_url('dashboard/profile')?>" method="post" enctype="multipart/form-data">
 
   <h3>Edit Profile</h3>
 
@@ -34,6 +34,23 @@
     <label for="bio">Bio</label>
     <textarea name="bio" id="bio"><?=$write_val('bio', $user)?></textarea>
     <?=form_error('bio', '<span>', '</span>')?>
+  </div>
+
+  <div>
+    <div>
+      <?php if ($user['u_image']): ?>
+      <label for="">Current Image</label>
+      <img src="<?=base_url('uploads/images/users/' . $user['u_image'])?>" alt="<?=$user['username']?>">
+      <?php else: ?>
+      <label for="">No current image</label>
+      <?php endif; ?>
+    </div>
+
+    <div>
+      <label for="u_image">User Image (optional)</label>
+      <input type="file" name="u_image" id="u_image">
+      <?=form_error('u_image', '<span>', '</span>')?>
+    </div>
   </div>
 
   <div>
