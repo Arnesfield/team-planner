@@ -3,20 +3,28 @@
   <h3>Manage Group</h3>
 
   <div>
-    <label for="name">Group Name</label>
-    <input type="text" name="name" id="name"
-      value="<?=set_value('name') ? set_value('name') : $group_info['name']?>">
-    <?=form_error('name', '<span>', '</span>')?>
+    <div class="w-max my-mt-1 mdl-textfield mdl-js-textfield mdl-textfield--floating-label
+      <?=form_error('name') ? 'is-invalid' : '' ?>">
+      <input type="text" name="name" id="name"
+        value="<?=set_value('name') ? set_value('name') : $group_info['name']?>"
+        class="mdl-textfield__input">
+      <label class="mdl-textfield__label" for="name">Group Name</label>
+      <span class="mdl-textfield__error"><?=form_error('name')?></span>
+    </div>
   </div>
 
   <div>
-    <label for="desc">Brief Description</label>
-    <textarea name="desc" id="desc" cols="30" rows="10"><?=set_value('desc') ? set_value('desc') : $group_info['description']?></textarea>
-    <?=form_error('desc', '<span>', '</span>')?>
+    <div class="w-max my-mt-1 mdl-textfield mdl-js-textfield mdl-textfield--floating-label
+      <?=form_error('desc') ? 'is-invalid' : '' ?>">
+      <textarea name="desc" id="desc"
+        class="t-area mdl-textfield__input"><?=set_value('desc') ? set_value('desc') : $group_info['description']?></textarea>
+      <label class="mdl-textfield__label" for="desc">Brief Description</label>
+      <span class="mdl-textfield__error"><?=form_error('desc')?></span>
+    </div>
   </div>
 
   <div>
-    <div>
+    <div class="my-pt-2 my-pb-2">
       <?php if ($group_info['g_image']): ?>
       <label for="">Current Image</label>
       <img src="<?=base_url('uploads/images/groups/' . $group_info['g_image'])?>" alt="<?=$group_info['name']?>"
@@ -29,27 +37,51 @@
     <div>
       <label for="g_image">Group Image (optional)</label>
       <input type="file" name="g_image" id="g_image">
-      <?=form_error('g_image', '<span>', '</span>')?>
+      <span class="mdl-textfield__error"><?=form_error('g_image')?></span>
     </div>
 
-    <div>
-      <label for="remove_image">Remove Image</label>
-      <input type="checkbox" name="remove_image" id="remove_image">
+    <div class="my-mt-2">
+      <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect"
+        for="remove_image">
+        <input type="checkbox" name="remove_image" id="remove_image"
+            class="mdl-checkbox__input">
+        <span class="mdl-checkbox__label">Remove Image</span>
+      </label>
+
+      <!-- <label for="remove_image">Remove Image</label> -->
+      <!-- <input type="checkbox" name="remove_image" id="remove_image"> -->
     </div>
   </div>
 
   <div>
-    <label for="status">Active</label>
+    <!-- <label for="status">Active</label>
     <input type="checkbox" name="status" id="status"
       <?=
         (set_value('status') ? set_value('status') == 'on' : $group_info['status'] == 1)
         ? 'checked' : ''
-      ?>>
+      ?>> -->
+
+    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" 
+      for="status">
+      <input type="checkbox" name="status" id="status"
+          class="mdl-checkbox__input"
+          <?=
+            (set_value('status') ? set_value('status') == 'on' : $group_info['status'] == 1)
+            ? 'checked' : ''
+          ?>>
+      <span class="mdl-checkbox__label">Active</span>
+    </label>
   </div>
 
   <div>
-    <label for="search_user">Members</label>
-    <input type="text" id="search_user" v-model="search">
+    <div class="w-max my-mt-1 mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <input type="text" id="search_user" v-model="search"
+        class="mdl-textfield__input">
+      <label class="mdl-textfield__label" for="search_user">Members</label>
+    </div>
+
+    <!-- <label for="search_user">Members</label>
+    <input type="text" id="search_user" v-model="search"> -->
 
     <noscript>
       <div>You need <strong>JavaScript</strong> to search for members!</div>
@@ -92,13 +124,30 @@
   </div>
 
   <div>
-    <button type="submit">Update</button>
-    <a @click="back">View Group</a>
-    <input type="checkbox" v-model="showPassword" id="delete">
-    <label v-if="!showPassword" for="delete">Delete</label>
-    <template v-if="showPassword">
-      <input type="password" placeholder="Password" v-model="password" :disabled="loading">
-      <a @click="deleteGroup" v-if="showDelete">Delete</a>
+    <button class="mx-xs mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+      type="submit">Update</button>
+    <a class="mx-xs mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+      @click="back">View Group</a>
+
+    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" style="display: inline"
+      for="delete">
+      <input type="checkbox" id="delete" v-model="showPassword"
+        class="mdl-checkbox__input">
+      <span v-if="!showPassword" class="mdl-checkbox__label">Delete</span>
+    </label>
+
+    <!-- <input type="checkbox" v-model="showPassword" id="delete">
+    <label v-if="!showPassword" for="delete">Delete</label> -->
+    <template>
+      <!-- <input type="password" placeholder="Password" v-model="password" :disabled="loading"> -->
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+        :style="{ 'display': showPassword ? '' : 'none'}">
+        <input type="password" v-model="password" :disabled="loading"
+          class="mdl-textfield__input">
+        <label class="mdl-textfield__label" for="search_user">Password</label>
+      </div>
+      <a class="mx-xs mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--deep-orange-A200 mdl-color-text--white"
+        @click="deleteGroup" v-if="showDelete">Delete</a>
     </template>
     <template v-if="loading">
       Loading...
