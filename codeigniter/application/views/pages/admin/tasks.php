@@ -1,3 +1,6 @@
+<div class="content">
+<div class="pad">
+
 <div id="tasks">
 
 <h3>Tasks</h3>
@@ -38,6 +41,9 @@
 </table>
 </div>
 
+</div>
+
+</div>
 </div>
 
 <script src="<?=base_url('vendor/dataTables/jquery.dataTables.min.js')?>"></script>

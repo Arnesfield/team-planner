@@ -1,3 +1,6 @@
+<div class="content">
+<div class="pad">
+
 <div id="users">
 
 <h3>Users</h3>
@@ -62,6 +65,9 @@
 </table>
 </div>
 
+</div>
+
+</div>
 </div>
 
 <script src="<?=base_url('vendor/dataTables/jquery.dataTables.min.js')?>"></script>

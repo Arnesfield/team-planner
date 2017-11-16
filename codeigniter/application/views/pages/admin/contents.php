@@ -1,3 +1,6 @@
+<div class="content">
+<div class="pad">
+
 <div id="contents">
 
 <h3>Manage Content</h3>
@@ -70,6 +73,9 @@
 </div>
 </div>
 
+</div>
+
+</div>
 </div>
 
 <script src="<?=base_url('vendor/summernote/summernote.min.js')?>"></script>

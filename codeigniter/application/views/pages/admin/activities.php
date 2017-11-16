@@ -1,3 +1,6 @@
+<div class="content">
+<div class="pad">
+
 <div id="activities">
 
 <h3>Activities</h3>
@@ -20,12 +23,18 @@
       <td>{{ activity.id }}</td>
       <td>{{ activity.remarks }}</td>
       <td>{{ activity.type }}</td>
-      <td>{{ activity.date }}</td>
+      <td>
+        <span style="display: none">{{ activity.raw_date }}</span>
+        {{ activity.date }}
+      </td>
     </tr>
   </tbody>
 </table>
 </div>
 
+</div>
+
+</div>
 </div>
 
 <script src="<?=base_url('vendor/dataTables/jquery.dataTables.min.js')?>"></script>

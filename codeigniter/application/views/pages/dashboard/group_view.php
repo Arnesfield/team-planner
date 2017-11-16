@@ -1,3 +1,6 @@
+<div class="content">
+<div class="pad">
+
 <div>
 
 <div>
@@ -52,7 +55,7 @@
         <img src="<?=base_url('uploads/images/users/' . $member['user_image'])?>" alt="<?=$member['username']?>"
           style="width: 52px;">
       </div>
-
+      &nbsp;
       <div style="display: inline-block">
         <a href="<?=base_url('dashboard/profile/' . $member['user_id'])?>" target="_blank">
           <h5 style="display: inline-block"><?=$member['username']?></h5>
@@ -180,4 +183,7 @@
 <?php endforeach; ?>
 
 
+</div>
+
+</div>
 </div>

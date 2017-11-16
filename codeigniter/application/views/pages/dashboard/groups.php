@@ -1,4 +1,5 @@
-<div>
+<div class="content">
+<div class="pad">
 
 <h3>Groups</h3>
 
@@ -27,12 +28,18 @@ if ($groups): ?>
   <?php if ($my_groups): ?>
   <div>
     <h4>My Groups</h4>
+    <hr>
 
     <?php foreach ($my_groups as $group): ?>
     <div>
+      <div>
+        <img src="<?=base_url('uploads/images/groups/' . $group['group_image'])?>" alt="<?=$group['group_name']?>"
+          style="width: 256px">
+      </div>
       <h4><?=$group['group_name']?></h4>
       <div><?=$group['group_desc']?></div>
-      <a href="<?=base_url('dashboard/groups/' . $group['group_id'])?>">Go to group</a>
+      <a class="my-mt-2 mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+        href="<?=base_url('dashboard/groups/' . $group['group_id'])?>">Go to group</a>
     </div>
     <?php endforeach; ?>
 
@@ -42,12 +49,18 @@ if ($groups): ?>
   <?php if ($other_groups): ?>
   <div>
     <h4>Other Groups</h4>
+    <hr>
 
     <?php foreach ($other_groups as $group): ?>
     <div>
+      <div>
+        <img src="<?=base_url('uploads/images/users/' . $group['group_image'])?>" alt="<?=$group['group_name']?>"
+          style="width: 256px">
+      </div>
       <h4><?=$group['group_name']?></h4>
       <div><?=$group['group_desc']?></div>
-      <a href="<?=base_url('dashboard/groups/' . $group['group_id'])?>">Go to group</a>
+      <a class="my-mt-2 mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+        href="<?=base_url('dashboard/groups/' . $group['group_id'])?>">Go to group</a>
     </div>
     <?php endforeach; ?>
 
@@ -63,4 +76,5 @@ if ($groups): ?>
 
 <?php endif; ?>
 
+</div>
 </div>
