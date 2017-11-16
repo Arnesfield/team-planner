@@ -60,32 +60,33 @@ class Signup extends MY_Custom_Controller {
       // image upload is optional!
       $data['u_image'] = $upload['result'] ? $upload['return']['file_name'] : '';
 
-      if ($this->user_model->insert($data)) {
-
+      // send email verification code
+      $send_data = array('code' => $verification_code);
+      // send email
+      $sent = $this->_send_mail($email, 'Email Verification', 'email/email_verification', $send_data);
+      
+      if ($sent === TRUE && $this->user_model->insert($data)) {
+        // set message
+        $this->session->set_flashdata('msg', 'Account successfully created! Please check your email to verify your account.');
+        
         $this->_insert_activity('Somebody created an account with email "'.$email.'".' , 3);
-
-        // send email verification code
-        $send_data = array('code' => $verification_code);
-        // send email
-        $sent = $this->_send_mail($email, 'Email Verification', 'email/email_verification', $send_data);
-        // email sent
-        if ($sent === TRUE) {
-          // set message
-          $this->session->set_flashdata('msg', 'Account successfully created! Please check your email to verify your account.');
-          // go to login
-          $this->_redirect('login');
-          return;
-        }
-        // if not sent
-        else {
-          $this->session->set_flashdata('msg', 'An error occurred. Unable to send verification link to email.');
-          // debug
-          echo $sent;
-        }
+        
+        // go to login
+        $this->_redirect('login');
       }
       // failed to insert
       else {
-        $this->session->set_flashdata('msg', 'An error occurred. Unable to create account.');
+        // if not sent
+        if ($sent === FALSE) {
+          $this->session->set_flashdata('msg', 'An error occurred. Unable to send verification link to email.');
+          // debug
+          // echo $sent;
+        }
+        // sent
+        else {
+          $this->session->set_flashdata('msg', 'An error occurred. Unable to create account.');
+        }
+
       }
       
     }
