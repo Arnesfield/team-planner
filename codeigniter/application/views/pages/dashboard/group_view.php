@@ -44,9 +44,9 @@
   </div>
 </div>
 
-<hr>
 
 <?php foreach ($memberships as $key => $member): ?>
+<hr>
 <div>
 
   <div>
@@ -75,11 +75,11 @@
 
     <div class="container-fluid">
       <!-- row and col -->
-      <div class="row">
+      <div class="row n-pad">
         <!-- pending tasks -->
         <div class="col-md-3 col-sm-6">
-          <div>
-            Pending Tasks
+          <div class="my-p-2" style="background-color: #ccc">
+            <i class="material-icons v-mid">pan_tool</i>&nbsp; Pending Tasks
           </div>
 
           <?php
@@ -93,16 +93,14 @@
           ?>
 
           <?php if ($i_count === 0): ?>
-          <div>
-            No pending tasks.
-          </div>
+          <h6 class="x-pad">No pending tasks.</h6>
           <?php endif; ?>
         </div>
 
         <!-- ongoing tasks -->
         <div class="col-md-3 col-sm-6">
-          <div>
-            Ongoing Tasks
+          <div class="my-p-2 mdl-color--primary mdl-color-text--white">
+            <i class="material-icons v-mid">arrow_forward</i>&nbsp; Ongoing Tasks
           </div>
 
           <?php
@@ -116,16 +114,14 @@
           ?>
 
           <?php if ($i_count === 0): ?>
-          <div>
-            No ongoing tasks.
-          </div>
+          <h6 class="x-pad">No ongoing tasks.</h6>
           <?php endif; ?>
         </div>
 
         <!-- done tasks -->
         <div class="col-md-3 col-sm-6">
-          <div>
-            Done Tasks
+          <div class="my-p-2 mdl-color--accent mdl-color-text--white">
+            <i class="material-icons v-mid">done</i>&nbsp; Done Tasks
           </div>
           <?php
             $i_count = 0;
@@ -138,16 +134,14 @@
           ?>
 
           <?php if ($i_count === 0): ?>
-          <div>
-            No done tasks.
-          </div>
+          <h6 class="x-pad">No done tasks.</h6>
           <?php endif; ?>
         </div>
 
         <!-- done tasks -->
         <div class="col-md-3 col-sm-6">
-          <div>
-            Discontinued Tasks
+          <div class="my-p-2 mdl-color--red-A200 mdl-color-text--white">
+            <i class="material-icons v-mid">close</i>&nbsp; Discontinued Tasks
           </div>
           <?php
             $i_count = 0;
@@ -160,9 +154,7 @@
           ?>
 
           <?php if ($i_count === 0): ?>
-          <div>
-            No discontinued tasks.
-          </div>
+          <h6 class="x-pad">No discontinued tasks.</h6>
           <?php endif; ?>
         </div>
 

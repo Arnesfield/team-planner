@@ -44,7 +44,7 @@
           :id="'type-' + user.id" :checked="user.type == 1" @click="changeType(user)">
         <label :for="'type-' + user.id">{{
           user.type == 1 ? 'Admin' : 'Member'
-        }}</span>
+        }}</label>
       </td>
       <td>{{ user.no_of_memberships }}</td>
       <td>

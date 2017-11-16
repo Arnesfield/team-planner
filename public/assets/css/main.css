@@ -17,3 +17,23 @@ body, h1, h5, h4, h3, pre {
   margin-left: 4px;
   margin-right: 4px;
 }
+
+.mx-xxs {
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.v-mid {
+  vertical-align: middle
+}
+
+.row.n-pad > div {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.x-pad {
+  padding-left: 16px;
+  padding-right: 16px;
+
+}

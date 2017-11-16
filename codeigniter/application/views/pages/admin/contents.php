@@ -12,17 +12,26 @@
 <div style="display: none" v-show="true">
   <form @submit.prevent="submit">
     <div class="my-mb-4">
-      <button type="submit">Commit Content Changes</button>
-      <a @click="addSection">Add Section</a>
+      <button class="mx-xxs mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+        type="submit">Commit Content Changes</button>
+      <a class="mx-xxs mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+       @click="addSection">Add Section</a>
     </div>
 
     <div :key="content.id" v-for="content in contents">
       <div class="row">
 
         <div class="col-md-3">
-          <label :for="'title-' + content.id">Title</label>
+          <!-- <label :for="'title-' + content.id">Title</label>
           <input :id="'title-' + content.id" type="text" v-model="content.title"
-            class="w-max" placeholder="Enter title">
+            class="w-max" placeholder="Enter title"> -->
+
+          <div class="w-max my-mt-1 mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input :id="'title-' + content.id" type="text" v-model="content.title"
+              class="mdl-textfield__input">
+            <label :for="'title-' + content.id" class="mdl-textfield__label">Title</label>
+          </div>
+
         </div>
         <div class="col-md-6">
           <label :for="'content-' + content.id">Content</label>
@@ -35,7 +44,7 @@
           <br>
           <!-- status -->
           <div>
-            <input type="checkbox"
+            <!-- <input type="checkbox"
               :id="'status-' + content.id" :checked="content.status == 1" @click="changeStatus(content)">
             <label :for="'status-' + content.id">
               {{
@@ -45,12 +54,27 @@
                   ? 'Hidden'
                   : 'Removed'
               }}
+            </label> -->
+
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect"
+              :for="'status-' + content.id">
+              <input type="checkbox" :id="'status-' + content.id" :checked="content.status == 1" @click="changeStatus(content)"
+                  class="mdl-checkbox__input">
+              <span class="mdl-checkbox__label">
+                {{
+                content.status == 1
+                  ? 'Activated'
+                  : content.status == 2
+                    ? 'Hidden'
+                    : 'Removed'
+                }}
+              </span>
             </label>
           </div>
 
           <!-- type -->
           <div>
-            <input type="radio" name="type"
+            <!-- <input type="radio" name="type"
               :id="'type-' + content.id" v-model="primary" :value="content">
             <label :for="'type-' + content.id">
               {{
@@ -60,6 +84,21 @@
                   ? 'Set as Primary'
                   : 'Other'
               }}
+            </label> -->
+
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect"
+              :for="'type-' + content.id">
+              <input type="radio" name="type" :id="'type-' + content.id" v-model="primary" :value="content"
+                class="mdl-radio__button">
+              <span class="mdl-radio__label">
+                {{
+                content.type == 1
+                  ? 'Primary'
+                  : content.type == 2
+                    ? 'Set as Primary'
+                    : 'Other'
+                }}
+              </span>
             </label>
           </div>
 

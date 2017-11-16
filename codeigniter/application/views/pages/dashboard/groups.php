@@ -11,7 +11,7 @@
 <?php
 // if invited groups exist
 if ($invited_groups): ?>
-<div>
+<div class="my-mt-3">
 
   <div>
     <span>You have <strong><?=$count = count($invited_groups)?></strong> group invitation<?=$count > 1 ? 's' : ''?>.</span>
@@ -35,7 +35,7 @@ if ($groups): ?>
     <?php if ($i % 4 == 0 || $i == 0): ?>
       <div class="row">
     <?php endif; ?>
-    <div class="col-md-3 my-mt-3">
+    <div class="col-md-3 col-sm-6 my-mt-3">
       <div>
         <img src="<?=base_url('uploads/images/groups/' . $group['group_image'])?>" alt="<?=$group['group_name']?>"
           style="width: 100%">
@@ -58,17 +58,23 @@ if ($groups): ?>
     <h4>Other Groups</h4>
     <hr>
 
-    <?php foreach ($other_groups as $group): ?>
-    <div>
+    <?php foreach ($other_groups as $i => $group): ?>
+    <?php if ($i % 4 == 0 || $i == 0): ?>
+      <div class="row">
+    <?php endif; ?>
+    <div class="col-md-3 col-sm-6 my-mt-3">
       <div>
-        <img src="<?=base_url('uploads/images/users/' . $group['group_image'])?>" alt="<?=$group['group_name']?>"
-          style="width: 256px">
+        <img src="<?=base_url('uploads/images/groups/' . $group['group_image'])?>" alt="<?=$group['group_name']?>"
+          style="width: 100%">
       </div>
       <h4><?=$group['group_name']?></h4>
       <div><?=$group['group_desc']?></div>
       <a class="my-mt-2 mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
         href="<?=base_url('dashboard/groups/' . $group['group_id'])?>">Go to group</a>
     </div>
+    <?php if (($i+1) % 4 == 0): ?>
+      </div>
+    <?php endif; ?>
     <?php endforeach; ?>
 
   </div>
