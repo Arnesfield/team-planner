@@ -31,10 +31,22 @@
       <td>{{ task.description }}</td>
       <td>{{ task.created_by_user_id }}</td>
       <td>{{ task.taken_by_user_id }}</td>
-      <td>{{ task.created_at }}</td>
-      <td>{{ task.deadline_at }}</td>
-      <td>{{ task.started_at }}</td>
-      <td>{{ task.ended_at }}</td>
+      <td>
+        <span style="display: none">{{ task.raw_created_at }}</span>
+        {{ task.created_at }}
+      </td>
+      <td>
+        <span style="display: none">{{ task.raw_deadline_at }}</span>
+        {{ task.deadline_at }}
+      </td>
+      <td>
+        <span style="display: none">{{ task.raw_started_at }}</span>
+        {{ task.started_at }}
+      </td>
+      <td>
+        <span style="display: none">{{ task.raw_ended_at }}</span>
+        {{ task.ended_at }}
+      </td>
       <td>{{ task.status }}</td>
     </tr>
   </tbody>
