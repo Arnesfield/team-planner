@@ -110,7 +110,11 @@ class MY_Custom_Controller extends MY_View_Controller {
           'href' => 'admin/groups'
         ),
         array(
-          'title' => 'Manage Activities',
+          'title' => 'Manage Memberships',
+          'href' => 'admin/memberships'
+        ),
+        array(
+          'title' => 'View Activities/Logs',
           'href' => 'admin/activities'
         ),
       );
@@ -167,6 +171,7 @@ class MY_Custom_Controller extends MY_View_Controller {
 
     // 14 - updated user
     // 15 - updated group
+    // 16 - updated member
 
     $data = array(
       'remarks' => $remarks,

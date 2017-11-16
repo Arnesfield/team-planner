@@ -34,7 +34,7 @@ class Admin extends MY_Custom_Controller {
     }
     
     // check gid
-    if (!($this->input->post('id', TRUE) || $this->input->post('gid', TRUE))) {
+    if (!($this->input->post('id', TRUE) || $this->input->post('gid', TRUE) || $this->input->post('mid', TRUE))) {
       $this->_redirect('dashboard');
       exit();
     }
@@ -45,6 +45,14 @@ class Admin extends MY_Custom_Controller {
     if (!$id) {
       $id = $this->input->post('gid', TRUE);
       $g = TRUE;
+    }
+
+    // if id not set
+    // use mid
+    if (!$id) {
+      $id = $this->input->post('mid', TRUE);
+      $g = FALSE;
+      $m = TRUE;
     }
 
     if (isset($this->input->post()['type'])) {
@@ -58,6 +66,9 @@ class Admin extends MY_Custom_Controller {
 
     if (isset($g) && $g) {
       $this->load->model('group_model');
+    }
+    else if (isset($m) && $m) {
+      $this->load->model('membership_model');
     }
     else {
       $this->load->model('user_model');
@@ -73,7 +84,12 @@ class Admin extends MY_Custom_Controller {
 
       $this->_insert_activity('User '.$user_id.' updated Group '.$id.' '.$key.' information.' , 15);
     }
-    else if (!(isset($g) && $g) && $this->user_model->update($data, $where)) {
+    else if ((isset($m) && $m) && $this->membership_model->update($data, $where)) {
+      $success = 1;
+
+      $this->_insert_activity('User '.$user_id.' updated Member '.$id.' '.$key.' information.' , 16);
+    }
+    else if (!(isset($g) && $g) && !(isset($m) && $m) && $this->user_model->update($data, $where)) {
       $success = 1;
 
       $this->_insert_activity('User '.$user_id.' updated User '.$id.' '.$key.' information.' , 14);
@@ -155,6 +171,7 @@ class Admin extends MY_Custom_Controller {
 
         case 14: $type = 'Admin: Updated User Type/Status'; break;
         case 15: $type = 'Admin: Updated Group Status'; break;
+        case 16: $type = 'Admin: Updated Member Type/Status'; break;
       }
       
       $activities[$key]['type'] = $type;
@@ -167,6 +184,24 @@ class Admin extends MY_Custom_Controller {
     );
     $this->_view(
       array('templates/nav', 'pages/admin/activities', 'alerts/msg'),
+      array_merge($this->_nav_items, $data)
+    );
+  }
+
+  // memberships
+  public function memberships() {
+    $this->load->model('combo_model');
+    
+    $memberships = $this->combo_model->fetch_memberships();
+    $memberships = $memberships ? $memberships : array();
+
+    $data = array(
+      'title' => 'Manage Groups',
+      'msg' => $this->session->flashdata('msg'),
+      'memberships' => json_encode($memberships),
+    );
+    $this->_view(
+      array('templates/nav', 'pages/admin/memberships', 'alerts/msg'),
       array_merge($this->_nav_items, $data)
     );
   }

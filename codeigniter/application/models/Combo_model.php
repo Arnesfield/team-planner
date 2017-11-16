@@ -64,6 +64,31 @@ class Combo_model extends MY_CRUD_Model {
     return $query->num_rows() > 0 ? $query->result_array() : FALSE;
   }
 
+  public function fetch_memberships() {
+    $sql = "
+      SELECT
+        m.id AS id,
+        u.id AS user_id,
+        u.username AS username,
+        g.id AS group_id,
+        g.name AS group_name,
+        m.type AS type,
+        m.status AS status
+      FROM
+        memberships m, users u, groups g
+      WHERE
+        u.id = m.user_id AND
+        g.id = m.group_id
+      ORDER BY
+        g.name ASC,
+        m.type ASC,
+        u.username ASC
+    ";
+      
+    $query = $this->db->query($sql);
+    return $query->num_rows() > 0 ? $query->result_array() : FALSE;
+  }
+
 }
 
 ?>
