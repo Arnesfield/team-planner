@@ -87,13 +87,23 @@ class MY_Custom_Controller extends MY_View_Controller {
   }
 
   protected function _set_info_nav_items() {
+    $this->load->model('content_model');
+    $where = array('status' => 1);
+    $contents = $this->content_model->fetch($where);
+
+    $navs = array();
+
+    if ($contents) {
+      foreach ($contents as $key => $content) {
+        $navs[$key] = array(
+          'title' => $content['title'],
+          'href' => 'info/c/' . strtolower($content['title']),
+        );
+      }
+    }
+
     // static test
-    $this->_info_nav_items = array('nav_items' => array(
-      array(
-        'title' => 'Home',
-        'href' => ''
-      )
-    ));
+    $this->_info_nav_items = array('nav_items' => $navs);
   }
 
   protected function _set_nav_items($is_admin = FALSE) {
@@ -120,6 +130,10 @@ class MY_Custom_Controller extends MY_View_Controller {
         array(
           'title' => 'View Activities/Logs',
           'href' => 'admin/activities'
+        ),
+        array(
+          'title' => 'Manage Content',
+          'href' => 'admin/content'
         ),
       );
     }

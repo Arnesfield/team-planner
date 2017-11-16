@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2017 at 06:55 AM
+-- Generation Time: Nov 16, 2017 at 09:00 AM
 -- Server version: 10.1.25-MariaDB
 -- PHP Version: 7.1.7
 
@@ -40,65 +40,53 @@ CREATE TABLE `activities` (
 --
 
 INSERT INTO `activities` (`id`, `remarks`, `type`, `date`) VALUES
-(1, 'User 3 updated Group 1 information and/or members.', 7, 1510775175),
-(2, 'User 1 added in Group 1 by User 3.', 8, 1510775175),
-(3, 'User 2 added in Group 1 by User 3.', 8, 1510775175),
-(4, 'User 3 added in Group 1 by User 3.', 8, 1510775175),
-(5, 'User 3 updated Group 1 information and/or members.', 7, 1510775197),
-(6, 'User 1 added in Group 1 by User 3.', 8, 1510775197),
-(7, 'User 2 added in Group 1 by User 3.', 8, 1510775197),
-(8, 'User 3 added in Group 1 by User 3.', 8, 1510775197),
-(9, 'User 3 updated Group 1 information and/or members.', 7, 1510775226),
-(10, 'User 1 added in Group 1 by User 3.', 8, 1510775226),
-(11, 'User 2 added in Group 1 by User 3.', 8, 1510775226),
-(12, 'User 3 added in Group 1 by User 3.', 8, 1510775227),
-(13, 'User 3 updated Group 1 information and/or members.', 7, 1510775438),
-(14, 'User 1 added in Group 1 by User 3.', 8, 1510775438),
-(15, 'User 2 added in Group 1 by User 3.', 8, 1510775438),
-(16, 'User 3 added in Group 1 by User 3.', 8, 1510775438),
-(17, 'User 3 updated Group 1 information and/or members.', 7, 1510775839),
-(18, 'User 1 added in Group 1 by User 3.', 8, 1510775839),
-(19, 'User 2 added in Group 1 by User 3.', 8, 1510775839),
-(20, 'User 3 added in Group 1 by User 3.', 8, 1510775839),
-(21, 'User 3 updated Group 1 information and/or members.', 7, 1510775940),
-(22, 'User 1 added in Group 1 by User 3.', 8, 1510775940),
-(23, 'User 2 added in Group 1 by User 3.', 8, 1510775940),
-(24, 'User 3 added in Group 1 by User 3.', 8, 1510775940),
-(25, 'User 3 updated Task 9 status to Discontinued.', 13, 1510777083),
-(26, 'User 3 updated Task 9 status to Done.', 12, 1510777215),
-(27, 'User 3 created a task for User 3.', 10, 1510777300),
-(28, 'User 3 updated Task 10 status to Ongoing.', 11, 1510777383),
-(29, 'User 3 updated Task 10 status to Discontinued.', 13, 1510777415),
-(30, 'Logged out User 3.', 2, 1510778183),
-(31, 'Logged in User 3.', 1, 1510778190),
-(32, 'User 3 updated User 2 type information.', 14, 1510778212),
-(33, 'User 3 updated User 2 status information.', 14, 1510778229),
-(34, 'User 3 updated User 2 type information.', 14, 1510778238),
-(35, 'Logged out User 3.', 2, 1510778336),
-(36, 'Logged in User 1.', 1, 1510778339),
-(37, 'User 1 created a group. Group 8.', 6, 1510778380),
-(38, 'User 1 joined in Group 8.', 8, 1510778380),
-(39, 'User 3 joined in Group 8.', 8, 1510778380),
-(40, 'Logged out User 1.', 2, 1510778430),
-(41, 'Logged in User 3.', 1, 1510778434),
-(42, 'User 3 joined in Group 8.', 8, 1510778451),
-(43, 'Logged out User 3.', 2, 1510778550),
-(44, 'Logged in User 1.', 1, 1510778554),
-(45, 'User 2 added in Group 8 by User 1.', 8, 1510778573),
-(46, 'User 1 updated Group 8 information and/or members.', 7, 1510778600),
-(47, 'Logged out User 1.', 2, 1510778656),
-(48, 'Logged in User 3.', 1, 1510801019),
-(49, 'Logged in User 3.', 1, 1510809310),
-(50, 'User 3 updated Member 1 type information.', 16, 1510811054),
-(51, 'User 3 updated Member 1 type information.', 16, 1510811082),
-(52, 'User 3 updated Member 1 type information.', 16, 1510811152),
-(53, 'User 3 updated Member 1 type information.', 16, 1510811180),
-(54, 'User 3 updated Member 1 type information.', 16, 1510811310),
-(55, 'User 3 updated Group 1 status information.', 15, 1510811494),
-(56, 'User 3 updated Member 1 status information.', 16, 1510811538),
-(57, 'User 3 updated Member 1 status information.', 16, 1510811563),
-(58, 'User 3 updated Member 1 status information.', 16, 1510811606),
-(59, 'User 3 updated Member 1 status information.', 16, 1510811609);
+(1, 'Somebody created an account with email \"rylee.jeff385@gmail.com\".', 3, 1510812865),
+(2, 'User 1 account verified.', 4, 1510812873),
+(3, 'Logged in User 1.', 1, 1510812877),
+(4, 'Logged out User 1.', 2, 1510812889),
+(5, 'Somebody created an account with email \"rylee.jeff385@gmail.com\".', 3, 1510812967),
+(6, 'User 2 unverified account login attempt.', 1, 1510812987),
+(7, 'User 2 account verified.', 4, 1510812997),
+(8, 'Logged in User 2.', 1, 1510813006),
+(9, 'User 2 created a group. Group 1.', 6, 1510813050),
+(10, 'User 2 joined in Group 1.', 8, 1510813051),
+(11, 'User 1 added in Group 1.', 8, 1510813051),
+(12, 'Logged out User 2.', 2, 1510813059),
+(13, 'Logged in User 1.', 1, 1510813062),
+(14, 'Logged out User 1.', 2, 1510813095),
+(15, 'Logged in User 1.', 1, 1510813097),
+(16, 'User 1 updated Member 2 status information.', 16, 1510813109),
+(17, 'User 1 updated Member 2 type information.', 16, 1510813133),
+(18, 'Logged out User 1.', 2, 1510813148),
+(19, 'Logged in User 1.', 1, 1510813151),
+(20, 'User 1 updated profile information.', 5, 1510813167),
+(21, 'User 1 updated profile information.', 5, 1510813190),
+(22, 'User 1 updated Member 2 type information.', 16, 1510813324),
+(23, 'User 1 created a task for User 1.', 10, 1510813359),
+(24, 'User 1 updated Task 1 status to Ongoing.', 11, 1510813405),
+(25, 'Logged out User 1.', 2, 1510817746);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `content`
+--
+
+CREATE TABLE `content` (
+  `id` int(11) NOT NULL,
+  `title` varchar(32) NOT NULL,
+  `content` text NOT NULL,
+  `type` tinyint(4) NOT NULL,
+  `status` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `content`
+--
+
+INSERT INTO `content` (`id`, `title`, `content`, `type`, `status`) VALUES
+(1, 'Home', 'Hello World', 1, 1),
+(2, 'About', 'About page', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -119,13 +107,7 @@ CREATE TABLE `groups` (
 --
 
 INSERT INTO `groups` (`id`, `name`, `description`, `g_image`, `status`) VALUES
-(1, 'Charlyn\'s Group', 'Hello friends! \"Test\"', 'IMG_151117123721.png', 1),
-(2, 'Test\'s Group', 'Hello test', '', 1),
-(3, 'Rylee\'s Group', 'Awesome', '', 1),
-(4, 'New', 'Test lol hi xD', '', 1),
-(6, 'Awesome Group XD', 'XD lol', '', 1),
-(7, 'Strawberry', '', 'IMG_151117131945.png', 1),
-(8, 'New Test Prep', 'Test', 'IMG_161117043940.png', 1);
+(1, 'Rylee\'s Group', 'Rylee\'s Group of \"Awesomenezz\"', 'IMG_161117141730.png', 1);
 
 -- --------------------------------------------------------
 
@@ -146,26 +128,8 @@ CREATE TABLE `memberships` (
 --
 
 INSERT INTO `memberships` (`id`, `user_id`, `group_id`, `type`, `status`) VALUES
-(1, 3, 1, 2, 1),
-(2, 1, 1, 1, 1),
-(3, 2, 1, 1, 1),
-(4, 1, 2, 1, 1),
-(5, 3, 2, 2, 1),
-(6, 2, 2, 2, 1),
-(7, 2, 3, 1, 1),
-(8, 3, 3, 2, 1),
-(9, 1, 3, 2, 1),
-(10, 3, 4, 1, 1),
-(11, 1, 4, 2, 2),
-(12, 2, 4, 2, 1),
-(13, 2, 6, 1, 1),
-(14, 1, 6, 2, 2),
-(15, 3, 6, 2, 1),
-(16, 3, 7, 1, 1),
-(17, 2, 7, 2, 2),
-(18, 1, 8, 1, 1),
-(19, 3, 8, 2, 1),
-(20, 2, 8, 2, 2);
+(1, 2, 1, 1, 1),
+(2, 1, 1, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -192,15 +156,7 @@ CREATE TABLE `tasks` (
 --
 
 INSERT INTO `tasks` (`id`, `name`, `description`, `group_id`, `created_by_user_id`, `taken_by_user_id`, `created_at`, `deadline_at`, `started_at`, `ended_at`, `status`) VALUES
-(1, 'Sleep', 'Sleep well', 1, 3, 3, 1510574960, 1510576200, 1510579713, 1510579720, 9),
-(2, 'Code', 'Finish projects', 1, 3, 2, 1510579184, 1510588740, 0, 1510595520, 8),
-(3, 'Apple', 'Red', 2, 2, 2, 1510594773, 1510603380, 1510595046, 1510595070, 9),
-(4, 'Apple', 'test', 1, 2, 2, 1510595501, 1510675200, 0, 1510595754, 9),
-(5, 'Wow', 'Ok', 6, 3, 3, 1510596047, 1510804800, 0, 0, 2),
-(7, 'test', 'new', 2, 1, 1, 1510597803, 1510761600, 1510597807, 0, 3),
-(8, 'Finish assignment', 'Finish psych', 1, 3, 3, 1510631976, 1510675200, 1510631990, 1510632000, 9),
-(9, 'Some task', 'Descr hehe', 1, 3, 3, 1510776860, 1510848000, 1510777083, 1510777215, 9),
-(10, 'Test', 'Desc', 1, 3, 3, 1510777300, 1510848000, 1510777383, 1510777414, 8);
+(1, 'Finish assignment', 'Hi', 1, 1, 1, 1510813359, 1510848000, 1510813405, 0, 3);
 
 -- --------------------------------------------------------
 
@@ -229,9 +185,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `fname`, `lname`, `email`, `bio`, `u_image`, `type`, `verification_code`, `reset_code`, `reset_expiration`, `status`) VALUES
-(1, 'test', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Jefferson', 'Rylee', 'test@email.com', '', '', 0, '', '', 0, 1),
-(2, 'rylee', '$2y$10$GPgXJJDOMuFNiR6T82SkYutSgWclTA0ELcjUqBDnivcj/0Vj8kIfG', 'Test', 'User', 'test@sample.com', 'Bio here', '', 0, '', '', 0, 1),
-(3, 'charlyn', '$2y$10$ico/hoXQ9ywrfhyEFk2yGudL1UC.s2xkqsDSyhxwT3ExjaDgrzoZS', 'Charlyn', 'Ann', 'rylee.jeff385@gmail.com', 'Hi new bio here hehe', 'IMG_151117123000.png', 1, '', '', 0, 1);
+(1, 'charlyn', '$2y$10$d/46JkJivDqU9Bh7v0f6YOi4C5nXZDQEngMaE4OEl2AGm7ykViqHC', 'Charlyn', 'Ann', 'charlyn@test.com', 'Some bio here', 'IMG_161117141950.png', 1, '', '', 0, 1),
+(2, 'rylee', '$2y$10$v4FBG3fw9MvpdfcReAs3sesbiHZKgTNyoJ6VqnEMGGSKMcMJ5Gbu.', 'Jefferson', 'Rylee', 'rylee.jeff385@gmail.com', 'Some rylee bio', 'IMG_161117141551.png', 2, '', '', 0, 1);
 
 --
 -- Indexes for dumped tables
@@ -241,6 +196,12 @@ INSERT INTO `users` (`id`, `username`, `password`, `fname`, `lname`, `email`, `b
 -- Indexes for table `activities`
 --
 ALTER TABLE `activities`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `content`
+--
+ALTER TABLE `content`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -277,31 +238,37 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activities`
 --
 ALTER TABLE `activities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT for table `content`
+--
+ALTER TABLE `content`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `memberships`
 --
 ALTER TABLE `memberships`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

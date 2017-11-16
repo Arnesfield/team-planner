@@ -237,7 +237,7 @@ class Admin extends MY_Custom_Controller {
         case 3: $status = 'Ongoing'; break;
         case 9: $status = 'Done'; break;
         case 8: $status = 'Discontinued'; break;
-        
+
         default: $status = 'Something else'; break;
       }
       
@@ -253,6 +253,11 @@ class Admin extends MY_Custom_Controller {
       array('templates/nav', 'pages/admin/tasks', 'alerts/msg'),
       array_merge($this->_nav_items, $data)
     );
+  }
+
+  // content
+  public function content() {
+    
   }
 
 }

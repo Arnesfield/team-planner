@@ -1,9 +1,7 @@
 <?php if ($content): ?>
+
 <div>
   <?=$content['content']?>
 </div>
-<?php endif; ?>
 
-<div>
-<?=$form_login?>
-</div>
+<?php endif; ?>
