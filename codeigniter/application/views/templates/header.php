@@ -29,7 +29,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <link rel="stylesheet" href="<?=base_url('assets/css/main.css')?>">
 
 <script src="<?=base_url('vendor/jquery.min.js')?>"></script>
-<script src="<?=base_url('vendor/dataTables/jquery.dataTables.min.js')?>"></script>
 
 <title><?=$title?></title>
 

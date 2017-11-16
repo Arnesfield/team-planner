@@ -257,7 +257,20 @@ class Admin extends MY_Custom_Controller {
 
   // content
   public function content() {
+    $this->load->model('content_model');
     
+    $contents = $this->content_model->fetch(array());
+    $contents = $contents ? $contents : array();
+
+    $data = array(
+      'title' => 'Manage Content',
+      'msg' => $this->session->flashdata('msg'),
+      'contents' => json_encode($contents),
+    );
+    $this->_view(
+      array('templates/nav', 'pages/admin/contents', 'alerts/msg'),
+      array_merge($this->_nav_items, $data)
+    );
   }
 
 }

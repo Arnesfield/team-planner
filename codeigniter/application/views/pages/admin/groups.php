@@ -36,7 +36,7 @@
         <label :for="'status-' + group.id">
           {{
           group.status == 1
-            ? 'Actived'
+            ? 'Activated'
             : group.status == 2
               ? 'Hidden'
               : 'Deactivated'
@@ -50,6 +50,7 @@
 
 </div>
 
+<script src="<?=base_url('vendor/dataTables/jquery.dataTables.min.js')?>"></script>
 <script src="<?=base_url('vendor/vue/vue.js')?>"></script>
 
 <script>

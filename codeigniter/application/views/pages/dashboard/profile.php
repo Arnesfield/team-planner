@@ -5,7 +5,7 @@
     <div>
       <?php if ($user['u_image']): ?>
       <img src="<?=base_url('uploads/images/users/' . $user['u_image'])?>"
-        style="width: 100%" alt="<?=$user['u_image']?>">
+        class="w-max" alt="<?=$user['u_image']?>">
       <?php else: ?>
       <div>No profile image</div>
       <?php endif; ?>

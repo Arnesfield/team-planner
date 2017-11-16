@@ -40,6 +40,7 @@
 
 </div>
 
+<script src="<?=base_url('vendor/dataTables/jquery.dataTables.min.js')?>"></script>
 <script src="<?=base_url('vendor/vue/vue.js')?>"></script>
 
 <script>

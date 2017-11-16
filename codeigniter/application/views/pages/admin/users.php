@@ -50,7 +50,7 @@
         <label :for="'status-' + user.id">
           {{
           user.status == 1
-            ? 'Actived'
+            ? 'Activated'
             : user.status == 2
               ? 'Unverified'
               : 'Deactivated'
@@ -64,6 +64,7 @@
 
 </div>
 
+<script src="<?=base_url('vendor/dataTables/jquery.dataTables.min.js')?>"></script>
 <script src="<?=base_url('vendor/vue/vue.js')?>"></script>
 
 <script>

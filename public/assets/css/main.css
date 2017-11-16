@@ -1,3 +1,14 @@
 body, h1, h5, h4, h3, pre {
   font-family: 'Roboto Mono', Consolas !important;
 }
+
+.w-max {
+  width: 100%;
+}
+
+.t-area {
+  min-height: 80px;
+  max-height: 256px;
+  width: 100%;
+  overflow-x: hidden;
+}
