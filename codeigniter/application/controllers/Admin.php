@@ -123,6 +123,54 @@ class Admin extends MY_Custom_Controller {
       array_merge($this->_nav_items, $data)
     );
   }
+
+  public function activities() {
+    $this->load->model('combo_model');
+    
+    $activities = $this->combo_model->fetch_activities();
+    $activities = $activities ? $activities : array();
+
+    // foreach activity
+    foreach ($activities as $key => $activity) {
+      $activities[$key]['raw_date'] = $activity['date'];
+      $activities[$key]['date'] = date('l, d M Y H:i:s', $activity['date']);
+      $activities[$key]['raw_type'] = $type = $activity['type'];
+      switch ($type) {
+        case 1: $type = 'Login'; break;
+        case 2: $type = 'Logout'; break;
+
+        case 3: $type = 'Created Account'; break;
+        case 4: $type = 'Verified Account'; break;
+        case 5: $type = 'Updated Account'; break;
+
+        case 6: $type = 'Created Group'; break;
+        case 7: $type = 'Updated Group Info'; break;
+        case 8: $type = 'Updated Group Members'; break;
+        case 9: $type = 'Updated Group Member Info'; break;
+
+        case 10: $type = 'Created Task'; break;
+        case 11: $type = 'Mark Task as Ongoing'; break;
+        case 12: $type = 'Mark Task as Done'; break;
+        case 13: $type = 'Mark Task as Discontinued'; break;
+
+        case 14: $type = 'Admin: Updated User Type/Status'; break;
+        case 15: $type = 'Admin: Updated Group Status'; break;
+      }
+      
+      $activities[$key]['type'] = $type;
+    }
+
+    $data = array(
+      'title' => 'Manage Activities',
+      'msg' => $this->session->flashdata('msg'),
+      'activities' => json_encode($activities),
+    );
+    $this->_view(
+      array('templates/nav', 'pages/admin/activities', 'alerts/msg'),
+      array_merge($this->_nav_items, $data)
+    );
+  }
+
 }
 
 ?>

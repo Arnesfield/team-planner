@@ -109,6 +109,10 @@ class MY_Custom_Controller extends MY_View_Controller {
           'title' => 'Manage Groups',
           'href' => 'admin/groups'
         ),
+        array(
+          'title' => 'Manage Activities',
+          'href' => 'admin/activities'
+        ),
       );
     }
 
