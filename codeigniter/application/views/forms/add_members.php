@@ -3,9 +3,16 @@
   <h3>Add members</h3>
 
   <div id="users">
-    <label for="search_user">Members</label>
-    <input type="text" id="search_user" v-model="search">
-    <button type="submit" v-if="selected.length">Invite</button>
+    <div>
+      <div class="my-mt-1 mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input type="text" id="search_user" v-model="search"
+          class="mdl-textfield__input">
+        <label class="mdl-textfield__label" for="search_user">Members</label>
+      </div>
+      
+      <button class="mx-xs mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+        type="submit" v-if="selected.length">Invite</button>
+    </div>
 
     <noscript>
       <div>You need <strong>JavaScript</strong> to search for members!</div>

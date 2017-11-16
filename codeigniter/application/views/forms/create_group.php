@@ -3,27 +3,40 @@
   <h3>Create Group</h3>
 
   <div>
-    <label for="name">Group Name</label>
-    <input type="text" name="name" id="name"
-      value="<?=set_value('name')?>">
-    <?=form_error('name', '<span>', '</span>')?>
+    <div class="w-max my-mt-1 mdl-textfield mdl-js-textfield mdl-textfield--floating-label
+      <?=form_error('name') ? 'is-invalid' : '' ?>">
+      <input type="text" name="name" id="name" value="<?=set_value('name')?>"
+        class="mdl-textfield__input">
+      <label class="mdl-textfield__label" for="name">Group Name</label>
+      <span class="mdl-textfield__error"><?=form_error('name')?></span>
+    </div>
   </div>
 
   <div>
-    <label for="desc">Brief Description</label>
-    <textarea name="desc" id="desc" cols="30" rows="10"><?=set_value('desc')?></textarea>
-    <?=form_error('desc', '<span>', '</span>')?>
+    <div class="w-max my-mt-1 mdl-textfield mdl-js-textfield mdl-textfield--floating-label
+      <?=form_error('desc') ? 'is-invalid' : '' ?>">
+      <textarea name="desc" id="desc"
+        class="t-area mdl-textfield__input"><?=set_value('desc')?></textarea>
+      <label class="mdl-textfield__label" for="desc">Brief Description</label>
+      <span class="mdl-textfield__error"><?=form_error('desc')?></span>
+    </div>
   </div>
 
-  <div>
+  <div class="my-pt-2 my-pb-2">
     <label for="g_image">Group Image (optional)</label>
     <input type="file" name="g_image" id="g_image">
     <?=form_error('g_image', '<span>', '</span>')?>
   </div>
 
   <div id="users">
-    <label for="search_user">Members</label>
-    <input type="text" id="search_user" v-model="search">
+    <div class="w-max my-mt-1 mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <input type="text" id="search_user" v-model="search"
+        class="mdl-textfield__input">
+      <label class="mdl-textfield__label" for="search_user">Members</label>
+    </div>
+
+    <!-- <label for="search_user">Members</label>
+    <input type="text" id="search_user" v-model="search"> -->
 
     <noscript>
       <div>You need <strong>JavaScript</strong> to search for members!</div>
@@ -60,8 +73,9 @@
 
   </div>
 
-  <div>
-    <button type="submit">Create</button>
+  <div class="my-mt-2">
+    <button class="mx-xs mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+      type="submit">Create</button>
   </div>
 
 </form>

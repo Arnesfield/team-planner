@@ -4,7 +4,8 @@
 <h3>Groups</h3>
 
 <div>
-  <a href="<?=base_url('dashboard/create')?>">Create Group</a>
+  <a class="my-mt-2 mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+    href="<?=base_url('dashboard/create')?>">Create Group</a>
 </div>
 
 <?php
@@ -30,17 +31,23 @@ if ($groups): ?>
     <h4>My Groups</h4>
     <hr>
 
-    <?php foreach ($my_groups as $group): ?>
-    <div>
+    <?php foreach ($my_groups as $i => $group): ?>
+    <?php if ($i % 4 == 0 || $i == 0): ?>
+      <div class="row">
+    <?php endif; ?>
+    <div class="col-md-3 my-mt-3">
       <div>
         <img src="<?=base_url('uploads/images/groups/' . $group['group_image'])?>" alt="<?=$group['group_name']?>"
-          style="width: 256px">
+          style="width: 100%">
       </div>
       <h4><?=$group['group_name']?></h4>
       <div><?=$group['group_desc']?></div>
       <a class="my-mt-2 mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
         href="<?=base_url('dashboard/groups/' . $group['group_id'])?>">Go to group</a>
     </div>
+    <?php if (($i+1) % 4 == 0): ?>
+      </div>
+    <?php endif; ?>
     <?php endforeach; ?>
 
   </div>

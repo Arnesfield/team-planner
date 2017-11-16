@@ -3,16 +3,23 @@
   <h3>Create Task</h3>
 
   <div>
-    <label for="name">Task Name</label>
-    <input type="text" name="name" id="name"
-      value="<?=set_value('name')?>">
-    <?=form_error('name', '<span>', '</span>')?>
+    <div class="w-max my-mt-1 mdl-textfield mdl-js-textfield mdl-textfield--floating-label
+      <?=form_error('name') ? 'is-invalid' : '' ?>">
+      <input type="text" name="name" id="name" value="<?=set_value('name')?>"
+        class="mdl-textfield__input">
+      <label class="mdl-textfield__label" for="name">Task Name</label>
+      <span class="mdl-textfield__error"><?=form_error('name')?></span>
+    </div>
   </div>
 
   <div>
-    <label for="desc">Description</label>
-    <textarea name="desc" id="desc" rows="2"><?=set_value('desc')?></textarea>
-    <?=form_error('desc', '<span>', '</span>')?>
+    <div class="w-max my-mt-1 mdl-textfield mdl-js-textfield mdl-textfield--floating-label
+      <?=form_error('desc') ? 'is-invalid' : '' ?>">
+      <textarea name="desc" id="desc"
+        class="t-area mdl-textfield__input"><?=set_value('desc')?></textarea>
+      <label class="mdl-textfield__label" for="desc">Description</label>
+      <span class="mdl-textfield__error"><?=form_error('desc')?></span>
+    </div>
   </div>
 
   <div>
@@ -37,8 +44,9 @@
     <?=form_error('time', '<span>', '</span>')?>
   </div>
 
-  <div>
-    <button type="submit">Create</button>
+  <div class="my-mt-2">
+    <button class="mx-xs mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+      type="submit">Create</button>
   </div>
 
   <input type="hidden" name="action" value="create">
