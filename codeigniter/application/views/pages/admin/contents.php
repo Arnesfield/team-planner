@@ -24,7 +24,7 @@
         <div class="col-md-6">
           <label :for="'content-' + content.id">Content</label>
           <br>
-          <textarea :id="'content-' + content.id" rows="7" v-model="content.content" v-html="content.content"
+          <textarea :id="'content-' + content.id" rows="7" v-model="content.content"
             class="t-area" placeholder="Enter content"></textarea>
         </div>
         <div class="col-md-3">
@@ -72,6 +72,7 @@
 
 </div>
 
+<script src="<?=base_url('vendor/summernote/summernote.min.js')?>"></script>
 <script src="<?=base_url('vendor/vue/vue.js')?>"></script>
 
 <script>
@@ -104,6 +105,23 @@ new Vue({
         return false
       }
       return true
+    })
+  },
+
+  mounted() {
+    const self = this
+    this.contents.forEach(e => {
+
+      $(document).ready(function() {
+        $('#content-' + e.id).summernote({
+          callbacks: {
+            onChange: function(contents) {
+              e.content = contents
+            }
+          }
+        })
+      })
+      
     })
   },
 

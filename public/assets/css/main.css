@@ -7,8 +7,8 @@ body, h1, h5, h4, h3, pre {
 }
 
 .t-area {
-  min-height: 80px;
-  max-height: 256px;
+  min-height: 128px;
+  max-height: 512px;
   width: 100%;
   overflow-x: hidden;
 }
