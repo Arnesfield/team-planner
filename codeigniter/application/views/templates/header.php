@@ -27,6 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <link rel="stylesheet" href="<?=base_url('vendor/summernote/summernote.css')?>">
 <link rel="stylesheet" href="<?=base_url('vendor/my.css')?>">
 
+<link rel="stylesheet" href="<?=base_url('assets/css/custom.css')?>">
 <link rel="stylesheet" href="<?=base_url('assets/css/main.css')?>">
 
 <script src="<?=base_url('vendor/jquery.min.js')?>"></script>

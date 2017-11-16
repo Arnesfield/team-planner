@@ -20,10 +20,6 @@ class Dashboard extends MY_Custom_Controller {
   
   // use index for notifications and such
   public function index() {
-    echo '<pre>';
-    print_r($_SESSION);
-    echo '</pre>';
-
     $data = array(
       'title' => 'Dashboard',
       'msg' => $this->session->flashdata('msg'),

@@ -1,4 +1,6 @@
-<div class="container-fluid">
+<div class="content">
+
+<div class="pad container-fluid">
 
 <div class="row">
   <div class="col-md-4 col-sm-4">
@@ -12,7 +14,8 @@
     </div>
     <h3>Profile of <?=$user['username']?></h3>
     <?php if ($allow_edit): ?>
-    <a href="<?=base_url('dashboard/profile/' . $user['id'] . '/edit')?>">Edit Profile</a>
+    <a  class="mx-xs mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+      href="<?=base_url('dashboard/profile/' . $user['id'] . '/edit')?>">Edit Profile</a>
     <?php endif; ?>
   </div>
   <div class="col-md-8 col-sm-8">
@@ -33,6 +36,8 @@
       <h4><?=$user['bio']?></h4>
     </div>
   </div>
+</div>
+
 </div>
 
 </div>

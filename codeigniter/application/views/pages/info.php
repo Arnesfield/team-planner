@@ -1,9 +1,15 @@
-<?php if ($content): ?>
-<div>
-  <?=$content['content']?>
-</div>
-<?php endif; ?>
+<div class="content">
+<div class="pad">
 
-<div>
-<?=$form_login?>
+  <?php if ($content): ?>
+  <div>
+    <?=$content['content']?>
+  </div>
+  <?php endif; ?>
+
+  <div>
+  <?=$form_login?>
+  </div>
+
+</div>
 </div>
