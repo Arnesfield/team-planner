@@ -172,6 +172,8 @@ class Admin extends MY_Custom_Controller {
         case 14: $type = 'Admin: Updated User Type/Status'; break;
         case 15: $type = 'Admin: Updated Group Status'; break;
         case 16: $type = 'Admin: Updated Member Type/Status'; break;
+
+        default: $type = 'Something else'; break;
       }
       
       $activities[$key]['type'] = $type;
@@ -202,6 +204,53 @@ class Admin extends MY_Custom_Controller {
     );
     $this->_view(
       array('templates/nav', 'pages/admin/memberships', 'alerts/msg'),
+      array_merge($this->_nav_items, $data)
+    );
+  }
+
+  // tasks
+  public function tasks() {
+    $this->load->model('combo_model');
+    
+    $tasks = $this->combo_model->fetch_tasks();
+    $tasks = $tasks ? $tasks : array();
+
+    // foreach task
+    foreach ($tasks as $key => $task) {
+      
+      // set fields of dates
+      foreach (array('created_at', 'deadline_at', 'started_at', 'ended_at') as $field) {
+        $tasks[$key]['raw_'.$field] = $task[$field];
+        // if not 0
+        if ($task[$field]) {
+          $tasks[$key][$field] = date('l, d M Y H:i:s', $task[$field]);
+        }
+        // if 0
+        else {
+          $tasks[$key][$field] = 'TBA';
+        }
+      }
+
+      $tasks[$key]['raw_status'] = $status = $task['status'];
+      switch ($status) {
+        case 2: $status = 'Pending'; break;
+        case 3: $status = 'Ongoing'; break;
+        case 9: $status = 'Done'; break;
+        case 8: $status = 'Discontinued'; break;
+        
+        default: $status = 'Something else'; break;
+      }
+      
+      $tasks[$key]['status'] = $status;
+    }
+
+    $data = array(
+      'title' => 'Manage Tasks',
+      'msg' => $this->session->flashdata('msg'),
+      'tasks' => json_encode($tasks),
+    );
+    $this->_view(
+      array('templates/nav', 'pages/admin/tasks', 'alerts/msg'),
       array_merge($this->_nav_items, $data)
     );
   }

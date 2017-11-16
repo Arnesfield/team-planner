@@ -89,6 +89,23 @@ class Combo_model extends MY_CRUD_Model {
     return $query->num_rows() > 0 ? $query->result_array() : FALSE;
   }
 
+  public function fetch_tasks() {
+    $sql = "
+      SELECT
+        *
+      FROM
+        tasks
+      ORDER BY
+        started_at DESC,
+        created_at DESC,
+        deadline_at DESC,
+        ended_at DESC
+    ";
+      
+    $query = $this->db->query($sql);
+    return $query->num_rows() > 0 ? $query->result_array() : FALSE;
+  }
+
 }
 
 ?>

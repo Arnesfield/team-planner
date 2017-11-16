@@ -110,6 +110,10 @@ class MY_Custom_Controller extends MY_View_Controller {
           'href' => 'admin/groups'
         ),
         array(
+          'title' => 'Manage Tasks',
+          'href' => 'admin/tasks'
+        ),
+        array(
           'title' => 'Manage Memberships',
           'href' => 'admin/memberships'
         ),

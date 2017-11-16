@@ -24,6 +24,7 @@ class Task_model extends MY_CRUD_Model {
       ->where($where)
       ->order_by('t.started_at', 'desc')
       ->order_by('t.created_at', 'desc')
+      ->order_by('t.deadline_at', 'desc')
       ->order_by('t.ended_at', 'desc')
       ->get();
     return $query->num_rows() > 0 ? $query->result_array() : FALSE;
