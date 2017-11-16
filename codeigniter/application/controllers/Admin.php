@@ -172,6 +172,8 @@ class Admin extends MY_Custom_Controller {
         case 14: $type = 'Admin: Updated User Type/Status'; break;
         case 15: $type = 'Admin: Updated Group Status'; break;
         case 16: $type = 'Admin: Updated Member Type/Status'; break;
+        case 17: $type = 'Admin: Updated Content Type/Status'; break;
+        case 18: $type = 'Admin: Updated Content Info'; break;
 
         default: $type = 'Something else'; break;
       }
@@ -271,6 +273,109 @@ class Admin extends MY_Custom_Controller {
       array('templates/nav', 'pages/admin/contents', 'alerts/msg'),
       array_merge($this->_nav_items, $data)
     );
+  }
+
+  // update content
+  public function content_update() {
+    if (!$this->input->post()) {
+      $this->_redirect('dashboard');
+      exit();
+    }
+
+    $this->load->model('content_model');
+
+    $action = $this->input->post('action', TRUE);
+    $user_id = $this->session->userdata('user')['id'];
+    $success = 0;
+    if ($action == 'status') {
+      $cid = $this->input->post('cid', TRUE);
+      $status = $this->input->post('status', TRUE);
+
+      $data = array('status' => $status);
+      $where = array('id' => $cid);
+
+      $this->content_model->update($data, $where);
+
+      $this->_insert_activity('User '.$user_id.' updated Content '.$cid.' status information.' , 17);
+      
+      $success = 1;
+    }
+    else if ($action == 'type') {
+      $to = $this->input->post('to', TRUE);
+      $from = $this->input->post('from', TRUE);
+      
+      $data = array('type' => $to['type']);
+      $where = array('id' => $to['cid']);
+
+      $this->content_model->update($data, $where);
+
+      $this->_insert_activity('User '.$user_id.' updated Content '.$to['cid'].' type information.' , 17);
+      
+      $data = array('type' => $from['type']);
+      $where = array('id' => $from['cid']);
+      
+      $this->content_model->update($data, $where);
+
+      $this->_insert_activity('User '.$user_id.' updated Content '.$from['cid'].' type information.' , 17);
+      
+      $success = 1;
+    }
+    else if ($action == 'submit') {
+      $contents = $this->input->post('contents');
+      
+      foreach ($contents as $key => $content) {
+        // only need id, title, and content
+        $id = $content['id'];
+        $title = $content['title'];
+        $type = $content['type'];
+        $status = $content['status'];
+        $cont = $content['content'];
+
+        $data = array(
+          'title' => $title,
+          'content' => $cont,
+        );
+        $where = array('id' => $id);
+
+        // fetch if exists
+        // if not, insert
+
+        $fetched = $this->content_model->fetch($where);
+
+        if ($fetched) {
+          $fetched = $fetched[0];
+          // update if did not change
+          if (!($title == $fetched['title'] && $cont == $fetched['content']) && $title) {
+            // update
+            $this->content_model->update($data, $where);
+            
+            $this->_insert_activity('User '.$user_id.' updated Content '.$id.' information.' , 18);
+          }
+        
+          $success = 1;
+          $this->session->set_flashdata('msg', 'Successfully updated content.');
+        }
+        // insert
+        else {
+          $data['type'] = $type;
+          $data['status'] = $status;
+          
+          if ($title && $this->content_model->insert($data)) {
+
+            $fetched = $this->content_model->fetch($data)[0];
+            
+            $this->_insert_activity('User '.$user_id.' added Content '.$fetched['id'].' information.' , 18);
+            
+          }
+          
+          $success = 1;
+          $this->session->set_flashdata('msg', 'Successfully updated content.');
+        }
+      }
+
+    }
+
+    echo json_encode(array('success' => $success));
   }
 
 }

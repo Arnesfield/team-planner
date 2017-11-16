@@ -10,6 +10,7 @@
   <form @submit.prevent="submit">
     <div class="my-mb-4">
       <button type="submit">Commit Content Changes</button>
+      <a @click="addSection">Add Section</a>
     </div>
 
     <div :key="content.id" v-for="content in contents">
@@ -18,12 +19,13 @@
         <div class="col-md-3">
           <label :for="'title-' + content.id">Title</label>
           <input :id="'title-' + content.id" type="text" v-model="content.title"
-            class="w-max">
+            class="w-max" placeholder="Enter title">
         </div>
         <div class="col-md-6">
           <label :for="'content-' + content.id">Content</label>
-          <textarea :id="'content-' + content.id" rows="7" v-html="content.content"
-            class="t-area"></textarea>
+          <br>
+          <textarea :id="'content-' + content.id" rows="7" v-model="content.content" v-html="content.content"
+            class="t-area" placeholder="Enter content"></textarea>
         </div>
         <div class="col-md-3">
           <div><strong>Actions</strong></div>
@@ -52,7 +54,7 @@
               content.type == 1
                 ? 'Primary'
                 : content.type == 2
-                  ? 'Secondary'
+                  ? 'Set as Primary'
                   : 'Other'
               }}
             </label>
@@ -106,17 +108,34 @@ new Vue({
   },
 
   methods: {
+    addSection() {
+      const self = this
+      this.contents.push({
+        title: "",
+        content: "",
+        id: String(self.contents.length + 1),
+        status: "1",
+        type: "2"
+      })
+    },
+
     submit() {
       // ajax
       const self = this
+      const error = function() {
+        alert('Unable to update changes.')
+      }
       this._ajax({
         'action': 'submit',
         'contents': self.contents
       }, function(res) {
-        window.location = self.contentUrl;
-      }, function() {
-        alert('Unable to update changes.')
-      })
+        if (res.success != 0) {
+          window.location = self.contentUrl
+        }
+        else {
+          error()
+        }
+      }, error)
     },
 
     setPrimary(content) {
@@ -135,6 +154,14 @@ new Vue({
       from.type = from.type == 1 ? 2 : 1
       // send ajax and update content type
       const self = this
+
+      const error = function() {
+        to.type = oldToType
+        from.type = oldFromType
+        self.workaround = false
+        self.primary = from
+      }
+
       this._ajax({
         'action': 'type',
         'to': {
@@ -146,13 +173,10 @@ new Vue({
           'type': from.type,
         }
       }, function(res) {
-        
-      }, function() {
-        to.type = oldToType
-        from.type = oldFromType
-        self.workaround = false
-        self.primary = from
-      })
+        if (res.success == 0) {
+          error()
+        }
+      }, error)
     },
 
     changeStatus(content) {
@@ -160,15 +184,18 @@ new Vue({
       const oldStatus = content.status
       content.status = content.status == 1 ? 0 : 1
       // send ajax and update content status
+      const error = function() {
+        content.status = oldStatus
+      }
       this._ajax({
         'action': 'status',
         'cid': content.id,
         'status': content.status
       }, function(res) {
-        
-      }, function() {
-        content.status = oldStatus
-      })
+        if (res.success == 0) {
+          error()
+        }
+      }, error)
     },
 
     _ajax(data, successCallback, errorCallback) {

@@ -190,6 +190,8 @@ class MY_Custom_Controller extends MY_View_Controller {
     // 14 - updated user
     // 15 - updated group
     // 16 - updated member
+    // 17 - updated content type/status
+    // 18 - updated content info
 
     $data = array(
       'remarks' => $remarks,
