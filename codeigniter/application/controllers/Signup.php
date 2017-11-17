@@ -61,7 +61,10 @@ class Signup extends MY_Custom_Controller {
       $data['u_image'] = $upload['result'] ? $upload['return']['file_name'] : '';
 
       // send email verification code
-      $send_data = array('code' => $verification_code);
+      $send_data = array(
+        'email' => $email,
+        'code' => $verification_code
+      );
       // send email
       $sent = $this->_send_mail($email, 'Email Verification', 'email/email_verification', $send_data);
       

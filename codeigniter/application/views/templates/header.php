@@ -32,6 +32,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <script src="<?=base_url('vendor/jquery.min.js')?>"></script>
 
+<link rel="shortcut icon" type="image/x-icon" href="<?=base_url('assets/images/icon.png')?>">
+
 <title><?=$title?></title>
 
 </head>

@@ -1,7 +1,8 @@
 <div class="sidenav">
 
 <h4 class="t-white my-pl-2 my-pr-2">
-  <i class="material-icons">group</i> Team-Planner
+  <i class="material-icons" style="vertical-align: middle; font-size: inherit">group</i>
+  <span style="vertical-align: middle;">Team-Planner</span>
 </h4>
 
 <nav>

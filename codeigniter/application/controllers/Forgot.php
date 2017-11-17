@@ -42,6 +42,7 @@ class Forgot extends MY_Custom_Controller {
         // update
         if ($this->user_model->update($user_data, $where)) {
           $send_data = array(
+            'email' => $email,
             'expiration' => $user_data['reset_expiration'],
             'code' => $reset_code
           );
@@ -60,7 +61,7 @@ class Forgot extends MY_Custom_Controller {
           else {
             $this->session->set_flashdata('msg', 'An error occurred. Unable to send password reset link to email.');
             // debug
-            echo $sent;
+            // echo $sent;
           }
         }
         // if unable to update

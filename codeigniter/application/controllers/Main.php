@@ -8,7 +8,13 @@ class Main extends MY_View_Controller {
   }
   
   public function index() {
-    $this->_view('pages/home', 'CI Project Setup');
+    $data = array(
+      'title' => 'CI Project Setup',
+      'code' => 'test',
+      'expiration' => time(),
+      'email' => 'rylee.jeff385@gmail.com'
+    );
+    $this->_view(['email/email_verification', 'email/password_reset'], $data, true);
   }
 }
 
