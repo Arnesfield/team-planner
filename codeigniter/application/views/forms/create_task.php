@@ -40,8 +40,10 @@
       min="<?=date('Y-m-d')?>" max="<?=date('Y-m-d', time()+(60*60*24*365))?>"
       value="<?=set_value('date')?>">
     <input type="time" name="time" id="time" value="<?=set_value('time')?>">
-    <?=form_error('date', '<span>', '</span>')?>
-    <?=form_error('time', '<span>', '</span>')?>
+    <div>
+      <span class="mdl-color-text--red-A700"><?=form_error('date')?></span>
+      <span class="mdl-color-text--red-A700"><?=form_error('time')?></span>
+    </div>
   </div>
 
   <div class="my-mt-2">

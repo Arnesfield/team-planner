@@ -76,6 +76,8 @@
   <div class="my-mt-2">
     <button class="mx-xs mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
       type="submit">Create</button>
+    <a class="mx-xs mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+      href="<?=base_url('dashboard/groups')?>">View My Groups</a>
   </div>
 
 </form>

@@ -1,5 +1,5 @@
-<div>
-
-<?=$form_forgot?>
-
+<div class="content">
+  <div class="pad">
+    <?=$form_forgot?>
+  </div>
 </div>

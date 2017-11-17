@@ -7,7 +7,7 @@
   <div>
     <?php if ($memberships[0]['group_image']): ?>
     <img src="<?=base_url('uploads/images/groups/' . $memberships[0]['group_image'])?>"
-      style="width: 256px" alt="<?=$memberships[0]['group_image']?>">
+      style="width: 256px" alt="<?=$memberships[0]['group_name']?>">
     <?php else: ?>
     <div>No profile image</div>
     <?php endif; ?>
@@ -166,7 +166,7 @@
 
   </div>
   <?php else: ?>
-  <div>
+  <div class="my-mt-3">
     <span><strong><?=$member['username']?></strong> has no tasks.</span>
   </div>
   <?php endif; ?>

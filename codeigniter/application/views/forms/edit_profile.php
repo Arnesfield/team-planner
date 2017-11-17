@@ -43,10 +43,10 @@
   </div>
 
   <div>
-    <div class="w-max my-mt-1 t-area mdl-textfield mdl-js-textfield mdl-textfield--floating-label
+    <div class="w-max my-mt-1 mdl-textfield mdl-js-textfield mdl-textfield--floating-label
       <?=form_error('bio') ? 'is-invalid' : '' ?>">
       <label class="mdl-textfield__label" for="bio">Bio</label>
-      <textarea class="mdl-textfield__input" name="bio" id="bio"><?=$write_val('bio', $user)?></textarea>
+      <textarea class="t-area mdl-textfield__input" name="bio" id="bio"><?=$write_val('bio', $user)?></textarea>
       <span class="mdl-textfield__error"><?=form_error('bio')?></span>
     </div>
   </div>

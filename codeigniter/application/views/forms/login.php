@@ -17,7 +17,7 @@
   <div>
     <div class="w-max my-mt-1 mdl-textfield mdl-js-textfield mdl-textfield--floating-label
       <?=form_error('password') ? 'is-invalid' : '' ?>">
-      <input type="password" name="password" id="password" maxlength="50"
+      <input type="password" name="password" id="password"
         class="mdl-textfield__input">
       <label class="mdl-textfield__label" for="password">Password</label>
       <span class="mdl-textfield__error"><?=form_error('password')?></span>
@@ -28,9 +28,9 @@
     <a class="mx-xs mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
       href="<?=base_url('forgot')?>">Forgot password?</a>
     <span style="flex: 1"></span>
-    <a class="mx-xs mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+    <a class="mx-xs mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary"
       href="<?=base_url('signup')?>">Signup</a>
-    <button class="mx-xs mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary"
+    <button class="mx-xs mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
       type="submit">Login</button>
   </div>
 
