@@ -18,31 +18,52 @@
       <div>You need <strong>JavaScript</strong> to search for members!</div>
     </noscript>
 
-    <div v-show="true" style="display: none">
-      <div v-bind:key="user.id" v-for="user in users">
+    <div v-if="users.length" class="my-mt-2 search-max" v-show="true" style="display: none">
+      <div class="my-mb-2" v-bind:key="user.id" v-for="user in users">
         <label :for="user.username">
-          <div>{{ user.username }} {{ user.email }}</div>
-          <div>{{ user.fname }} {{ user.lname }}</div>
-          <div>
-            <a :href="profileUrl + user.id" target="_blank">View Profile</a>
+
+          <div style="display: inline-block; vertical-align: 100%; width: 52px;">
+            <img style="width: inherit; display: inline"
+              :src="usersImageUrl + user.u_image" :alt="user.username">
           </div>
-          <input type="checkbox" :id="user.username" v-model="selected" :value="user">
+          &nbsp;
+          <div style="display: inline">
+            <div style="display: inline-block">
+              <a :href="profileUrl + user.id" target="_blank">{{ user.username }}</a>
+              | {{ user.fname }} {{ user.lname }}
+              <br>
+              <span>{{ user.email }}</span>
+              <br>
+              <input type="checkbox" :id="user.username" v-model="selected" :value="user">
+            </div>
+          </div>
+
         </label>
       </div>
     </div>
 
     <!-- users selected -->
-    <div v-show="true" style="display: none">
-      <div v-if="selected.length">
-        <strong>Selected</strong>
+    <div v-if="selected.length" v-show="true" style="display: none">
+      <div>
+        <h6>Selected</h6>
       </div>
-      <div v-bind:key="user.id" v-for="user in selected">
-        <div>{{ user.username }} {{ user.email }}</div>
-        <div>{{ user.fname }} {{ user.lname }}</div>
-        <div>
-          <a :href="profileUrl + user.id" target="_blank">View Profile</a>
+      <div class="my-mb-2" v-bind:key="user.id" v-for="user in selected">
+        <div style="display: inline-block; vertical-align: 100%; width: 52px;">
+          <img style="width: inherit; display: inline"
+            :src="usersImageUrl + user.u_image" :alt="user.username">
         </div>
-        <input type="checkbox" :id="user.username" v-model="selected" :value="user">
+        &nbsp;
+        <div style="display: inline">
+          <div style="display: inline-block">
+            <a :href="profileUrl + user.id" target="_blank">{{ user.username }}</a>
+            | {{ user.fname }} {{ user.lname }}
+            <br>
+            <span>{{ user.email }}</span>
+            <br>
+            <input type="checkbox" :id="user.username" v-model="selected" :value="user">
+          </div>
+        </div>
+        
         <input type="hidden" name="users[]" :value="user.id">
       </div>
     </div>
@@ -60,7 +81,8 @@ new Vue({
     users: [],
     selected: [],
     search: '',
-    profileUrl: "<?=base_url('dashboard/profile/')?>"
+    profileUrl: "<?=base_url('dashboard/profile/')?>",
+    usersImageUrl: "<?=base_url('uploads/images/users/')?>"
   },
 
   watch: {

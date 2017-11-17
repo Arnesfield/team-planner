@@ -35,5 +35,9 @@ body, h1, h5, h4, h3, pre {
 .x-pad {
   padding-left: 16px;
   padding-right: 16px;
+}
 
+.search-max {
+  max-height: 256px;
+  overflow-y: auto;
 }
