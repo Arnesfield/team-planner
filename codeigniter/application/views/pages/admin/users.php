@@ -90,7 +90,7 @@ new Vue({
     changeType(user) {
       // toggle type
       const oldType = user.type
-      user.type = user.type == 1 ? 0 : 1
+      user.type = user.type == 1 ? 2 : 1
       // send ajax and update user type
       this._ajax({
         'id': user.id,
