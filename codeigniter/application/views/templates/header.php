@@ -21,7 +21,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <link rel="stylesheet" href="<?=base_url('vendor/fonts/Roboto/roboto.css')?>">
 <link rel="stylesheet" href="<?=base_url('vendor/material-icons/material-icons.css')?>">
+<?php if (isset($_do_bootstrap) && $_do_bootstrap): ?>
 <link rel="stylesheet" href="<?=base_url('vendor/bootstrap/css/bootstrap.min.css')?>">
+<?php else: ?>
+<link rel="stylesheet" href="<?=base_url('vendor/bootstrap-grid-only/css/bootstrap.min.css')?>">
+<?php endif; ?>
 <link rel="stylesheet" href="<?=base_url('vendor/mdl/material.min.css')?>">
 <link rel="stylesheet" href="<?=base_url('vendor/dataTables/jquery.dataTables.min.css')?>">
 <link rel="stylesheet" href="<?=base_url('vendor/summernote/summernote.css')?>">

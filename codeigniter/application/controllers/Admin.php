@@ -114,7 +114,8 @@ class Admin extends MY_Custom_Controller {
       'title' => 'Manage Users',
       'msg' => $this->session->flashdata('msg'),
       'users' => json_encode($members),
-      'curr_user_id' => $curr_user_id
+      'curr_user_id' => $curr_user_id,
+      '_do_bootstrap' => TRUE,
     );
     $this->_view(
       array('templates/nav', 'pages/admin/users', 'alerts/msg'),
@@ -133,6 +134,7 @@ class Admin extends MY_Custom_Controller {
       'title' => 'Manage Groups',
       'msg' => $this->session->flashdata('msg'),
       'groups' => json_encode($groups),
+      '_do_bootstrap' => TRUE,
     );
     $this->_view(
       array('templates/nav', 'pages/admin/groups', 'alerts/msg'),
@@ -185,6 +187,7 @@ class Admin extends MY_Custom_Controller {
       'title' => 'Manage Activities',
       'msg' => $this->session->flashdata('msg'),
       'activities' => json_encode($activities),
+      '_do_bootstrap' => TRUE,
     );
     $this->_view(
       array('templates/nav', 'pages/admin/activities', 'alerts/msg'),
@@ -203,6 +206,7 @@ class Admin extends MY_Custom_Controller {
       'title' => 'Manage Groups',
       'msg' => $this->session->flashdata('msg'),
       'memberships' => json_encode($memberships),
+      '_do_bootstrap' => TRUE,
     );
     $this->_view(
       array('templates/nav', 'pages/admin/memberships', 'alerts/msg'),
@@ -250,6 +254,7 @@ class Admin extends MY_Custom_Controller {
       'title' => 'Manage Tasks',
       'msg' => $this->session->flashdata('msg'),
       'tasks' => json_encode($tasks),
+      '_do_bootstrap' => TRUE,
     );
     $this->_view(
       array('templates/nav', 'pages/admin/tasks', 'alerts/msg'),
@@ -268,6 +273,7 @@ class Admin extends MY_Custom_Controller {
       'title' => 'Manage Content',
       'msg' => $this->session->flashdata('msg'),
       'contents' => json_encode($contents),
+      '_do_bootstrap' => TRUE,
     );
     $this->_view(
       array('templates/nav', 'pages/admin/contents', 'alerts/msg'),

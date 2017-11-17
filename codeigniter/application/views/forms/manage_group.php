@@ -155,7 +155,7 @@
       for="delete">
       <input type="checkbox" id="delete" v-model="showPassword"
         class="mdl-checkbox__input">
-      <span v-if="!showPassword" class="mdl-checkbox__label">Delete</span>
+      <span v-if="!showPassword" class="mdl-checkbox__label" style="vertical-align: text-top">Delete</span>
     </label>
 
     <!-- <input type="checkbox" v-model="showPassword" id="delete">
