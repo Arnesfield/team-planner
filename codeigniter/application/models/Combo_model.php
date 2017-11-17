@@ -15,13 +15,9 @@ class Combo_model extends MY_CRUD_Model {
         u.u_image AS u_image,
         u.type AS type,
         u.status AS status,
-        count(*) AS no_of_memberships
+        (SELECT count(*) FROM memberships m WHERE m.user_id = u.id) AS no_of_memberships
       FROM
-        users u, memberships m
-      WHERE
-        u.id = m.user_id
-      GROUP BY
-        u.id
+        users u
     ";
       
     $query = $this->db->query($sql);
@@ -36,13 +32,9 @@ class Combo_model extends MY_CRUD_Model {
         g.description AS g_desc,
         g.g_image AS g_image,
         g.status AS status,
-        count(*) AS member_count
+        (SELECT count(*) FROM memberships m WHERE g.id = m.group_id) AS member_count
       FROM
-        groups g, memberships m
-      WHERE
-        g.id = m.group_id
-      GROUP BY
-        g.id
+        groups g
     ";
       
     $query = $this->db->query($sql);
