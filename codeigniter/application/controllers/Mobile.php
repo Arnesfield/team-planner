@@ -16,13 +16,18 @@ class Mobile extends MY_Custom_Controller {
     exit();
   }
 
+  private function _fail() {
+    echo json_encode(array('success' => 0));
+    exit();
+  }
+
   public function login() {
     // accept username and password
     if (!(
       ($username = $this->input->post('username')) &&
       ($password = $this->input->post('password'))
     )) {
-      exit();
+      $this->_fail();
     }
 
     $this->load->user_model();
@@ -41,7 +46,7 @@ class Mobile extends MY_Custom_Controller {
       );
     }
     else {
-      echo json_encode(array('success' => 0));
+      $this->_fail();
     }
   }
 
